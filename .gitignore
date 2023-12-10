@@ -1,2 +1,8 @@
+# Ignore SSL files
 .ssl
+
+# Ignore Node modules
+node_modules
+
+# Ignore files related to API keys
 .env
