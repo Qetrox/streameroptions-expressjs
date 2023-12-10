@@ -1,0 +1,113 @@
+<header>
+    <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/latest/css/pro.min.css" media="all">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <div class="header-image">
+        <img src="<%= locals.hostname || '' %>/i/so_logo_white.png" alt="logo" onclick="IlIIIllIIII()">
+    </div>
+    <div class="mobile-hide">
+        <a href="<%= locals.hostname || '' %>/#features"><p>Features</p></a>
+        <a href="<%= locals.hostname || '' %>/supported"><p>Supported Games</p></a>
+        <a href="<%= locals.hostname || '' %>/streamers"><p>Streamers</p></a>
+    </div>
+    <div class="header-mobile-burger">
+        <span class="material-symbols-outlined" onclick="IlIIlllIIIl()">menu</span>
+    </div>
+    <div class="header-buttons mobile-hide">
+        <button class="header-button-streamer" onclick="IlIIlllIIII()">
+            <p>Creator</p>
+        </button>
+        <button class="header-button-viewer" onclick="IlIIIllIIIl()">
+            <p>Viewer</p>
+        </button>
+    </div>
+</header>
+<div class="mobile-navmenu" id="mobile-navmenu" style="visibility: hidden; opacity: 0;">
+    <header>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+        <div class="header-image">
+            <img src="<%= locals.hostname || '' %>/i/so_logo_white.png" alt="logo" onclick="IlIIIllIIII()">
+        </div>
+        <div class="header-mobile-burger">
+            <span class="material-symbols-outlined" onclick="IlIIlllIIIl()">menu</span>
+        </div>
+    </header>
+    <a href="<%= locals.hostname || '' %>/#features"><p>Features</p></a>
+    <a href="<%= locals.hostname || '' %>/supported"><p>Supported Games</p></a>
+    <a href="<%= locals.hostname || '' %>/streamers"><p>Streamers</p></a>
+    <div class="header-buttons">
+        <button class="header-button-streamer" onclick="IlIIlllIIII()">
+            <p>Creator</p>
+        </button>
+        <button class="header-button-viewer" onclick="IlIIIllIIIl()">
+            <p>Viewer</p>
+        </button>
+    </div>
+    
+</div>
+<script>
+    dododo = document.getElementById("mobile-navmenu");
+
+    dododo.style.visibility = "hidden";
+    dododo.style.opacity = 0;
+    function IlIIlllIIIl() {
+         if (dododo.style.visibility === "visible") {
+              dododo.style.visibility = "hidden";
+              dododo.style.opacity = 0;
+         } else {
+              dododo.style.visibility = "visible";
+              dododo.style.opacity = 1;
+         }
+    }
+    function IlIIIllIIII() {
+        window.location.href = "<%= locals.hostname || '' %>";
+    }
+    function IlIIlllIIII() {
+        window.location.href = "<%= locals.hostname || '' %>/streamer/dashboard";
+    }
+    function IlIIIllIIIl() {
+        window.location.href = "<%= locals.hostname || '' %>/viewer";
+    }
+
+    setInterval(function() {
+        if (window.innerWidth > 800) {
+            dododo.style.visibility = "hidden";
+            dododo.style.opacity = 0;
+        }
+    }, 1);
+
+</script>
+<div class="cookie-notifier" id="cookies">
+    <div class="cookie-notifier__content">
+        <h1>We value your privacy</h1>
+        <p>
+            We use cookies that serve a purely functional purpose and are essential 
+            for the proper operation of the website. We do not utilize these cookies to track or monitor users' activities.
+            <a href="<%= locals.hostname || '' %>/cookies">Learn more</a> about our cookie policy.
+        </p>
+        <div class="cookie-buttons">
+            <button onclick="dissapearcookies()" class="cookie-notifier__button">Accept Cookies</button>
+        </div>
+    </div>
+</div>
+<script>
+    var div = document.getElementById('cookies');
+    var display = 0;
+
+    function checkCookies() {
+        if(localStorage.getItem("cookie") === 'accepted') {
+            div.style.display = 'none';
+        }
+    }
+
+    checkCookies();
+    function dissapearcookies(){
+        localStorage.setItem("cookie", "accepted");
+        div.style.display = 'none';
+    }
+
+    function leaveWebsite() {
+        window.location.href = "https://www.google.com";
+    }
+
+</script>

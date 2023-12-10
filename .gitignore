@@ -1,0 +1,11 @@
+# Ignore SSL files
+.ssl
+.ssl/certificate.pem
+.ssl/privatekey.pem
+
+
+# Ignore Node modules
+node_modules
+
+# Ignore files related to API keys
+.env

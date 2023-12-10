@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= locals.WebsiteTitleElementText %></title>
+    <link rel="stylesheet" type="text/css" href="<%= locals.CssUrl || 'stylesheet1.css' %>">
+    <link rel="stylesheet" type="text/css" href="<%= locals.hostname + '/base_stylesheet.css' || 'localhost/base_stylesheet1.css' %>">
+</head>
+<body>
+    <%- include('parts/header.ejs') %>
+    <main>
+        <div>
+            <h1>Lets configure your Creator Account</h1>
+            <div class="form">
+                <form action="" method="post">
+                    <p>Small description (100 characters)</p>
+                    <input type="text" onchange="IIlIIIlIIIlll()" id="slogan" name="slogan" maxlength="100" value="<%= locals.slogan || ''%>">
+                    <p>Description (2000 characters)</p>
+                    <textarea id="description" onchange="IIlIIIlIIIlll()" rows=20 name="description" maxlength="2000"><%= locals.description || ''%></textarea>
+                    <input class="button" type="submit" onclick="IIlIIIlIIIlll()" name="confirm" id="checkbox3" value="Done" disabled>
+                </form>
+            </div>
+        </div>
+    </main>
+    <%- include('parts/footer.ejs') %>
+</body>
+<script>
+
+    IIlIIIlIIIlll();
+
+    function IIlIIIlIIIlll() {
+        const b1 = document.getElementById('description');
+        const b2 = document.getElementById('slogan');
+        const b3 = document.getElementById('checkbox3');
+
+        const a1 = b1.value;
+        const a2 = b2.value;
+
+        console.log(a1.length)
+
+        if(a2.length != 0 && a1.length != 0) {
+            b3.disabled = false;
+        } else if (b3.disabled == false) {
+            b3.disabled = true;
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,71 @@
+main {
+    display: flex;
+    justify-content: center;
+}
+
+a {
+    color: #fff;
+}
+
+main > div {
+    background: var(--first-color);
+    padding: 20px;
+    width: 60vw;
+    height: auto;
+    color: #fff;
+    text-align: left;
+    font-family: 'Sometype Mono', monospace;
+}
+
+.form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    text-align: left;
+}
+
+form {
+    width: 100%;
+    height: 100%;
+}
+
+.form form textarea, input {
+    width: 90%;
+    margin: 20px;
+    margin-top: 0;
+    margin-left: 0;
+}
+
+textarea, input {
+    resize: none;
+    outline: none;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.button {
+    background: var(--second-color);
+    outline: none;
+    border: none;
+    width: 50%;
+    color: #fff;
+    border-radius: 10px;
+}
+.button:hover {
+    background: var(--second-color-darker);
+    cursor: pointer;
+}
+.button:hover:disabled {
+    cursor: not-allowed;
+}
+
+@media only screen and (max-width: 768px) {
+    main > div {
+        width: 100%;
+    }
+    .button {
+        width: 95%;
+        margin: 0;
+    }
+}
