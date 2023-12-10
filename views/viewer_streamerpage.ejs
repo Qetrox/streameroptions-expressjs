@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= locals.WebsiteTitleElementText %></title>
+    <link rel="stylesheet" type="text/css" href="<%= locals.CssUrl || 'stylesheet1.css' %>">
+    <link rel="stylesheet" type="text/css" href="<%= locals.hostname + '/base_stylesheet.css' || 'localhost/base_stylesheet1.css' %>">
+</head>
+<body>
+    <%- include('parts/header.ejs') %>
+
+    <main>
+        <div class="streamer-info">
+            <div class="profile">
+                <div class="image">
+                    <img src="<%= locals.streamerProfileImageUrl%>" alt="">
+                </div>
+                <div class="heading">
+                    <h1><%= locals.streamername || '' %></h1>
+                    <h4><%= locals.streamerslogan || '' %></h4>
+                </div>
+            </div>
+            <h4>Active Since <%= locals.activesince || '--/--/--' %></h4>
+            <div class="description">
+                <p><%= locals.streamerdescription || '' %></p>
+            </div>
+        </div>
+        <div class="redeemables">
+
+            <div class="viewer-info">
+                Points: <%= locals.points %>
+            </div>
+            <% for(let key in locals.modules.minecraft) { 
+                let module = locals.modules.minecraft[key]; %>
+                <div class="redeemable<%= module.price > locals.points ? ' not-enough' : ''%>">
+                    <form action="" method="POST">
+                        <h1><%= module.title %> - <%= module.price %> Points</h1>
+                        <div class="redeemable-description">
+                            <div class="redeemable-image">
+                                <img src="<%= module.image_url %>" alt="image">
+                            </div>
+                            <p><%= module.description %></p>
+                        </div>
+                        <input type="hidden" name="type" value="minecraft">
+                        <input type="hidden" name="redeemed_by" value="<%= locals.viewername %>">
+                        <input type="hidden" name="event_type" value="<%= module.data_name %>">
+                        <% if(module.data_name == "whitelist_add") { %>
+                        <input type="text" name="minecraft_username" placeholder="Minecraft Username">
+                        <% } %>
+                        <% if(module.data_name == "change_weather") { %>
+
+                        <select name="weather_type">
+                            <option value="clear">Clear</option>
+                            <option value="rain">Rain</option>
+                            <option value="storm">Thunder</option>
+                        </select>
+                        <% } %>
+                        <input type="submit" value="<%= module.price > locals.points ? 'Not enough points' : 'Activate'%>" class="save-button <%= module.price > locals.points ? ' disabled' : ''%>"<%= module.price > locals.points ? ' disabled' : ''%>>
+                    </form>
+                </div>
+            <% } %>
+        </div>
+
+    </main>
+    <%- include('parts/footer.ejs') %>
+</body>
+</html>

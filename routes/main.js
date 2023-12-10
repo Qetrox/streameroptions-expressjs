@@ -1,0 +1,327 @@
+const express= require('express');
+const router = express.Router()
+const streamer = require('../middleware/streamer');
+const mysql = require('mysql');
+const database = require('../functions/sql');
+const eventFunctions = require('../functions/eventFunctions');
+const authFunctions = require('../functions/authFunctions');
+const auth = require('../middleware/auth');
+const checkPoints = require('../functions/checkPoints');
+
+router.get('/', (req, res) => {
+
+    let con = mysql.createConnection(database.getDatabaseCredentials());
+
+    con.connect();
+
+    con.query('SELECT * FROM streamer JOIN users ON streamerUserId = userId LIMIT 50', async (error, results, fields) => {
+        con.end();
+        if (error) {
+            console.error(error); 
+            res.status(500).send();
+        }
+
+        res.render(
+            'home', 
+            { 
+                WebsiteTitleElementText: webTitle,
+                hostname: hostname,
+                CssUrl: 'stylesheet1.css',
+                featured_streamer_list: results
+            }
+        );
+
+    });
+});
+
+router.get('/disclaimer', (req, res) => {
+    res.render(
+        'legal/disclaimer', 
+        { 
+            WebsiteTitleElementText: webTitle,
+            hostname: hostname,
+            CssUrl: 'stylesheet8.css'
+        }
+    );
+});
+
+router.get('/cookies', (req, res) => {
+    res.render(
+        'legal/cookies', 
+        { 
+            WebsiteTitleElementText: webTitle,
+            hostname: hostname,
+            CssUrl: 'stylesheet8.css'
+        }
+    );
+});
+
+router.get('/privacy', (req, res) => {
+    res.render(
+        'legal/privacy', 
+        { 
+            WebsiteTitleElementText: webTitle,
+            hostname: hostname,
+            CssUrl: 'stylesheet8.css'
+        }
+    );
+});
+
+router.get('/terms', (req, res) => {
+    res.render(
+        'legal/terms', 
+        { 
+            WebsiteTitleElementText: webTitle,
+            hostname: hostname,
+            CssUrl: 'stylesheet8.css'
+        }
+    );
+});
+
+router.get('/logout', (req, res) => {
+    res.clearCookie("token");
+    res.clearCookie("refreshtoken");
+    res.redirect("../login")
+});
+
+router.get('/login', (req, res) => {
+    res.render(
+        'login', 
+        { 
+            WebsiteTitleElementText: webTitle,
+            hostname: hostname,
+            CssUrl: 'stylesheet4.css'
+        }
+    );
+});
+
+router.get('/viewer', auth.authCookie, (req, res) => {
+
+
+    const viewerId = req.user.id;
+    let con = mysql.createConnection(database.getDatabaseCredentials());
+    con.connect();
+    con.query('SELECT * FROM points JOIN streamer ON streamerUserId = streamerId JOIN users ON streamerUserId = userId WHERE points.viewerId = ?', [viewerId], (error, results, fields) => {
+        con.end();
+        if(error) {
+            console.error(error);
+            return res.status(500).send();
+        }
+        res.render(
+            'viewer_home', 
+            { 
+                WebsiteTitleElementText: webTitle,
+                hostname: hostname,
+                CssUrl: 'stylesheet7.css',
+                streamer_points: results
+            }
+        );
+    });
+});	
+
+router.post('/:id', auth.authViewer, express.urlencoded({extended: true}), (req, res) => {
+    const streamerNameID = req.params.id;
+
+    let con = mysql.createConnection(database.getDatabaseCredentials());
+
+    con.connect();
+
+    con.query('SELECT * FROM streamer JOIN users ON streamerUserId = userId JOIN eventTokens ON tokenUserId = streamerUserId WHERE userUsername = ?', [streamerNameID], async (error, results, fields) => {
+        con.end();
+        if (error) {
+            console.error(error); 
+            res.status(500).send();
+        }
+
+        if (results[0] !== undefined && results[0].userId !== undefined && results[0].token !== undefined) {
+
+            const { type, redeemed_by, event_type } = req.body;
+            if (type === undefined || redeemed_by === undefined || event_type === undefined) {
+                res.redirect("./" + streamerNameID);
+                return;
+            }
+
+            if(event_type === "whitelist_add") {
+                if(req.body.minecraft_username === undefined || req.body.minecraft_username === null || req.body.minecraft_username === '') {
+                    res.redirect("./" + streamerNameID);
+                    return;
+                }
+            }
+
+            const token = results[0].token;
+
+            if (redeemed_by === undefined || redeemed_by === null || redeemed_by === '') return res.redirect("./" + streamerNameID);
+            con = mysql.createConnection(database.getDatabaseCredentials());
+            con.connect();
+            con.query('SELECT * FROM StreamerEvents WHERE EventStreamerUserId = ? AND is_enabled = 1 AND StreamerEventId IN ( SELECT event_id FROM events WHERE event_data_name = ?)', [results[0].userId, event_type], (error, results, fields) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send();
+                }
+                con.end();
+                if (results[0] !== undefined && results[0].EventStreamerUserId !== undefined) {
+                    
+                    const event_cost = results[0].event_cost;
+                    let viewerId;
+
+                    if(req.user === undefined || req.user.id === undefined) {
+                        res.redirect("./" + streamerNameID);
+                    } else {
+                        viewerId = req.user.id;
+                    }
+                    con = mysql.createConnection(database.getDatabaseCredentials());
+                    con.connect();
+
+                    con.query('select points from points where streamerId = ? and viewerId = ?', [results[0].EventStreamerUserId, viewerId], (error, results69, fields) => {
+                        let points = 0;
+
+                        if(error) {
+                            console.error(error);
+                            return res.status(500).send();
+                        }
+                        if(results69[0] !== undefined && results69[0].points !== undefined) {
+                            points = results69[0].points;
+                        }
+                        con.end();
+                        if(points >= event_cost) {
+                            con = mysql.createConnection(database.getDatabaseCredentials());
+                            con.connect();
+                            con.query('update points set points = points - ? where streamerId = ? and viewerId = ?', [event_cost, results[0].EventStreamerUserId, viewerId], (error, results69, fields) => {
+                                if (error) {
+                                    console.error(error);
+                                    res.status(500).send();
+                                    return;
+                                }
+                                if(event_type === "whitelist_add") {
+                                    eventFunctions.addEvent(token, type, {redeemed_by: redeemed_by, type: event_type, minecraft_username: req.body.minecraft_username});
+                                } else if (event_type === "change_weather") {
+                                    eventFunctions.addEvent(token, type, {redeemed_by: redeemed_by, type: event_type, weather_type: req.body.weather_type});
+                                } else {
+                                    eventFunctions.addEvent(token, type, {redeemed_by: redeemed_by, type: event_type});
+                                }
+
+                                res.redirect("./" + streamerNameID);
+                                con.end();
+                                return;
+                            });
+                        } else {
+                            console.log(`User tried to activate ${type} ${JSON.stringify({redeemed_by: redeemed_by, type: event_type})} but did not have enough points`);
+                        }
+
+                    });
+                } else {
+                    res.redirect("./" + streamerNameID);
+                }
+            });
+        } else {
+            res.redirect("./" + streamerNameID);
+        }
+
+    });
+});
+
+router.get('/:id', auth.authViewer, (req, res) => {
+
+    const streamerNameID = req.params.id;
+
+    let con = mysql.createConnection(database.getDatabaseCredentials());
+
+    con.connect();
+
+    con.query('SELECT * FROM streamer JOIN users ON streamerUserId = userId WHERE userUsername = ?', [streamerNameID], (error, results, fields) => {
+        con.end();
+        if (error) {
+            console.error(error);
+            res.status(500).send();
+        }
+
+        if (results[0] !== undefined && results[0].userId !== undefined) {
+            con = mysql.createConnection(database.getDatabaseCredentials());
+            con.connect();
+            con.query('SELECT * FROM events LEFT JOIN StreamerEvents ON event_id = StreamerEventId WHERE StreamerEvents.EventStreamerUserId = ? AND is_enabled = 1', [results[0].userId], (error, results2, fields) => {
+                con.end();
+                if(error) {
+                    console.error(error);
+                    return res.status(500).send();
+                }
+
+
+                let events = {
+                };
+
+                for(i = 0; i < results2.length; i++) {
+                    const jsonObject = JSON.parse(results2[i].event_data);
+                    if (events[results2[i].event_type] === undefined) {
+                        events[results2[i].event_type] = [];
+                    }
+
+                    if (results2[i].event_cost === null)  results2[i].event_cost = 0;
+
+                    events[results2[i].event_type].push(
+                        {
+                            title: jsonObject.title,
+                            description: jsonObject.description,
+                            price: results2[i].event_cost,
+                            image_url: jsonObject.image_url,
+                            m_id: results2[i].event_id,
+                            enabled: results2[i].is_enabled,
+                            data_name: results2[i].event_data_name,
+                        }
+                    )    
+                
+                }
+                
+                let viewerId;
+
+                if(req.user === undefined || req.user.id === undefined) {
+                    viewerId = 0;
+                } else {
+                    viewerId = req.user.id;
+                }
+
+                con = mysql.createConnection(database.getDatabaseCredentials());
+                con.connect();
+                con.query('select points from points where streamerId = ? and viewerId = ?', [results[0].userId, viewerId], (error, results69, fields) => {
+                    con.end();
+
+                    let viewer_name = "";
+
+                    if(req.user !== undefined && req.user.display_name !== undefined) {
+                        viewer_name = req.user.display_name;
+                    }
+
+                    let points = 0;
+
+                    if(error) {
+                        console.error(error);
+                        return res.status(500).send();
+                    }
+                    if(results69[0] !== undefined && results69[0].points !== undefined) {
+                        points = results69[0].points;
+                    }
+                    res.render('viewer_streamerpage',
+                    {
+                        WebsiteTitleElementText: `${webTitle} - ${results[0].userDisplayname}`,
+                        hostname: hostname,
+                        CssUrl: 'stylesheet3.css',
+                        streamername: results[0].userDisplayname,
+                        streamerslogan: results[0].streamerSlogan,
+                        streamerdescription: results[0].streamerDescription,
+                        streamerProfileImageUrl: results[0].userProfileImageUrl,
+                        activesince: results[0].streamerActiveSince,
+                        modules: events,
+                        points: points,
+                        viewername: viewer_name
+                    });
+                });
+
+            });
+
+            
+        } else {
+            res.redirect("/");
+        }
+    });
+});
+
+module.exports = router;

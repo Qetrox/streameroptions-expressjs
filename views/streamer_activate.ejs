@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= locals.WebsiteTitleElementText %></title>
+    <link rel="stylesheet" type="text/css" href="<%= locals.CssUrl || 'stylesheet1.css' %>">
+    <link rel="stylesheet" type="text/css" href="<%= locals.hostname + '/base_stylesheet.css' || 'localhost/base_stylesheet1.css' %>">
+</head>
+<body>
+    <%- include('parts/header.ejs') %>
+    <main>
+        <div>
+            <h1>Your account is not registered as a creator, want to enable Creator mode?</h1>
+            <div>
+                <input type="checkbox" onclick="IIlIIIlIIIlll()" name="checkbox" id="checkbox" class="checkbox">
+                <p>I agree to the <a href="../terms-of-service" target="_blank">Terms of Service</a>.</p>
+            </div>
+            <div class="two">
+                <input type="checkbox" onclick="IIlIIIlIIIlll()" name="checkbox2" id="checkbox2" class="checkbox2">
+                <p>I acknowledge that I cannot disable Creator mode.</p>
+            </div>
+            <form action="" method="post">
+                <input type="submit" onclick="IIlIIIlIIIlll()" name="confirm" id="checkbox3" value="Enable" disabled>
+            </form>
+        </div>
+    </main>
+    <%- include('parts/footer.ejs') %>
+</body>
+<script>
+    function IIlIIIlIIIlll() {
+        b1 = document.getElementById('checkbox');
+        b2 = document.getElementById('checkbox2');
+        b3 = document.getElementById('checkbox3');
+        if(b1.checked && b2.checked) {
+            b3.disabled = false;
+        } else if (b3.disabled == false) {
+            b3.disabled = true;
+        }
+    }
+</script>
+</html>

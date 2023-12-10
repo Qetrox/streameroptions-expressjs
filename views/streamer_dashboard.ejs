@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= locals.WebsiteTitleElementText %></title>
+    <link rel="stylesheet" type="text/css" href="<%= locals.CssUrl || 'stylesheet1.css' %>">
+    <link rel="stylesheet" type="text/css" href="<%= locals.hostname + '/base_stylesheet.css' || 'localhost/base_stylesheet1.css' %>">
+</head>
+<body>
+    <%- include('parts/header.ejs') %>
+    <main>
+        <div class="top">
+            <div class="setup">
+                <h1>Edit your page info</h1>
+                <form action="./setup" method="post">
+                    <p>Small description (100 characters)</p>
+                    <input type="text" onchange="IIlIIIlIIIlll()" id="slogan" name="slogan" maxlength="100" value="<%= locals.slogan || ''%>">
+                    <p>Description (2000 characters)</p>
+                    <textarea id="description" onchange="IIlIIIlIIIlll()" rows=20 name="description" maxlength="2000"><%= locals.description || ''%></textarea>
+                    <input class="button" type="submit" onclick="IIlIIIlIIIlll()" name="confirm" id="checkbox3" value="Done" disabled>
+                </form>
+            </div>
+            <div class="info">
+                <h1>Point Info</h1>
+                <p>Streamer Options will try to ask Twitch which viewers are watching your stream every minute, and grant every viewer 10 points.</p>
+                <p>Depending on demand, there is a small chance that the interval will be longer than a minute.</p>
+                <h2>Point pricing guide</h3>
+                <p>A viewer gets 10 points per minute.<br>That is 600 points every hour.</p>
+                <p>Be careful when pricing your modules, you don't want to make the game unplayable (most of the time).</p>
+                <p><strong>For example:</strong> If you want a viewer to be able to join your Minecraft server after watching your stream for 12 hours, you should price the whitelist module at <strong>7.200</strong> points.</p>
+                <h2>Streamer Options Token</h3>
+                <p>Do not show this token to anyone! This token is used by our services to receive events when someone uses their points! You should only use this token when we ask for it while configuring your settings on our mods and plugins.</p>
+                <input type="password" id="tokenfield" value="<%= locals.token || 'Oops! Something went wrong. Try again later.'%>" disabled>
+                <button onclick="tokenButton()" id="token-button">Show Token</button>
+                <p>Token compromised? Mail us at <a href="mailto://contact@streameroptions.com">contact@streameroptions.com</a></p>
+                <script>
+                    function tokenButton() {
+                        const tokenfield = document.getElementById('tokenfield');
+                        const tokenbutton = document.getElementById('token-button');
+                        if(tokenfield.type == 'password') {
+                            tokenfield.type = 'text';
+                            tokenbutton.textContent = 'Hide Token';
+                        } else {
+                            tokenfield.type = 'password';
+                            tokenbutton.textContent = 'Show Token';
+                        }
+                    }
+                </script>
+            </div>
+        </div>
+
+        <h1>Minecraft Server Modules</h1>
+        <div class="module-container">
+            <% for(let key in locals.modules.minecraft) { 
+                let module = locals.modules.minecraft[key]; %>
+                <div class="module <%= module.enabled == 1 ? 'module-active' : '' %>">
+                    <form action="./save-modules" method="GET">
+                        <div class="title"><%= module.title %></div>
+                        <div class="description"><%= module.description %></div>
+                        <div class="price"><%= module.price %> Points</div>
+                        <label for="price">Price</label>
+                        <input type="number" name="price" class="price-input" value="<%= module.price %>">
+                        <input type="hidden" name="module_id" value="<%= module.m_id %>">
+                        <div class="toggle-slider">
+                            <input type="checkbox" name="toggled" id="toggle<%= key %>" class="toggle-slider-checkbox toggle" <%= module.enabled == 1 ? 'checked' : '' %>>
+                            <label for="toggle<%= key %>" class="toggle-slider-label"></label>
+                        </div>
+                        <input type="submit" value="Save" class="save-button" hidden>
+                    </form>
+                </div>
+            <% } %>
+        </main>
+    </div>
+
+        <script>
+            const toggleSliders = document.querySelectorAll('.toggle');
+            const priceInputs = document.querySelectorAll('.price-input');
+
+            toggleSliders.forEach((slider, index) => {
+                slider.addEventListener('change', () => {
+                    const module = slider.closest('.module');
+                    module.classList.toggle('module-active');
+                    const saveButton = module.querySelector('.save-button');
+                    saveButton.hidden = false;
+                });
+            });
+
+            priceInputs.forEach(input => {
+                input.addEventListener('change', () => {
+                    const module = input.parentNode;
+                    const price = module.querySelector('.price');
+                    price.textContent = input.value + ' Points';
+                    const saveButton = module.querySelector('.save-button');
+                    saveButton.hidden = false;
+                });
+            });
+
+            IIlIIIlIIIlll();
+
+            function IIlIIIlIIIlll() {
+                const b1 = document.getElementById('description');
+                const b2 = document.getElementById('slogan');
+                const b3 = document.getElementById('checkbox3');
+                const a1 = b1.value;
+                const a2 = b2.value;
+
+                console.log(a1.length)
+
+                if(a2.length != 0 && a1.length != 0) {
+                    b3.disabled = false;
+                } else if (b3.disabled == false) {
+                    b3.disabled = true;
+                }
+            }
+
+        </script>
+    <%- include('parts/footer.ejs') %>
+    </body>
+</html>
