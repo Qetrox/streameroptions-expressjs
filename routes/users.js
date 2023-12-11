@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 const authFunctions = require('../functions/authFunctions');
 const database = require('../functions/sql');
 const axios = require('axios');
+const mailFunctions = require('../functions/mailFunctions');
 
 /**
  * Performs bitwise operations and returns a string representation of the result.
@@ -115,14 +116,16 @@ router.get('/login/twitch-auth', express.urlencoded({extended: true}), async (re
                             return;
                         }
 
-                        const userId = results.insertId;
                         const jwt_user = { name: twitchUser.login, id: userId, display_name: twitchUser.display_name };
                         const accessToken = authFunctions.genToken(jwt_user);
-                        const refreshToken = authFunctions.genRefreshToken(jwt_user, userId);
+                        const refreshToken = authFunctions.genRefreshToken(jwt_user, twitchUser.id);
                         res.cookie('token', accessToken, { expires: new Date(Date.now() + 60*60*24*30*1000) })
                         res.cookie('refreshtoken', refreshToken, { expires: new Date(Date.now() + 60*60*24*30*1000) })
 
                         res.redirect("../");
+                        setTimeout(() => {
+                            mailFunctions.sendSignupMail(twitchUser.id);
+                        }, 500);
                     });
                 }
             });

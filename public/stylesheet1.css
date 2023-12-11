@@ -3,7 +3,7 @@
     position: relative;
     color: #fff;
     background-repeat: no-repeat;
-    background-attachment: cover;
+    background-size: cover;
     background-position: center;
     transition:  all 1s ease;
 }

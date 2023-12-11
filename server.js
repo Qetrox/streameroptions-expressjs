@@ -10,7 +10,7 @@ const mainRouter = require('./routes/main');
 const checkPoints = require('./functions/checkPoints');
 
 webTitle = 'Streamer Options'
-hostname = 'https://localhost'
+hostname = 'https://streameroptions.com'
 
 app.set('x-powered-by', false)
 app.use(cookieParser());

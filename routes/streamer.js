@@ -121,9 +121,7 @@ router.post('/activate', auth.authCookie, express.urlencoded({extended: true}), 
     const confirm = req.body.confirm;
     if(confirm === 'Enable') {
         let con = mysql.createConnection(database.getDatabaseCredentials());
-
         const date = new Date();
-
         con.connect();
         con.query('INSERT IGNORE INTO streamer (streamerUserId, streamerActiveSince) VALUES (?, ?)', [req.user.id, `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`], (error, results, fields) => {
             con.end();
