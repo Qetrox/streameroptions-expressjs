@@ -8,7 +8,9 @@ a {
 }
 
 main > div {
-    background: var(--first-color);
+    background: #777;
+    margin: 20px 0;
+    border-radius: 5px;
     padding: 20px;
     width: 60vw;
     height: auto;
@@ -41,11 +43,11 @@ textarea, input {
     outline: none;
     border: none;
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 2px;
 }
 
 .button {
-    background: var(--second-color);
+    background: var(--first-color);
     outline: none;
     border: none;
     width: 50%;
@@ -53,7 +55,7 @@ textarea, input {
     border-radius: 10px;
 }
 .button:hover {
-    background: var(--second-color-darker);
+    background: var(--first-color-darker);
     cursor: pointer;
 }
 .button:hover:disabled {

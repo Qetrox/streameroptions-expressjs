@@ -16,7 +16,7 @@ h1 {
     height: 200px;
     padding: 15px;
     box-sizing: border-box;
-    border-radius: 20px;
+    border-radius: 5px;
     margin: 10px;
     position: relative;
     transition: all 150ms ease;
@@ -119,10 +119,10 @@ main > h1 {
     margin-bottom: 10px;
     font-family: 'Kanit', sans-serif;
     text-align: center;
-    background: var(--third-color);
+    background: #777;
     width: calc(90% + 40px);
     margin: 30px auto;
-    border-radius: 20px;
+    border-radius: 5px;
 }
 
 main > .top {
@@ -134,25 +134,29 @@ main > .top {
 }
 
 main > div > .info {
-    background: var(--first-color);
+    background: #333;
     padding: 20px;
     width: 40%;
     height: auto;
     color: #fff;
     text-align: left;
     font-family: 'Sometype Mono', monospace;
-    border-radius: 20px;
+    border-radius: 5px;
 }
 
 main > div > .setup {
-    background: var(--first-color);
+    background: #333;
     padding: 20px;
     width: 40%;
     height: auto;
     color: #fff;
     text-align: left;
     font-family: 'Sometype Mono', monospace;
-    border-radius: 20px;
+    border-radius: 5px;
+}
+
+.info > input:disabled {
+    color: #eee;
 }
 
 .form {
@@ -179,19 +183,20 @@ textarea, input {
     outline: none;
     border: none;
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 2px;
 }
 
-.button {
-    background: var(--second-color);
+.button, .info > button {
+    background: var(--first-color);
     outline: none;
     border: none;
     width: 50%;
     color: #fff;
-    border-radius: 10px;
+    border-radius: 2px;
+    min-height: 40px;
 }
-.button:hover {
-    background: var(--second-color-darker);
+.button:hover, .info > button:hover {
+    background: var(--first-color-darker);
     cursor: pointer;
 }
 .button:hover:disabled {
@@ -228,5 +233,13 @@ textarea, input {
     main > h1 {
         width: 100%;
         border-radius: 0;
+    }
+    main > div > .setup, main > div > .info {
+        width: 90%;
+        border-radius: 0;
+        margin-top: 20px;
+    }
+    .top {
+        flex-wrap: wrap;
     }
 }

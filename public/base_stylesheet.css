@@ -1,16 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&family=Kanit:wght@500&family=Sometype+Mono&display=swap');
 /*
 :root {
-    --navbar-color: #141528;
-    --background-color: #f3eded;
-    --first-color: #20b0f8;
-    --second-color: #D1284C;
-    --third-color: #0d137e;
-    --first-color-darker: #ba5f14;
-    --second-color-darker: #ac1133;
-}
-*/
-:root {
     --navbar-color: #3E0E1F;
     --background-color: #F6E1E1;
     --first-color: #F88020;
@@ -18,6 +8,16 @@
     --third-color: #9be769;
     --first-color-darker: #ba5f14;
     --second-color-darker: #ac1133;
+}
+*/
+:root {
+    --navbar-color: #050505;
+    --background-color: #eee;
+    --first-color: #050505;
+    --second-color: #fff;
+    --third-color: #050505;
+    --first-color-darker: #202020;
+    --second-color-darker: #999;
 }
 
 
@@ -69,17 +69,20 @@ header > .header-buttons {
 header > .header-image {
     justify-content: left;
 }
+.header-buttons > button:hover {
+    border-color: var(--second-color-darker)
+}
 .header-buttons > button {
     margin-left: 20px;
     width: 150px;
     text-align: center;
     border: none;
     outline: none;
-    border-radius: 10px;
     transition: all 150ms ease;
     height: 50px;
     color: #fff;
     font-family: 'Kanit', sans-serif;
+    border: 2px solid #fff;
     box-shadow: 5px 5px 10px rgba(29, 29, 29, 0.5);
 }
 .header-buttons > button > p {
@@ -88,6 +91,9 @@ header > .header-image {
 }
 .header-button-streamer {
     background: var(--second-color);
+    & p {
+        color: #050505;
+    }
 }
 .header-button-viewer {
     background: var(--first-color);
@@ -98,7 +104,6 @@ header > .header-image {
     cursor: pointer;
 }
 .header-button-viewer:hover {
-    background: var(--first-color-darker);
     cursor: pointer;
 }
 header > .header-mobile-burger {

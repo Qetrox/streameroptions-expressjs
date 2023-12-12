@@ -111,15 +111,15 @@
     align-items: center;
     align-content: center;
     justify-content: space-evenly;
-    border-radius: 10px;
     margin-right:10vw;
+    border-radius: 5px;
     padding: 5px;
     box-sizing: border-box;
     cursor: pointer;
 }
 .streamer-list > .streamer > img {
     width: 7vw;
-    border-radius: 50%;
+    border-radius: 2px;
 }
 
 .fade-in {
