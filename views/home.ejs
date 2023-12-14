@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="apple-touch-icon" sizes="180x180" href="<%= locals.hostname || '' %>/fav/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<%= locals.hostname || '' %>/fav/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<%= locals.hostname || '' %>/fav/favfavicon-16x16.png">
+    <link rel="manifest" href="<%= locals.hostname || '' %>/fav/site.webmanifest">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= locals.WebsiteTitleElementText %></title>
@@ -24,11 +28,16 @@
                 <div class="streamer-list">
                     <% 
                     const streamer_display = locals.featured_streamer_list || [];
-                    streamer_display.forEach((streamer) => {
+                    streamer_display.forEach((streamer, index) => {
+
+                        const previousStreamer = index > 0 ? streamer_display[index - 1] : streamer_display[streamer_display.length - 1];
+                        const nextStreamer = index < streamer_display.length - 1 ? streamer_display[index + 1] : streamer_display[0];
+
                     %>
-                    <div class="streamer" onclick="javascript:window.location.href='./<%= streamer.userUsername %>'">
-                        <img src="<%= streamer.userProfileImageUrl %>" alt="streamer profile picture">
-                        <h1><%= streamer.userDisplayname %></h1>
+                    <div class="streamer-container">
+                        <div class="streamer" style="background-image: url('<%= nextStreamer.userProfileImageUrl %>');" onclick="javascript:window.location.href='./<%= nextStreamer.userUsername %>'"></div>
+                        <div class="streamer" style="background-image: url('<%= streamer.userProfileImageUrl %>');" onclick="javascript:window.location.href='./<%= streamer.userUsername %>'"></div>
+                        <div class="streamer" style="background-image: url('<%= previousStreamer.userProfileImageUrl %>');" onclick="javascript:window.location.href='./<%= previousStreamer.userUsername %>'"></div>
                     </div>
                     <% }) %>
                 </div>

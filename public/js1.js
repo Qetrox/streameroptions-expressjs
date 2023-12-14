@@ -57,33 +57,51 @@ const banner = document.getElementById('banner');
         }, 5000);
 
         const streamerList = document.querySelector('.streamer-list');
+
+        const orgIndex = streamerList.children.length;
+
         const first_streamer_clone = streamerList.children[0].cloneNode(true);
         const second_streamer_clone = streamerList.children[1].cloneNode(true);
         const last_streamer_clone = streamerList.children[streamerList.children.length - 1].cloneNode(true);
 
-        streamerList.insertBefore(last_streamer_clone, streamerList.children[0]);
-        streamerList.appendChild(first_streamer_clone);
-        streamerList.appendChild(second_streamer_clone);
-
         let currentStreamer = 0;
+        let currentDupeStreamer = 0
+        
 
+        // Duplicate the streamer list until it reaches 18
+        while (streamerList.children.length < 18 + orgIndex) {
+            const clone = streamerList.children[currentDupeStreamer].cloneNode(true);
+            streamerList.appendChild(clone);
+            currentDupeStreamer++;
+        }
+
+        setTimeout(() => {
+        if(window.innerWidth < 768) {
+            shoveWidth = 25;
+        } else {
+            shoveWidth = 5
+        }
+
+        streamerList.style.transition = '3s linear';
+        currentStreamer++;
+        streamerList.style.transform = `translateX(-${currentStreamer * shoveWidth}vw)`;
+        }, 100);
 
         setInterval(function() {
-
             if(window.innerWidth < 768) {
-                shoveWidth = 90;
+                shoveWidth = 25;
             } else {
-                shoveWidth = 30
+                shoveWidth = 5
             }
 
-            streamerList.style.transitionDuration = '2s';
+            streamerList.style.transition = '3s linear';
             currentStreamer++;
             streamerList.style.transform = `translateX(-${currentStreamer * shoveWidth}vw)`;
-            if(currentStreamer == streamerList.children.length - 3) {
+            if(currentStreamer == orgIndex) {
                 currentStreamer = 0;
                 setTimeout(() => {
-                    streamerList.style.transitionDuration = '0s';
+                    streamerList.style.transition = '0s';
                     streamerList.style.transform = `translateX(-${currentStreamer * shoveWidth}vw)`;
-                }, 2000);
+                }, 2980);
             }
-        }, 4000);
+        }, 3000);

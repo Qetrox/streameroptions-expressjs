@@ -282,6 +282,10 @@ footer > div > img {
     .cookie-notifier__button {
         margin-right: 0px;
     }
+    .mobile-navmenu button {
+        background: #fff;
+        color: #050505;
+    }
 
     /* -- Footer -- */
 

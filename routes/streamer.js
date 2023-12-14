@@ -149,7 +149,7 @@ router.post('/activate', auth.authCookie, express.urlencoded({extended: true}), 
 router.get('/activate', auth.authCookie, async (req, res) => {
     res.render('streamer_activate',
     { 
-        WebsiteTitleElementText: `${webTitle} - Dashboard`,
+        WebsiteTitleElementText: `${webTitle} - Setup`,
         hostname: hostname,
         CssUrl: '../../stylesheet5.css'
     }

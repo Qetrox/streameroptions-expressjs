@@ -38,7 +38,7 @@ router.get('/disclaimer', (req, res) => {
     res.render(
         'legal/disclaimer', 
         { 
-            WebsiteTitleElementText: webTitle,
+            WebsiteTitleElementText: webTitle + ' - Disclaimer',
             hostname: hostname,
             CssUrl: 'stylesheet8.css'
         }
@@ -49,7 +49,7 @@ router.get('/cookies', (req, res) => {
     res.render(
         'legal/cookies', 
         { 
-            WebsiteTitleElementText: webTitle,
+            WebsiteTitleElementText: webTitle + ' - Cookies',
             hostname: hostname,
             CssUrl: 'stylesheet8.css'
         }
@@ -60,7 +60,7 @@ router.get('/privacy', (req, res) => {
     res.render(
         'legal/privacy', 
         { 
-            WebsiteTitleElementText: webTitle,
+            WebsiteTitleElementText: webTitle + ' - Privacy Policy',
             hostname: hostname,
             CssUrl: 'stylesheet8.css'
         }
@@ -71,7 +71,7 @@ router.get('/terms', (req, res) => {
     res.render(
         'legal/terms', 
         { 
-            WebsiteTitleElementText: webTitle,
+            WebsiteTitleElementText: webTitle + ' - Terms of Service',
             hostname: hostname,
             CssUrl: 'stylesheet8.css'
         }
@@ -88,7 +88,7 @@ router.get('/login', (req, res) => {
     res.render(
         'login', 
         { 
-            WebsiteTitleElementText: webTitle,
+            WebsiteTitleElementText: webTitle + ' - Login',
             hostname: hostname,
             CssUrl: 'stylesheet4.css'
         }
@@ -110,7 +110,7 @@ router.get('/viewer', auth.authCookie, (req, res) => {
         res.render(
             'viewer_home', 
             { 
-                WebsiteTitleElementText: webTitle,
+                WebsiteTitleElementText: webTitle + ' - Viewer Home',
                 hostname: hostname,
                 CssUrl: 'stylesheet7.css',
                 streamer_points: results
