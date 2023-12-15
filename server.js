@@ -8,11 +8,13 @@ const streamerRouter = require('./routes/streamer');
 const eventRouter = require('./routes/events');
 const mainRouter = require('./routes/main');
 const checkPoints = require('./functions/checkPoints');
+const security = require('./middleware/security');
 
 webTitle = 'Streamer Options'
 hostname = 'https://streameroptions.com'
 
 app.set('x-powered-by', false)
+app.use(security.onlyAllowCloudflare);
 app.use(cookieParser());
 app.use(express.static("public"));
 app.use(express.json());
