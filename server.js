@@ -9,9 +9,10 @@ const eventRouter = require('./routes/events');
 const mainRouter = require('./routes/main');
 const checkPoints = require('./functions/checkPoints');
 const security = require('./middleware/security');
+const devMonitorRouter = require('./routes/devMonitor');
 
 webTitle = 'Streamer Options'
-hostname = 'https://streameroptions.com'
+hostname = 'https://localhost'
 
 app.set('x-powered-by', false)
 app.use(security.onlyAllowCloudflare);
@@ -21,7 +22,9 @@ app.use(express.json());
 app.use('/users', userRouter);
 app.use('/streamer', streamerRouter);
 app.use('/events', eventRouter);
-app.use('/', mainRouter);
+app.use('/', devMonitorRouter);
+
+app.use('/', mainRouter); // this router should be last.
 
 app.use(express.urlencoded({
     extended: true
