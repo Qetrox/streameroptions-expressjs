@@ -10,6 +10,7 @@ const mainRouter = require('./routes/main');
 const checkPoints = require('./functions/checkPoints');
 const security = require('./middleware/security');
 const devMonitorRouter = require('./routes/devMonitor');
+const guideRouter = require('./routes/guides');
 
 webTitle = 'Streamer Options'
 hostname = 'https://localhost'
@@ -23,6 +24,7 @@ app.use('/users', userRouter);
 app.use('/streamer', streamerRouter);
 app.use('/events', eventRouter);
 app.use('/', devMonitorRouter);
+app.use('/', guideRouter);
 
 app.use('/', mainRouter); // this router should be last.
 

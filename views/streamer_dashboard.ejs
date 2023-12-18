@@ -55,7 +55,7 @@
         </div>
 
         <h1>Minecraft Server Modules</h1>
-        <div class="module-container">
+        <div class="module-container minecraft">
             <% for(let key in locals.modules.minecraft) { 
                 let module = locals.modules.minecraft[key]; %>
                 <div class="module <%= module.enabled == 1 ? 'module-active' : '' %>">

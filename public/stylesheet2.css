@@ -4,14 +4,15 @@
     justify-content: center;
     align-items: center;
     position: relative;
+    padding-top: 80px;
 }
 
 h1 {
-    color: #fff;
+    color: #050505;
 }
 
 .module {
-    background: var(--first-color-darker);
+    background: rgba(153, 153, 153, 0.5);
     width: 30%;
     height: 200px;
     padding: 15px;
@@ -20,7 +21,7 @@ h1 {
     margin: 10px;
     position: relative;
     transition: all 150ms ease;
-    color: #fff;
+    color: #050505;
 }
 
 .title {
@@ -119,7 +120,7 @@ main > h1 {
     margin-bottom: 10px;
     font-family: 'Kanit', sans-serif;
     text-align: center;
-    background: #777;
+    background: #fff;
     width: calc(90% + 40px);
     margin: 30px auto;
     border-radius: 5px;
@@ -134,29 +135,29 @@ main > .top {
 }
 
 main > div > .info {
-    background: #333;
+    background: #fff;
     padding: 20px;
     width: 40%;
     height: auto;
-    color: #fff;
+    color: #050505;
     text-align: left;
     font-family: 'Sometype Mono', monospace;
     border-radius: 5px;
 }
 
 main > div > .setup {
-    background: #333;
+    background: #fff;
     padding: 20px;
     width: 40%;
     height: auto;
-    color: #fff;
+    color: #050505;
     text-align: left;
     font-family: 'Sometype Mono', monospace;
     border-radius: 5px;
 }
 
 .info > input:disabled {
-    color: #eee;
+    color: #050505;
 }
 
 .form {
@@ -176,6 +177,8 @@ form {
     margin: 20px;
     margin-top: 0;
     margin-left: 0;
+    background-color: #ddd;
+    color: #050505;
 }
 
 textarea, input {
@@ -202,9 +205,6 @@ textarea, input {
 .button:hover:disabled {
     cursor: not-allowed;
 }
-.setup > h1 {
-    text-align: center;
-}
 
 .module input {
     padding: 5px;
@@ -220,10 +220,23 @@ textarea, input {
     margin: 0;
 }
 
+main > h1 {
+    transform: translateY(60px);
+    z-index: 1;
+}
+
 /* Overrides */
 
 .module-active {
-    background: var(--first-color);
+    background: #fff;
+}
+
+.module-container.minecraft {
+    background-image: url('../../i/banner0.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 @media only screen and (max-width: 768px) {

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="apple-touch-icon" sizes="180x180" href="<%= locals.hostname || '' %>/fav/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<%= locals.hostname || '' %>/fav/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<%= locals.hostname || '' %>/fav/favfavicon-16x16.png">
+    <link rel="manifest" href="<%= locals.hostname || '' %>/fav/site.webmanifest">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= locals.WebsiteTitleElementText %></title>
+    <link rel="stylesheet" type="text/css" href="<%= locals.CssUrl || 'stylesheet1.css' %>">
+    <link rel="stylesheet" type="text/css" href="<%= locals.hostname + '/base_stylesheet.css' || 'localhost/base_stylesheet1.css' %>">
+</head>
+<body>
+    <%- include('parts/header.ejs') %>
+    <main>
+        <h1><%= locals.guide.name %></h1>
+        <p><%= locals.guide.description %></p>
+        <div class="guide-content">
+            <%- include('guides/' + locals.guide.viewPath) %>
+        </div>
+    </main>
+    <%- include('parts/footer.ejs') %>
+</body>
+</html>

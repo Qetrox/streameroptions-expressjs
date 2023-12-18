@@ -4,17 +4,17 @@ main {
 }
 
 a {
-    color: #fff;
+    color: #050505;
 }
 
 main > div {
-    background: #777;
+    background: #fff;
     margin: 20px 0;
     border-radius: 5px;
     padding: 20px;
     width: 60vw;
     height: auto;
-    color: #fff;
+    color: #050505;
     text-align: left;
     font-family: 'Sometype Mono', monospace;
 }
@@ -36,6 +36,7 @@ form {
     margin: 20px;
     margin-top: 0;
     margin-left: 0;
+    background-color: #ddd;
 }
 
 textarea, input {
@@ -52,7 +53,7 @@ textarea, input {
     border: none;
     width: 50%;
     color: #fff;
-    border-radius: 10px;
+    border-radius: 2px;
 }
 .button:hover {
     background: var(--first-color-darker);

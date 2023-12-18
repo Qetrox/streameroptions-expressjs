@@ -1,0 +1,63 @@
+main {
+    margin-top: 30px;
+}
+main > p,
+main > h1 {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+main > h1 {
+    font-size: 50px;
+    font-family: 'Kanit', sans-serif;
+}
+main > p {
+    font-size: 20px;
+    font-family: 'Sometype Mono', monospace;
+}
+
+.guide-content {
+    font-family: 'Kanit', sans-serif;
+    margin: 10px 9vw;
+    padding: 10px 1vw;
+    background: #fff;
+    border-radius: 5px;
+    margin-top: 50px;
+}
+.guide-content > p {
+    font-family: 'Sometype Mono', monospace;
+}
+.guide-content > img {
+    width: 70%;
+}
+
+.guide-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.guide-list > .guide {
+    font-family: 'Kanit', sans-serif;
+    background: #fff;
+    width: 30vw;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+@media screen and (max-width: 768px) {
+    .guide-list > .guide {
+        width: 90vw;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        text-align: center;
+    }
+    .guide-content {
+        margin: 10px;
+    }
+}

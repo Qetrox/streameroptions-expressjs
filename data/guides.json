@@ -1,0 +1,14 @@
+{
+    "how-to-enable-creator-and-use-modules": {
+        "name": "How to enable Creator mode and set up modules",
+        "urlTitle": "Module guide",
+        "description": "This guide will shouw you how you can enable Creator mode, and set up modules for your stream.",
+        "viewPath": "how_to_enable_creator_and_use_modules.ejs"
+    },
+    "setting-up-the-streamer-options-minecraft-plugin": {
+        "name": "Setting up the Streamer Options Minecraft plugin",
+        "urlTitle": "Minecraft plugin guide",
+        "description": "This guide will show you how to setup the Streamer Options Minecraft plugin.",
+        "viewPath": "minecraft_plugin_setup.ejs"
+    }
+}
