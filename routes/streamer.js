@@ -89,6 +89,7 @@ router.get('/save-modules', auth.authCookie, streamer.isStreamerSetup, async (re
 });
 router.get('/save-custom-minecraft-modules', auth.authCookie, streamer.isStreamerSetup, async (req, res) => {
     if(req.query === undefined || req.query === null) return res.redirect('./dashboard');
+
     let enabled1 = 0;
     let enabled2 = 0;
     let enabled3 = 0;

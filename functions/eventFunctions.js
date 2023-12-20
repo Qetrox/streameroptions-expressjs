@@ -79,10 +79,21 @@ async function addEvents(token, type, data) {
 
     Events[type][token].push(data);
 }
+
+async function addCustomMinecraftEvent(token, data) {
+    if (!Events['minecraft']) {
+        Events['minecraft'] = {};
+    }
+    if (!Events['minecraft'][token]) {
+        Events['minecraft'][token] = [];
+    }
+    Events['minecraft'][token].push(data);
+}
  
 
 module.exports = {
     sendEvents: sendEvents,
     addEvent: addEvents,
     isValidEvent: isValidEvent,
+    addCustomMinecraftEvent: addCustomMinecraftEvent,
 }

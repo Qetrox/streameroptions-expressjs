@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="apple-touch-icon" sizes="180x180" href="<%= locals.hostname || '' %>/fav/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="<%= locals.hostname || '' %>/fav/favicon-32x32.png">
@@ -7,13 +8,68 @@
     <link rel="manifest" href="<%= locals.hostname || '' %>/fav/site.webmanifest">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= locals.WebsiteTitleElementText %></title>
+    <title>
+        <%= locals.WebsiteTitleElementText %>
+    </title>
+    <link rel="stylesheet" type="text/css"
+        href="<%= locals.hostname + '/base_stylesheet.css' || 'localhost/base_stylesheet1.css' %>">
     <link rel="stylesheet" type="text/css" href="<%= locals.CssUrl || 'stylesheet1.css' %>">
-    <link rel="stylesheet" type="text/css" href="<%= locals.hostname + '/base_stylesheet.css' || 'localhost/base_stylesheet1.css' %>">
 </head>
+
 <body>
     <main>
-        
+        <div class="top">
+            <div class="timer">
+                <h1 id="online-timer">Online for: </h1>
+            </div>
+        </div>
+        <div class="middle">
+            <div class="statlist">
+                <h1>Statistics</h1>
+                <p id="tokens-connected-stat">Event Tokens Connected: <%= locals.statistics.connected_tokens || '' %></p>
+                <p id="users-stat">Users: <%= locals.statistics.users || '' %></p>
+                <p id="streamers-stat">Streamers: <%= locals.statistics.streamers || '' %></p>
+            </div>
+        </div>
+        <div class="bottom">
+
+        </div>
     </main>
+    <script>
+
+        const tokens_connected_stat = document.getElementById("tokens-connected-stat");
+        const users_stat = document.getElementById("users-stat");
+        const streamers_stat = document.getElementById("streamers-stat");
+
+        function getStatistics() {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", '<%= locals.hostname || "" %>/devmonitorstats/<%= locals.eventToken || "" %>', false); // false for synchronous request
+            xmlHttp.send(null);
+            return JSON.parse(xmlHttp.responseText);
+        }
+
+        function updateStatistics() {
+            var statistics = getStatistics();
+            var newStats = getStatistics();
+            tokens_connected_stat.innerHTML = "Event Tokens Connected: " + newStats.connected_tokens;
+            users_stat.innerHTML = "Users: " + newStats.users;
+            streamers_stat.innerHTML = "Streamers: " + newStats.streamers;
+        }
+
+        var startTime = new Date(<%= locals.startTime || '' %>).getTime();
+        var x = setInterval(function () {
+            var now = new Date().getTime();
+            var distance = now - startTime;
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById("online-timer").innerHTML = "Online for:<br> " + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+        }, 1000);
+
+        setInterval(updateStatistics, 5000);
+
+    </script>
 </body>
+
 </html>
