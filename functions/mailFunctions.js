@@ -29,7 +29,7 @@ async function sendSignupMail(userId) {
             html: `
         <html>
         <head><meta name="color-scheme" content="only"></head>
-        <body style='background-color: #F6E1E1; color-scheme: light only;'>
+        <body style='background-color: #fff; color-scheme: light only;'>
             <div style='color-scheme: light only; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; min-height: 400px; margin: 20px 0; padding: 10px; background-image: url("https://streameroptions.com/i/banner0_mobile.png"); background-repeat: no-repeat; background-size: cover; background-position: center;'>
             <div style='color-scheme: light only; width: 100%;'>
                 <h1 style='color-scheme: light only; text-align: center; color: #eee;'>Welcome to Streamer Options, ${results[0].userDisplayname}!</h1>

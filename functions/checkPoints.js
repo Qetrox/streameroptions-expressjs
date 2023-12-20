@@ -19,6 +19,7 @@ async function updateViewers(Streamer_Id, access_token) {
         'Client-Id': CLIENT_ID
     } 
     }).then(response => {
+        console.log('Checked viewers for: ' + Streamer_Id);
         const chatters = response.data.data
         chatters.forEach(chatter => {
             const con = mysql.createConnection(database.getDatabaseCredentials());
@@ -61,6 +62,7 @@ async function updateViewersForAll() {
                     'Client-Id': CLIENT_ID
                 }
             }).then(response => {
+                console.log('Checked viewers for: ' + result.tokenUserId);
                 const streams = response.data.data;
                 if (streams.length > 0) {
                     updateViewers(result.tokenUserId, result.token);
@@ -78,6 +80,7 @@ async function updateViewersForAll() {
  * Starts the point update loop.
  */
 function start() {
+    updateViewersForAll();
     setInterval(() => {
         updateViewersForAll();
     }, 1000 * 60);
