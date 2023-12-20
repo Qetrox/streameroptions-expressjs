@@ -1,0 +1,25 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    background-color: #212121;
+}
+main {
+    color: #fff;
+    font-family: 'Kanit', sans-serif;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+.top {
+    width: 100%;
+}
+.top > .timer {
+    min-width: 300px;
+    width: 30%;
+    background-color: #313131;
+    border-radius: 10px;
+    margin: 10px;
+}
+.top > .timer > h1 {
+    text-align: center;
+}

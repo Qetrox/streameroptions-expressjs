@@ -121,6 +121,18 @@ router.get('/viewer', auth.authCookie, (req, res) => {
 
 router.post('/:id', auth.authViewer, express.urlencoded({extended: true}), (req, res) => {
     const streamerNameID = req.params.id;
+    let viewerName;
+
+    if(req.user === undefined || req.user.display_name === undefined) {
+        viewerName = 0;
+    } else {
+        viewerName = req.user.display_name;
+    }
+
+    if(viewerName != req.body.redeemed_by) {
+        res.status(401).send('Requested does not match with logged in user');
+        return;
+    }
 
     let con = mysql.createConnection(database.getDatabaseCredentials());
 
@@ -135,88 +147,162 @@ router.post('/:id', auth.authViewer, express.urlencoded({extended: true}), (req,
 
         if (results[0] !== undefined && results[0].userId !== undefined && results[0].token !== undefined) {
 
-            const { type, redeemed_by, event_type } = req.body;
-            if (type === undefined || redeemed_by === undefined || event_type === undefined) {
-                res.redirect("./" + streamerNameID);
-                return;
-            }
+            const token = results[0].token;
+            /* Custom minecraft commands events */
 
-            if(event_type === "whitelist_add") {
-                if(req.body.minecraft_username === undefined || req.body.minecraft_username === null || req.body.minecraft_username === '') {
+            if ([1, 2, 3, 4, 5].includes(parseInt(req.body.event_type)) && req.body.type == 'minecraft') {
+
+                const { type, redeemed_by, event_type, minecraft_username } = req.body;
+                let input = true;
+                if(minecraft_username === undefined || minecraft_username === null) input = false;
+                if(input && minecraft_username === '') {
                     res.redirect("./" + streamerNameID);
                     return;
                 }
-            }
 
-            const token = results[0].token;
-
-            if (redeemed_by === undefined || redeemed_by === null || redeemed_by === '') return res.redirect("./" + streamerNameID);
-            con = mysql.createConnection(database.getDatabaseCredentials());
-            con.connect();
-            con.query('SELECT * FROM StreamerEvents WHERE EventStreamerUserId = ? AND is_enabled = 1 AND StreamerEventId IN ( SELECT event_id FROM events WHERE event_data_name = ?)', [results[0].userId, event_type], (error, results, fields) => {
-                if (error) {
-                    console.error(error);
-                    res.status(500).send();
-                }
-                con.end();
-                if (results[0] !== undefined && results[0].EventStreamerUserId !== undefined) {
-                    
-                    const event_cost = results[0].event_cost;
-                    let viewerId;
-
-                    if(req.user === undefined || req.user.id === undefined) {
-                        res.redirect("./" + streamerNameID);
-                    } else {
-                        viewerId = req.user.id;
+                con = mysql.createConnection(database.getDatabaseCredentials());
+                con.connect();
+                con.query('select * from customMinecraftEvents WHERE streamerId = ? AND isEnabled = 1 AND streamerEventId = ?', [results[0].userId, event_type], (error, results, fields) => {
+                    con.end();
+                    if (error) {
+                        console.error(error);
+                        res.status(500).send();
                     }
-                    con = mysql.createConnection(database.getDatabaseCredentials());
-                    con.connect();
+                    if (results[0] !== undefined && results[0].streamerId !== undefined) {
+                        let commandString = results[0].eventCommandString;
+                        if(input) commandString = commandString.replace('%arg%', minecraft_username);
+                        const event_cost = results[0].eventCost;
+                        let viewerId;
 
-                    con.query('select points from points where streamerId = ? and viewerId = ?', [results[0].EventStreamerUserId, viewerId], (error, results69, fields) => {
-                        let points = 0;
-
-                        if(error) {
-                            console.error(error);
-                            return res.status(500).send();
-                        }
-                        if(results69[0] !== undefined && results69[0].points !== undefined) {
-                            points = results69[0].points;
-                        }
-                        con.end();
-                        if(points >= event_cost) {
-                            con = mysql.createConnection(database.getDatabaseCredentials());
-                            con.connect();
-                            con.query('update points set points = points - ? where streamerId = ? and viewerId = ?', [event_cost, results[0].EventStreamerUserId, viewerId], (error, results69, fields) => {
-                                if (error) {
-                                    console.error(error);
-                                    res.status(500).send();
-                                    return;
-                                }
-                                if(event_type === "whitelist_add") {
-                                    eventFunctions.addEvent(token, type, {redeemed_by: redeemed_by, type: event_type, minecraft_username: req.body.minecraft_username});
-                                } else if (event_type === "change_weather") {
-                                    eventFunctions.addEvent(token, type, {redeemed_by: redeemed_by, type: event_type, weather_type: req.body.weather_type});
-                                } else {
-                                    eventFunctions.addEvent(token, type, {redeemed_by: redeemed_by, type: event_type});
-                                }
-
-                                res.redirect("./" + streamerNameID);
-                                con.end();
-                                return;
-                            });
+                        if(req.user === undefined || req.user.id === undefined) {
+                            res.redirect("./" + streamerNameID);
                         } else {
-                            console.log(`User tried to activate ${type} ${JSON.stringify({redeemed_by: redeemed_by, type: event_type})} but did not have enough points`);
+                            viewerId = req.user.id;
                         }
+                        con = mysql.createConnection(database.getDatabaseCredentials());
+                        con.connect();
 
-                    });
-                } else {
+                        con.query('select points from points where streamerId = ? and viewerId = ?', [results[0].streamerId, viewerId], (error, results69, fields) => {
+                            let points = 0;
+                            if(error) {
+                                console.error(error);
+                                return res.status(500).send();
+                            }
+                            if(results69[0] !== undefined && results69[0].points !== undefined) {
+                                points = results69[0].points;
+                            }
+                            con.end();
+                            if(points >= event_cost) {
+                                con = mysql.createConnection(database.getDatabaseCredentials());
+                                con.connect();
+                                con.query('update points set points = points - ? where streamerId = ? and viewerId = ?', [event_cost, results[0].streamerId, viewerId], (error, results69, fields) => {
+                                    if (error) {
+                                        console.error(error);
+                                        res.status(500).send();
+                                        return;
+                                    }
+                                    if(input) {
+                                        eventFunctions.addCustomMinecraftEvent(token, {redeemed_by: redeemed_by, type: 'custom_command', minecraft_username: minecraft_username, command: commandString});
+                                    } else {
+                                        eventFunctions.addCustomMinecraftEvent(token, {redeemed_by: redeemed_by, type: 'custom_command', command: commandString});
+                                    }
+                                    res.redirect("./" + streamerNameID);
+                                    con.end();
+                                    return;
+                                });
+                            }
+
+                        });
+                    } else {
+                        res.redirect("./" + streamerNameID);
+                    }
+
+                });
+
+            } else {
+
+                const { type, redeemed_by, event_type } = req.body;
+                if (type === undefined || redeemed_by === undefined || event_type === undefined) {
                     res.redirect("./" + streamerNameID);
+                    return;
                 }
-            });
+
+                if(event_type === "whitelist_add") {
+                    if(req.body.minecraft_username === undefined || req.body.minecraft_username === null || req.body.minecraft_username === '') {
+                        res.redirect("./" + streamerNameID);
+                        return;
+                    }
+                }
+
+                const token = results[0].token;
+
+                if (redeemed_by === undefined || redeemed_by === null || redeemed_by === '') return res.redirect("./" + streamerNameID);
+                con = mysql.createConnection(database.getDatabaseCredentials());
+                con.connect();
+                con.query('SELECT * FROM StreamerEvents WHERE EventStreamerUserId = ? AND is_enabled = 1 AND StreamerEventId IN ( SELECT event_id FROM events WHERE event_data_name = ?)', [results[0].userId, event_type], (error, results, fields) => {
+                    if (error) {
+                        console.error(error);
+                        res.status(500).send();
+                    }
+                    con.end();
+                    if (results[0] !== undefined && results[0].EventStreamerUserId !== undefined) {
+                        
+                        const event_cost = results[0].event_cost;
+                        let viewerId;
+
+                        if(req.user === undefined || req.user.id === undefined) {
+                            res.redirect("./" + streamerNameID);
+                        } else {
+                            viewerId = req.user.id;
+                        }
+                        con = mysql.createConnection(database.getDatabaseCredentials());
+                        con.connect();
+
+                        con.query('select points from points where streamerId = ? and viewerId = ?', [results[0].EventStreamerUserId, viewerId], (error, results69, fields) => {
+                            let points = 0;
+
+                            if(error) {
+                                console.error(error);
+                                return res.status(500).send();
+                            }
+                            if(results69[0] !== undefined && results69[0].points !== undefined) {
+                                points = results69[0].points;
+                            }
+                            con.end();
+                            if(points >= event_cost) {
+                                con = mysql.createConnection(database.getDatabaseCredentials());
+                                con.connect();
+                                con.query('update points set points = points - ? where streamerId = ? and viewerId = ?', [event_cost, results[0].EventStreamerUserId, viewerId], (error, results69, fields) => {
+                                    if (error) {
+                                        console.error(error);
+                                        res.status(500).send();
+                                        return;
+                                    }
+                                    if(event_type === "whitelist_add") {
+                                        eventFunctions.addEvent(token, type, {redeemed_by: redeemed_by, type: event_type, minecraft_username: req.body.minecraft_username});
+                                    } else if (event_type === "change_weather") {
+                                        eventFunctions.addEvent(token, type, {redeemed_by: redeemed_by, type: event_type, weather_type: req.body.weather_type});
+                                    } else {
+                                        eventFunctions.addEvent(token, type, {redeemed_by: redeemed_by, type: event_type});
+                                    }
+
+                                    res.redirect("./" + streamerNameID);
+                                    con.end();
+                                    return;
+                                });
+                            } else {
+                                console.log(`User tried to activate ${type} ${JSON.stringify({redeemed_by: redeemed_by, type: event_type})} but did not have enough points`);
+                            }
+
+                        });
+                    } else {
+                        res.redirect("./" + streamerNameID);
+                    }
+                });
+            }
         } else {
             res.redirect("./" + streamerNameID);
         }
-
     });
 });
 
@@ -270,7 +356,8 @@ router.get('/:id', auth.authViewer, (req, res) => {
                     )    
                 
                 }
-                
+
+                const streamerId = results[0].userId;
                 let viewerId;
 
                 if(req.user === undefined || req.user.id === undefined) {
@@ -298,20 +385,26 @@ router.get('/:id', auth.authViewer, (req, res) => {
                     }
                     if(results69[0] !== undefined && results69[0].points !== undefined) {
                         points = results69[0].points;
-                    }
-                    res.render('viewer_streamerpage',
-                    {
-                        WebsiteTitleElementText: `${webTitle} - ${results[0].userDisplayname}`,
-                        hostname: hostname,
-                        CssUrl: 'stylesheet3.css',
-                        streamername: results[0].userDisplayname,
-                        streamerslogan: results[0].streamerSlogan,
-                        streamerdescription: results[0].streamerDescription,
-                        streamerProfileImageUrl: results[0].userProfileImageUrl,
-                        activesince: results[0].streamerActiveSince,
-                        modules: events,
-                        points: points,
-                        viewername: viewer_name
+                    }  
+
+                    con = mysql.createConnection(database.getDatabaseCredentials());
+                    con.connect();
+                    con.query('select * from customMinecraftEvents WHERE streamerId = ? AND isEnabled = 1', [streamerId], (error, resultscringe, fields) => {
+                        res.render('viewer_streamerpage',
+                        {
+                            WebsiteTitleElementText: `${webTitle} - ${results[0].userDisplayname}`,
+                            hostname: hostname,
+                            CssUrl: 'stylesheet3.css',
+                            streamername: results[0].userDisplayname,
+                            streamerslogan: results[0].streamerSlogan,
+                            streamerdescription: results[0].streamerDescription,
+                            streamerProfileImageUrl: results[0].userProfileImageUrl,
+                            activesince: results[0].streamerActiveSince,
+                            modules: events,
+                            customMCModules: resultscringe,
+                            points: points,
+                            viewername: viewer_name
+                        });
                     });
                 });
 

@@ -64,6 +64,24 @@
                     </form>
                 </div>
             <% } %>
+            <% for(let key in locals.customMCModules) { 
+                let customModule = locals.customMCModules[key]; %>
+                <div class="redeemable<%= customModule.eventCost > locals.points ? ' not-enough' : ''%>">
+                    <form action="" method="POST">
+                        <h1><%= customModule.eventName %> - <%= customModule.eventCost %> Points</h1>
+                        <div class="redeemable-description">
+                            <p><%= customModule.eventDescription %></p>
+                        </div>
+                        <input type="hidden" name="type" value="minecraft">
+                        <input type="hidden" name="redeemed_by" value="<%= locals.viewername %>">
+                        <input type="hidden" name="event_type" value="<%= customModule.streamerEventId %>">
+                        <% if(customModule.inputEnabled == 1) { %>
+                        <input type="text" name="minecraft_username" placeholder="<%= customModule.inputPlaceholder %>">
+                        <% } %>
+                        <input type="submit" value="<%= customModule.eventCost > locals.points ? 'Not enough points' : 'Activate'%>" class="save-button <%= customModule.eventCost > locals.points ? ' disabled' : ''%>"<%= customModule.eventCost > locals.points ? ' disabled' : ''%>>
+                    </form>
+                </div>
+            <% } %>
         </div>
 
     </main>

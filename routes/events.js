@@ -5,6 +5,8 @@ const streamer = require('../middleware/streamer');
 const mysql = require('mysql');
 const database = require('../functions/sql');
 const eventFunctions = require('../functions/eventFunctions');
+const serverStatsFunctions = require('../functions/serverStatsFunctions');
+const { isDevMode } = require('../data/dev.json');
 
 
 
@@ -28,7 +30,8 @@ router.get('/minecraft/:token', async (req, res) => {
             res.setHeader('Connection', 'keep-alive');
             res.flushHeaders();
 
-            console.log(token + ' Connected')
+            if(isDevMode) console.log(token + ' Connected')
+            serverStatsFunctions.updateConnectedTokens(1);
 
             res.write(`data: {"status":"connected"}\n\n`);
 
@@ -43,10 +46,11 @@ router.get('/minecraft/:token', async (req, res) => {
             }, 100);
 
             res.on('close', () => {
-              console.log(token + ' Dropped');
-              clearInterval(interval);
-              clearInterval(keepAliveInterval);
-              res.end();
+                if(isDevMode) console.log(token + ' Dropped');
+                serverStatsFunctions.updateConnectedTokens(-1);
+                clearInterval(interval);
+                clearInterval(keepAliveInterval);
+                res.end();
             });
 
         } else {

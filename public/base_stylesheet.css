@@ -181,6 +181,10 @@ header > .header-mobile-burger {
 
 }
 
+main {
+    min-height: 70vh;
+}
+
 /* -- Footer -- */
 
 footer {

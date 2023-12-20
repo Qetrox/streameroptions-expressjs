@@ -11,9 +11,11 @@ const checkPoints = require('./functions/checkPoints');
 const security = require('./middleware/security');
 const devMonitorRouter = require('./routes/devMonitor');
 const guideRouter = require('./routes/guides');
+const serverStatsFunctions = require('./functions/serverStatsFunctions');
+const { isDevMode } = require('./data/dev.json');
 
 webTitle = 'Streamer Options'
-hostname = 'https://localhost'
+hostname = 'https://streameroptions.com'
 
 app.set('x-powered-by', false)
 app.use(security.onlyAllowCloudflare);
@@ -46,5 +48,10 @@ const options = {
 };
 
 let server = https.createServer(options, app).listen(443, function(){
-  console.log("Express server listening on port " + 443);
+  serverStatsFunctions.start();
+  if(isDevMode) {
+    console.log("Express server listening on port " + 443);
+  } else {
+    console.log("Streamer Options is now online. Time: " + Date.now());
+  }
 });
