@@ -15,7 +15,7 @@ const serverStatsFunctions = require('./functions/serverStatsFunctions');
 const { isDevMode } = require('./data/dev.json');
 
 webTitle = 'Streamer Options'
-hostname = 'https://streameroptions.com'
+hostname = 'https://localhost'
 
 app.set('x-powered-by', false)
 app.use(security.onlyAllowCloudflare);

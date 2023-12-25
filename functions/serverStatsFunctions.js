@@ -7,6 +7,7 @@ let start_time;
 let connected_tokens = 0;
 let users = 0;
 let streamers = 0;
+let total_events = 0;
 
 async function updateUsersAndStreamers() {
     let con = mysql.createConnection(database.getDatabaseCredentials());
@@ -45,6 +46,10 @@ async function updateConnectedTokens(change) {
     connected_tokens += change;
 }
 
+async function updateTotalEvents(change) {
+    total_events += change;
+}
+
 function getStatisticsCounts() {
     return {
         connected_tokens,
@@ -62,4 +67,5 @@ module.exports = {
     updateConnectedTokens,
     getStatisticsCounts,
     getStartTime,
+    updateTotalEvents,
 }

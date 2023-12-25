@@ -30,20 +30,72 @@
                 <p id="users-stat">Users: <%= locals.statistics.users || '' %></p>
                 <p id="streamers-stat">Streamers: <%= locals.statistics.streamers || '' %></p>
             </div>
+
+            <canvas id="tokenChart"></canvas>
+
         </div>
         <div class="bottom">
 
         </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-
         const tokens_connected_stat = document.getElementById("tokens-connected-stat");
         const users_stat = document.getElementById("users-stat");
         const streamers_stat = document.getElementById("streamers-stat");
+        const ctx = document.getElementById('tokenChart');
+
+        let chart;
+
+        function createChart() {
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Connected Tokens',
+                        data: [],
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Users',
+                        data: [],
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Streamers',
+                        data: [],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateChart(timestamp, connectedTokens, users, streamers) {
+            if (chart.data.labels.length > 60) {
+                // Remove the oldest data points
+                chart.data.labels.splice(0, chart.data.labels.length - 60);
+                chart.data.datasets[0].data.splice(0, chart.data.datasets[0].data.length - 60);
+                chart.data.datasets[1].data.splice(0, chart.data.datasets[1].data.length - 60);
+                chart.data.datasets[2].data.splice(0, chart.data.datasets[2].data.length - 60);
+            }
+            chart.data.labels.push(timestamp);
+            chart.data.datasets[0].data.push(connectedTokens);
+            chart.data.datasets[1].data.push(users);
+            chart.data.datasets[2].data.push(streamers);
+            chart.update();
+        }
 
         function getStatistics() {
             var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open("GET", '<%= locals.hostname || "" %>/devmonitorstats/<%= locals.eventToken || "" %>', false); // false for synchronous request
+            xmlHttp.open("GET", '<%= locals.hostname || "" %>/devmonitorstats', false); // false for synchronous request
             xmlHttp.send(null);
             return JSON.parse(xmlHttp.responseText);
         }
@@ -54,6 +106,7 @@
             tokens_connected_stat.innerHTML = "Event Tokens Connected: " + newStats.connected_tokens;
             users_stat.innerHTML = "Users: " + newStats.users;
             streamers_stat.innerHTML = "Streamers: " + newStats.streamers;
+            updateChart(new Date().toLocaleTimeString(), newStats.connected_tokens, newStats.users, newStats.streamers);
         }
 
         var startTime = new Date(<%= locals.startTime || '' %>).getTime();
@@ -67,8 +120,8 @@
             document.getElementById("online-timer").innerHTML = "Online for:<br> " + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
         }, 1000);
 
-        setInterval(updateStatistics, 5000);
-
+        createChart();
+        setInterval(updateStatistics, 1000);
     </script>
 </body>
 

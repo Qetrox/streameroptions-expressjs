@@ -1,5 +1,6 @@
 const database = require('../functions/sql');
 const mysql = require('mysql');
+const serverStatsFunctions = require('../functions/serverStatsFunctions');
 
 let Events = {
 };
@@ -78,6 +79,7 @@ async function addEvents(token, type, data) {
     }
 
     Events[type][token].push(data);
+    serverStatsFunctions.updateTotalEvents(1);
 }
 
 async function addCustomMinecraftEvent(token, data) {
