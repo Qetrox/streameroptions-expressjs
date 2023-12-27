@@ -10,5 +10,11 @@
         "urlTitle": "Minecraft plugin guide",
         "description": "This guide will show you how to setup the Streamer Options Minecraft plugin.",
         "viewPath": "minecraft_plugin_setup.ejs"
+    },
+    "using-custom-commands-with-the-minecraft-plugin": {
+        "name": "Using custom commands with the Minecraft plugin",
+        "urlTitle": "Minecraft plugin custom commands",
+        "description": "This guide will show you how to use custom commands with the Minecraft plugin.",
+        "viewPath": "minecraft_plugin_custom_commands.ejs"
     }
 }

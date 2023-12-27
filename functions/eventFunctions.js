@@ -68,9 +68,10 @@ async function isValidEvent(eventData, streamerId) {
  * @param {string} token - The token associated with the event.
  * @param {string} type - The type of event.
  * @param {object} data - The data associated with the event.
+ * @param {number} id - The ID of the streamer.
  * @returns {void}
  */
-async function addEvents(token, type, data) {
+async function addEvents(token, type, data, id) {
     if (!Events[type]) {
         Events[type] = {};
     }
@@ -80,9 +81,10 @@ async function addEvents(token, type, data) {
 
     Events[type][token].push(data);
     serverStatsFunctions.updateTotalEvents(1);
+    serverStatsFunctions.saveEventToDatabase(data, type, id);
 }
 
-async function addCustomMinecraftEvent(token, data) {
+async function addCustomMinecraftEvent(token, data, id) {
     if (!Events['minecraft']) {
         Events['minecraft'] = {};
     }
@@ -90,6 +92,7 @@ async function addCustomMinecraftEvent(token, data) {
         Events['minecraft'][token] = [];
     }
     Events['minecraft'][token].push(data);
+    serverStatsFunctions.saveEventToDatabase(data, 'minecraft', id);
 }
  
 

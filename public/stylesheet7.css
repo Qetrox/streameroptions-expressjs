@@ -4,9 +4,10 @@ main {
     justify-content: space-evenly;
 }
 .streamer_points {
-    background: var(--first-color);
+    background: #fff;
     width: 300px;
-    color: #eee;
+    height: 150px;
+    color: #050505;
     font-family: 'Kanit', sans-serif;
     padding: 10px;
     border-radius: 10px;

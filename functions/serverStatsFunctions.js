@@ -9,6 +9,21 @@ let users = 0;
 let streamers = 0;
 let total_events = 0;
 
+async function saveEventToDatabase(data, type, streamerId) {
+
+    const con = mysql.createConnection(database.getDatabaseCredentials());
+    con.connect();
+
+    con.query('INSERT INTO eventLog (streamerId, type, data) VALUES (?, ?, ?)', [streamerId, type, JSON.stringify(data)], (error, results, fields) => {
+        con.end();
+        if (error) {
+            console.error(error);
+            return false;
+        }
+    });
+
+}
+
 async function updateUsersAndStreamers() {
     let con = mysql.createConnection(database.getDatabaseCredentials());
     con.connect();
@@ -68,4 +83,5 @@ module.exports = {
     getStatisticsCounts,
     getStartTime,
     updateTotalEvents,
+    saveEventToDatabase,
 }

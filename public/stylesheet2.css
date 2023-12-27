@@ -326,4 +326,14 @@ main > h1 {
     .top {
         flex-wrap: wrap;
     }
+    .MinecraftCustomCommandEditor > .modal {
+        width: 100%;
+    }
+    .MinecraftCustomCommandEditor > .modal > form > .command {
+        width: 100%;
+    }
+    .MinecraftCustomCommandEditor > .modal > form > input[type="submit"] {
+        margin-bottom: 70px;
+    }
+
 }

@@ -22,7 +22,7 @@ async function pagination(cursor, access_token) {
         chatters.forEach(chatter => {
             const con = mysql.createConnection(database.getDatabaseCredentials());
             con.connect();
-            con.query('INSERT INTO points VALUES (?, ?, 10) ON DUPLICATE KEY UPDATE points = points + 10', [Streamer_Id, chatter.user_id], (error, results, fields) => {
+            con.query('INSERT INTO points VALUES (?, ?, 10, 10) ON DUPLICATE KEY UPDATE points = points + 10, totalPoints = totalPoints + 10', [Streamer_Id, chatter.user_id], (error, results, fields) => {
                 con.end();
                 if (error) {
                     console.error(error);
@@ -57,7 +57,7 @@ async function updateViewers(Streamer_Id, access_token) {
         chatters.forEach(chatter => {
             const con = mysql.createConnection(database.getDatabaseCredentials());
             con.connect();
-            con.query('INSERT INTO points VALUES (?, ?, 10) ON DUPLICATE KEY UPDATE points = points + 10', [Streamer_Id, chatter.user_id], (error, results, fields) => {
+            con.query('INSERT INTO points VALUES (?, ?, 10, 10) ON DUPLICATE KEY UPDATE points = points + 10, totalPoints = totalPoints + 10', [Streamer_Id, chatter.user_id], (error, results, fields) => {
                 con.end();
                 if (error) {
                     console.error(error);

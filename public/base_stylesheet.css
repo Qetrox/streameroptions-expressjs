@@ -199,8 +199,15 @@ footer {
     flex-wrap: wrap;
 }
 footer > .info > a{
+    text-decoration: underline;
     color: #eee;
     font-family: 'Kanit', sans-serif;
+    text-align: center;
+}
+footer > .info {
+    display: inline;
+    text-align: center;
+    justify-content: space-evenly;
 }
 footer > .info > h3 {
     margin: 0;

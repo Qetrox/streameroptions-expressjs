@@ -1,0 +1,58 @@
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+main > .streamer {
+    font-family: 'Kanit', sans-serif;
+    min-width: 200px;
+    min-height: 100px;
+    height: 10vw;
+    width: 30%;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    word-break: break-all;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    overflow-y: hidden;
+}
+main > .streamer > .streamer__name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+}
+main > .streamer > .streamer__image {
+    width: calc(30% - 10px);
+    height: 100%;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0; /* Add this line */
+}
+main > .streamer > .streamer__image > img {
+    width: 100%;
+    border-radius: 2px;
+}
+main > .streamer > .streamer__info {
+    width: calc(70% - 10px);
+}
+
+@media screen and (max-width: 768px) {
+    main > .streamer {
+        width: 90%;
+    }
+    main {
+        display: block;
+    }
+    
+}

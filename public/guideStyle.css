@@ -34,6 +34,7 @@ main > p {
 .guide-list {
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 
 .guide-list > .guide {
@@ -43,6 +44,10 @@ main > p {
     margin: 10px;
     padding: 10px;
     border-radius: 5px;
+}
+
+img.float {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
 }
 
 @media screen and (max-width: 768px) {
