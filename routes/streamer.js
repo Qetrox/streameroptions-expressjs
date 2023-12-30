@@ -70,6 +70,7 @@ router.get('/dashboard', auth.authCookie, streamer.isStreamerSetup, async (req, 
 router.get('/save-modules', auth.authCookie, streamer.isStreamerSetup, async (req, res) => {
     let enabled = 0;
     if(req.query === undefined || req.query === null) return res.redirect('./dashboard');
+
     try {
         const con = mysql.createConnection(database.getDatabaseCredentials());
         con.connect();
@@ -121,7 +122,7 @@ router.get('/save-custom-minecraft-modules', auth.authCookie, streamer.isStreame
     const con = mysql.createConnection(
         database.getDatabaseCredentials(true), 
     );
-
+    
     con.connect();
     try {
         con.query(

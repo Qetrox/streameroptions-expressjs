@@ -11,11 +11,12 @@ const checkPoints = require('./functions/checkPoints');
 const security = require('./middleware/security');
 const devMonitorRouter = require('./routes/devMonitor');
 const guideRouter = require('./routes/guides');
+const apiRouter = require('./routes/api');
 const serverStatsFunctions = require('./functions/serverStatsFunctions');
 const { isDevMode } = require('./data/dev.json');
 
 webTitle = 'Streamer Options'
-hostname = 'https://localhost'
+hostname = 'https://localhost:8080'
 
 app.set('x-powered-by', false)
 app.use(security.onlyAllowCloudflare);
@@ -27,6 +28,7 @@ app.use('/streamer', streamerRouter);
 app.use('/events', eventRouter);
 app.use('/', devMonitorRouter);
 app.use('/', guideRouter);
+app.use('/api/v1', apiRouter);
 
 app.use('/', mainRouter); // this router should be last.
 
