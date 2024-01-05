@@ -20,6 +20,7 @@ async function sendSignupMail(userId) {
 
     con.query('SELECT * FROM users WHERE userId = ?', [userId], function (error, results, fields) {
         con.end();
+        if(results[0].userEmail == null || results[0].userEmail == "" || results[0].userEmail == undefined) return;
         if (error) throw error;
         const mailOptions = {
             from: '"Streamer Options" <noreply@streameroptions.com>',

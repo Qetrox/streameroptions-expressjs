@@ -49,10 +49,10 @@ const options = {
     cert: fs.readFileSync('./.ssl/certificate.pem'),
 };
 
-let server = https.createServer(options, app).listen(443, function(){
+let server = https.createServer(options, app).listen(8080, function(){
   serverStatsFunctions.start();
   if(isDevMode) {
-    console.log("Express server listening on port " + 443);
+    console.log("Express server listening on port " + 8080);
   } else {
     console.log("Streamer Options is now online. Time: " + Date.now());
   }

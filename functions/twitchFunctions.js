@@ -33,15 +33,6 @@ async function refreshTwitchToken(refreshToken, twitch_id) {
         });
     }).catch((error) => {
         console.error(error);
-        con = mysql.createConnection(database.getDatabaseCredentials());
-        con.connect();
-        con.query('DELETE FROM accessTokens WHERE tokenUserid = ?', [twitch_id], (error, results, fields) => {
-            con.end();
-            if(error) {
-                console.error(error);
-                return;
-            }
-        });
         return;
     });
 }

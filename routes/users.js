@@ -116,7 +116,7 @@ router.get('/login/twitch-auth', express.urlencoded({extended: true}), async (re
                             return;
                         }
 
-                        const jwt_user = { name: twitchUser.login, id: userId, display_name: twitchUser.display_name };
+                        const jwt_user = { name: twitchUser.login, id: twitchUser.id, display_name: twitchUser.display_name };
                         const accessToken = authFunctions.genToken(jwt_user);
                         const refreshToken = authFunctions.genRefreshToken(jwt_user, twitchUser.id);
                         res.cookie('token', accessToken, { expires: new Date(Date.now() + 60*60*24*30*1000) })
