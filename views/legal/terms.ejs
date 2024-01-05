@@ -14,7 +14,8 @@
     <link rel="stylesheet" type="text/css" href="<%= locals.CssUrl || 'stylesheet1.css' %>">
     <link rel="stylesheet" type="text/css"
         href="<%= locals.hostname + '/base_stylesheet.css' || 'localhost/base_stylesheet1.css' %>">
-</head>
+        <%- include('../parts/metatags.ejs') %>
+    </head>
 
 <body>
     <%- include('../parts/header.ejs') %>
