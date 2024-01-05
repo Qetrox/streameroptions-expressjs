@@ -10,7 +10,17 @@
     <title><%= locals.WebsiteTitleElementText %></title>
     <link rel="stylesheet" type="text/css" href="<%= locals.CssUrl || 'stylesheet1.css' %>">
     <link rel="stylesheet" type="text/css" href="<%= locals.hostname + '/base_stylesheet.css' || 'localhost/base_stylesheet1.css' %>">
-    <%- include('parts/metatags.ejs') %>
+
+    <meta name="description" content="<%= locals.streamerdescription || '' %>">
+    <meta name="keywords" content="Streamer Options, Streameroptions, Twitch stream interaction, viewer interaction, streamer interaction, streamer options, streameroptions.com, streamer, minecraft live interaction, twitch live, twitch interaction, twitch viewer interaction">
+    <meta name="author" content="Streamer Options - <%= locals.streamername || '' %>">
+    <meta name="url" content="https://www.streameroptions.com/">
+    <meta property="og:title" content="Streamer Options - <%= locals.streamername || '' %>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.streameroptions.com" />
+    <meta property="og:image" content="<%= locals.streamerProfileImageUrl%>" />
+    <meta property="og:description" content="<%= locals.streamerdescription || '' %>" />
+
 </head>
 <body>
     <%- include('parts/header.ejs') %>
