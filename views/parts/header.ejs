@@ -77,7 +77,7 @@
     }, 1);
 
 </script>
-<div class="cookie-notifier" id="cookies">
+<div class="cookie-notifier" id="cookies" style="display: none;">
     <div class="cookie-notifier__content">
         <h1>We value your privacy</h1>
         <p>
@@ -95,8 +95,8 @@
     var display = 0;
 
     function checkCookies() {
-        if(localStorage.getItem("cookie") === 'accepted') {
-            div.style.display = 'none';
+        if(localStorage.getItem("cookie") !== 'accepted') {
+            div.style.display = 'block';
         }
     }
 

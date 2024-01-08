@@ -165,7 +165,7 @@ router.post('/:id', auth.authViewer, express.urlencoded({extended: true}), (req,
 
     con.connect();
 
-    con.query('SELECT * FROM streamer JOIN users ON streamerUserId = userId JOIN eventTokens ON tokenUserId = streamerUserId WHERE userUsername = ? OR userId = ?', [streamerNameID, streamerNameID], async (error, results, fields) => {
+    con.query('SELECT * FROM streamer JOIN users ON streamerUserId = userId JOIN eventTokens ON tokenUserId = streamerUserId WHERE userUsername = ?', [streamerNameID, streamerNameID], async (error, results, fields) => {
         con.end();
         if (error) {
             console.error(error); 
@@ -343,7 +343,7 @@ router.get('/:id', auth.authViewer, (req, res) => {
 
     con.connect();
 
-    con.query('SELECT * FROM streamer JOIN users ON streamerUserId = userId WHERE userUsername = ? OR userId = ?', [streamerNameID, streamerNameID], (error, results, fields) => {
+    con.query('SELECT * FROM streamer JOIN users ON streamerUserId = userId WHERE userUsername = ?', [streamerNameID, streamerNameID], (error, results, fields) => {
         con.end();
         if (error) {
             console.error(error);
