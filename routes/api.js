@@ -15,6 +15,7 @@ router.get('/twitch/activated-modules', cors(), (req, res) => {
     con.connect();
     con.query('SELECT event_data, userUsername FROM StreamerEvents JOIN events ON StreamerEventId = event_id JOIN users ON EventStreamerUserId = userId WHERE is_enabled = 1 and EventStreamerUserId = ?', [req.query.u], (err, result) => {
         con.end();
+        if(result[0].userUsername === undefined) return res.status(400).send('User not found');
         if(err) {
             res.status(500).send('Internal Server Error');
             console.log(err);
