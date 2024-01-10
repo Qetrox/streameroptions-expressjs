@@ -26,7 +26,7 @@
                 <div id="MinecraftCustomCommandEditor" class="MinecraftCustomCommandEditor">
                     <div class="modal" id="mcModal">
                         <h1>Edit your custom commands</h1>
-                        <form action="./save-custom-minecraft-modules" method="GET">
+                        <form action="./save-custom-minecraft-modules" method="GET" id="mcModalForm">
                             <div class="command">
                                 <h2>Command 1</h2>
                                 <div class="top-inputs">
@@ -208,7 +208,8 @@
                                 </div>
                             </div>
                             <br><br>
-                            <input type="submit" value="Save">
+                            <input type="text" name="CSRFToken" value="<%= locals.CSRFToken || '' %>" hidden>
+                            <input onclick="saveCustomMinecraftModules()" type="button" value="Save">
                         </form>
                     </div>
                 </div>
@@ -257,7 +258,7 @@
                 <div class="module-container minecraft">
                     <% for(let key in locals.modules.minecraft) { let module=locals.modules.minecraft[key]; %>
                         <div class="module <%= module.enabled == 1 ? 'module-active' : '' %>">
-                            <form action="./save-modules" method="GET">
+                            <div>
                                 <div class="title">
                                     <%= module.title %>
                                 </div>
@@ -269,14 +270,14 @@
                                 </div>
                                 <label for="price">Price</label>
                                 <input type="number" name="price" class="price-input" value="<%= module.price %>">
-                                <input type="hidden" name="module_id" value="<%= module.m_id %>">
+                                <input type="hidden" name="module_id" class="module_input" value="<%= module.m_id %>">
                                 <div class="toggle-slider">
                                     <input type="checkbox" name="toggled" id="toggle<%= key %>"
                                         class="toggle-slider-checkbox toggle" <%=module.enabled==1 ? 'checked' : '' %>>
                                     <label for="toggle<%= key %>" class="toggle-slider-label"></label>
                                 </div>
-                                <input type="submit" value="Save" class="save-button" hidden>
-                            </form>
+                                <input type="submit" onclick="saveModule(`<%= locals.CSRFToken || '' %>`)" value="Save" class="save-button" hidden>
+                            </div>
                         </div>
                         <% } %>
                             <div class="module module-active">
@@ -287,11 +288,11 @@
                                     <div class="description">
                                         Edit your custom commands.
                                     </div>
-                                    <div class="price">
+                                    <div class="price" id="minecraftCustomCommandsPrice">
                                         <%= customMinecraftModulesEnabled %>/5 Enabled
                                     </div>
                                     <input onclick="showMinecraftCustomCommandEditor()" type="submit" value="Edit"
-                                        class="save-button">
+                                        class="save-button" id="minecraftCustomCommandsButton">
                                 </div>
                             </div>
                 </div>

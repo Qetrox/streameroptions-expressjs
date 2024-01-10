@@ -13,14 +13,16 @@ router.get('/twitch/activated-modules', cors(), (req, res) => {
     }
     let con = mysql.createConnection(database.getDatabaseCredentials());
     con.connect();
-    con.query('SELECT event_data FROM StreamerEvents JOIN events ON StreamerEventId = event_id WHERE is_enabled = 1 and EventStreamerUserId = ?', [req.query.u], (err, result) => {
+    con.query('SELECT event_data, userUsername FROM StreamerEvents JOIN events ON StreamerEventId = event_id JOIN users ON EventStreamerUserId = userId WHERE is_enabled = 1 and EventStreamerUserId = ?', [req.query.u], (err, result) => {
         con.end();
+        if(result[0].userUsername === undefined) return res.status(400).send('User not found');
         if(err) {
             res.status(500).send('Internal Server Error');
             console.log(err);
             return;
         }
         const responseJSON = JSON.parse('[]');
+        responseJSON.push({ "href_name": result[0].userUsername });
         for(let i = 0; i < result.length; i++) {
             const newData = JSON.parse(result[i].event_data);
             delete newData["description"];

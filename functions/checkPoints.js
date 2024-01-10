@@ -114,6 +114,7 @@ async function updateViewersForAll() {
  * Starts the point update loop.
  */
 function start() {
+    if(isDevMode) return; // Dont check viewers in dev mode
     updateViewersForAll();
     setInterval(() => {
         updateViewersForAll();
