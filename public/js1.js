@@ -44,7 +44,7 @@ const banner = document.getElementById('banner');
         } else {
             banner.style.backgroundImage = `url('${bannerImages[bannerImageNumber]}')`;
         }
-        setInterval(function() {
+        /*setInterval(function() {
             bannerImageNumber++;
             if (bannerImageNumber >= bannerImages.length) {
                 bannerImageNumber = 0;
@@ -54,7 +54,7 @@ const banner = document.getElementById('banner');
             } else {
                 banner.style.backgroundImage = `url('${bannerImages[bannerImageNumber]}')`;
             }
-        }, 5000);
+        }, 5000);*/
 
         const streamerList = document.querySelector('.streamer-list');
 
