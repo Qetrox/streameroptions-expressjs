@@ -227,8 +227,7 @@ router.post('/:id', auth.authViewer, express.urlencoded({extended: true}), (req,
                                     con.end();
                                     if (error) {
                                         console.error(error);
-                                        res.status(500).send();
-                                        return;
+                                        return res.status(500).send();
                                     }
                                     if(input) {
                                         eventFunctions.addCustomMinecraftEvent(token, {redeemed_by: redeemed_by, type: 'custom_command', minecraft_username: minecraft_username, command: commandString}, SID);
@@ -279,7 +278,7 @@ router.post('/:id', auth.authViewer, express.urlencoded({extended: true}), (req,
                         let viewerId;
 
                         if(req.user === undefined || req.user.id === undefined) {
-                            res.redirect("./" + streamerNameID);
+                            return res.redirect("./" + streamerNameID);
                         } else {
                             viewerId = req.user.id;
                         }
@@ -316,8 +315,7 @@ router.post('/:id', auth.authViewer, express.urlencoded({extended: true}), (req,
                                         eventFunctions.addEvent(token, type, {redeemed_by: redeemed_by, type: event_type}, SID);
                                     }
 
-                                    res.redirect("./" + streamerNameID);
-                                    return;
+                                    return res.redirect("./" + streamerNameID);
                                 });
                             } else {
                                 if(isDevMode) console.log(`User tried to activate ${type} ${JSON.stringify({redeemed_by: redeemed_by, type: event_type})} but did not have enough points`);
@@ -325,12 +323,12 @@ router.post('/:id', auth.authViewer, express.urlencoded({extended: true}), (req,
 
                         });
                     } else {
-                        res.redirect("./" + streamerNameID);
+                        return res.redirect("./" + streamerNameID);
                     }
                 });
             }
         } else {
-            res.redirect("./" + streamerNameID);
+            return res.redirect("./" + streamerNameID);
         }
     });
 });
@@ -347,7 +345,7 @@ router.get('/:id', auth.authViewer, (req, res) => {
         con.end();
         if (error) {
             console.error(error);
-            res.status(500).send();
+            return res.status(500).send();
         }
 
         if (results[0] !== undefined && results[0].userId !== undefined) {
@@ -442,7 +440,7 @@ router.get('/:id', auth.authViewer, (req, res) => {
 
             
         } else {
-            res.redirect("/");
+            return res.redirect("/");
         }
     });
 });

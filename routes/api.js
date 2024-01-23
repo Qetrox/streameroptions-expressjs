@@ -16,9 +16,8 @@ router.get('/twitch/activated-modules', cors(), (req, res) => {
     con.query('SELECT event_data, userUsername FROM StreamerEvents JOIN events ON StreamerEventId = event_id JOIN users ON EventStreamerUserId = userId WHERE is_enabled = 1 and EventStreamerUserId = ?', [req.query.u], (err, result) => {
         con.end();
         if(err) {
-            res.status(500).send('Internal Server Error');
             console.log(err);
-            return;
+            return res.status(500).send('Internal Server Error');
         }
         console.log(result);
         const responseJSON = JSON.parse('[]');
@@ -39,9 +38,8 @@ router.get('/twitch/activated-modules', cors(), (req, res) => {
         con.query('SELECT * FROM customMinecraftEvents JOIN users ON streamerId = userId WHERE isEnabled = 1 AND streamerId = ?', [req.query.u], (err, result) => {
             con.end();
             if(err) {
-                res.status(500).send('Internal Server Error');
                 console.log(err);
-                return;
+                return res.status(500).send('Internal Server Error');
             }
             if(!foundModules) {
                 responseJSON.push({ "href_name": result[0].userUsername });
@@ -51,7 +49,7 @@ router.get('/twitch/activated-modules', cors(), (req, res) => {
                 
                 responseJSON.push(newData);
             }
-            res.send(responseJSON);
+            return res.send(responseJSON);
         });
 
     });
@@ -59,48 +57,44 @@ router.get('/twitch/activated-modules', cors(), (req, res) => {
 
 router.get('/twitch/point-leaderboard', cors(), (req, res) => {
     if(req.query.u === undefined || req.query.u === '') {
-        res.status(400).send('No user specified');
-        return;
+        return res.status(400).send('No user specified');
     }
     let con = mysql.createConnection(database.getDatabaseCredentials());
     con.connect();
     con.query('SELECT points, userDisplayname FROM points JOIN users ON viewerId = userId WHERE userUsername IS NOT NULL AND streamerId = ? AND viewerId != ? ORDER BY points DESC LIMIT 200', [req.query.u, req.query.u], (err, result) => {
         con.end();
         if(err) {
-            res.status(500).send('Internal Server Error');
             console.log(err);
-            return;
+            return res.status(500).send('Internal Server Error');
         }
         const responseJSON = JSON.parse('[]');
         for(let i = 0; i < result.length; i++) {
             responseJSON.push({ "username": result[i].userDisplayname, "points": result[i].points });
         }
 
-        res.send(responseJSON);
+        return res.send(responseJSON);
 
     });
 });
 
 router.get('/twitch/watchtime-leaderboard', cors(), (req, res) => {
     if(req.query.u === undefined || req.query.u === '') {
-        res.status(400).send('No user specified');
-        return;
+        return res.status(400).send('No user specified');
     }
     let con = mysql.createConnection(database.getDatabaseCredentials());
     con.connect();
     con.query('SELECT totalPoints, userDisplayname FROM points JOIN users ON viewerId = userId WHERE userUsername IS NOT NULL AND streamerId = ? AND viewerId != ? ORDER BY totalPoints DESC LIMIT 200', [req.query.u, req.query.u], (err, result) => {
         con.end();
         if(err) {
-            res.status(500).send('Internal Server Error');
             console.log(err);
-            return;
+            return res.status(500).send('Internal Server Error');
         }
         const responseJSON = JSON.parse('[]');
         for(let i = 0; i < result.length; i++) {
             responseJSON.push({ "username": result[i].userDisplayname, "watchtime": Math.round(result[i].totalPoints / 10) });
         }
 
-        res.send(responseJSON);
+        return res.send(responseJSON);
 
     });
 });

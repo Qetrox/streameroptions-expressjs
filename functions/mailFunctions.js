@@ -50,7 +50,9 @@ async function sendSignupMail(userId) {
     `,
         }
 
-    transporter.sendMail(mailOptions);
+    try {
+        transporter.sendMail(mailOptions);
+    } catch (error) {}
 
     });
 

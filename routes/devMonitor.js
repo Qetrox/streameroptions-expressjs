@@ -11,17 +11,17 @@ const e = require('express');
 
 router.get('/devMonitorStats/', auth.authCookie, (req, res) => {
     if(admin.includes(req.user.id)) {
-        res.json(
+        return res.json(
             serverStatsFunctions.getStatisticsCounts()
             );
     } else {
-        res.status(403).send('You do not have permission to view this page.');
+        return res.status(403).send('You do not have permission to view this page.');
     }  
 });
 
 router.get('/devMonitor', auth.authCookie, (req, res) => {
     if(admin.includes(req.user.id)) {
-        res.render(
+        return res.render(
             'dev/monitor',
             { 
                 WebsiteTitleElementText: webTitle + ' - Dev Monitor',
@@ -32,7 +32,7 @@ router.get('/devMonitor', auth.authCookie, (req, res) => {
             }
             );
     } else {
-        res.redirect('../../../');
+        return res.redirect('../../../');
     }
 });
 

@@ -20,7 +20,7 @@ function onlyAllowCloudflare(req, res, next) {
         // IP is within the Cloudflare range
         next();
     } else {
-        console.warn('Unauthorized IP: ' + ip + '\n tried to access: ' + req.originalUrl);
+        // console.warn('Unauthorized IP: ' + ip + '\n tried to access: ' + req.originalUrl);
     }
 }
 

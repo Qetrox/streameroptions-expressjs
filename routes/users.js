@@ -27,7 +27,7 @@ router.get('/login/twitch', express.urlencoded({extended: true}), (req, res) => 
     const TWITCH_LOGIN_URI = TWITCH_ID_DOMAIN + 'oauth2/authorize?' + 'client_id=' + process.env.TWITCH_CLIENT_ID + '&redirect_uri=' + encodeURIComponent('https://streameroptions.com/users/login/twitch-auth') + '&response_type=code&scope=' + encodeURIComponent('user:read:email') + "+" + encodeURIComponent('moderator:read:chatters') + '&state=' + encodeURIComponent(noCRRF);
 
     res.cookie('csrf_token', noCRRF, { httpOnly: true });
-    res.redirect(TWITCH_LOGIN_URI);
+    return res.redirect(TWITCH_LOGIN_URI);
 
 });
 
@@ -35,14 +35,12 @@ router.get('/login/twitch-auth', express.urlencoded({extended: true}), async (re
     const TWITCH_ID_DOMAIN = 'https://id.twitch.tv/';
 
     if(req.query.code == undefined) {
-        res.redirect('./twitch');
-        return;
+        return res.redirect('./twitch');
     }
 
     const csrfToken = req.cookies.csrf_token;
     if (!csrfToken || csrfToken !== req.query.state) {
-        res.redirect('./twitch');
-        return;
+        return res.redirect('./twitch');
     }
 
     const noCRRF = MD5(`${Date.now()}${Math.random()*1000}`)
@@ -77,8 +75,7 @@ router.get('/login/twitch-auth', express.urlencoded({extended: true}), async (re
             con.end();
             if(error) {
                 console.error(error);
-                res.status(500).send();
-                return;
+                return res.status(500).send();
             }
         
 
@@ -88,8 +85,7 @@ router.get('/login/twitch-auth', express.urlencoded({extended: true}), async (re
                 con.end();
                 if (error) {
                     console.error(error);
-                    res.status(500).send();
-                    return;
+                    return res.status(500).send();
                 }
 
                 if (results[0] !== undefined && results[0].userId !== undefined) {
@@ -101,7 +97,7 @@ router.get('/login/twitch-auth', express.urlencoded({extended: true}), async (re
                     res.cookie('token', accessToken, { expires: new Date(Date.now() + 60*60*24*30*1000) })
                     res.cookie('refreshtoken', refreshToken, { expires: new Date(Date.now() + 60*60*24*30*1000) })
 
-                    res.redirect("../");
+                    return res.redirect("../");
                 } else {
                     // Add the user to the database
                     con = mysql.createConnection(database.getDatabaseCredentials());
@@ -112,8 +108,7 @@ router.get('/login/twitch-auth', express.urlencoded({extended: true}), async (re
                         con.end();
                         if (error) {
                             console.error(error);
-                            res.status(500).send();
-                            return;
+                            return res.status(500).send();
                         }
 
                         const jwt_user = { name: twitchUser.login, id: twitchUser.id, display_name: twitchUser.display_name };
@@ -131,7 +126,7 @@ router.get('/login/twitch-auth', express.urlencoded({extended: true}), async (re
             });
         });
     } catch (e) {
-        res.redirect(TWITCH_LOGIN_URI);
+        return res.redirect(TWITCH_LOGIN_URI);
     }
 });
 

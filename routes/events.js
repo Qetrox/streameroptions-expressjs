@@ -19,8 +19,7 @@ router.get('/minecraft/:token', async (req, res) => {
     con.query('select * from eventTokens where token = ?', [token], (error, results, fields) => {
         con.end();
         if(error) {
-            res.status(500).send();
-            return;
+            return res.status(500).send();
         }
         if(results[0] !== undefined && results[0].tokenUserId !== undefined && results[0].tokenUserId !== null) {
 
@@ -54,7 +53,7 @@ router.get('/minecraft/:token', async (req, res) => {
             });
 
         } else {
-            res.status(401).json({ error:"Invalid Token" });
+            return res.status(401).json({ error:"Invalid Token" });
         }
     });
     

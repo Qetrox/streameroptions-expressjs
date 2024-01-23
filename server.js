@@ -17,7 +17,7 @@ const { isDevMode } = require('./data/dev.json');
 const websocket = require('./functions/websocket')
 
 webTitle = 'Streamer Options'
-hostname = 'https://localhost:8080'
+hostname = 'https://streameroptions.com'
 
 app.set('x-powered-by', false)
 app.use(security.onlyAllowCloudflare);

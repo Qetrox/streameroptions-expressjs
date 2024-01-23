@@ -201,14 +201,14 @@ router.post('/setup', auth.authCookie, streamer.isStreamerEnabled, express.urlen
                 console.error(error);
                 return res.status(500).send();
             }
-            res.redirect('dashboard')
+            return res.redirect('dashboard')
         });
 
     if(description.length == 0 && slogan.length == 0) res.redirect('/setup');
 
     } catch (err) {
         console.log(err)
-        res.redirect('/setup');
+        return res.redirect('/setup');
     }
 
 
@@ -239,7 +239,7 @@ router.post('/activate', auth.authCookie, express.urlencoded({extended: true}), 
                         console.error(error);
                         return res.status(500).send();
                     }
-                    res.redirect('dashboard')
+                    return res.redirect('dashboard')
                 });    
             });
         });
