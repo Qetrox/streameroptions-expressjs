@@ -3,11 +3,17 @@ const axios = require('axios');
 const mysql = require('mysql');
 const database = require('./sql');
 const twitchFunctions = require('./twitchFunctions');
+const serverStatsFunctions = require('./serverStatsFunctions');
 const server = require('../server');
 const { isDevMode } = require('../data/dev.json');
 
 const CLIENT_ID = process.env.TWITCH_CLIENT_ID;
 
+/**
+ * When there are more than 1000 chatters, this function is called to get the next 1000 chatters.
+ * @param {String} cursor - The cursor to get the next chatters, this is received in the initial check.
+ * @param {String} access_token - The access token of the streamer.
+ */
 async function pagination(cursor, access_token) {
     axios.get(`https://api.twitch.tv/helix/chat/chatters?broadcaster_id=${Streamer_Id}&moderator_id=${Streamer_Id}&first=1000&after=${cursor}`, {
     headers: {
@@ -100,6 +106,9 @@ async function updateViewersForAll() {
                 const streams = response.data.data;
                 if (streams.length > 0) {
                     updateViewers(result.tokenUserId, result.token);
+                    serverStatsFunctions.updateNowLive(result.tokenUserId, true, streams[0]);
+                } else {
+                    serverStatsFunctions.updateNowLive(result.tokenUserId, false);
                 }
             }).catch(error => {
                 if(isDevMode) console.error("(2)Error while getting chatters for: " + result.tokenUserId);

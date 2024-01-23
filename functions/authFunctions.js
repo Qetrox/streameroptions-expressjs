@@ -27,10 +27,9 @@ function generateRefreshToken(user, id) {
 
     con.connect();
     con.query('insert into refreshTokens values (?, ?) on duplicate key update token = ?', [MD5(token), id, MD5(token)], function (error, results, fields) {
+        con.end();
         if (error) throw error;
     });
-    con.end();
-
     return token;
 }
 /**
@@ -44,10 +43,10 @@ function checkRefreshToken(token) {
 
     con.connect();
     con.query('select * from refreshTokens where token = ?', [MD5(token)], function (error, results, fields) {
+        con.end();
         if(results[0] !== undefined && results[0].token !== undefined) return true;
         return false;
     });
-    con.end();
 }
 
 

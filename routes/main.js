@@ -210,6 +210,7 @@ router.post('/:id', auth.authViewer, express.urlencoded({extended: true}), (req,
                         con.connect();
 
                         con.query('select points from points where streamerId = ? and viewerId = ?', [results[0].streamerId, viewerId], (error, results69, fields) => {
+                            con.end();
                             let points = 0;
                             if(error) {
                                 console.error(error);
@@ -218,12 +219,12 @@ router.post('/:id', auth.authViewer, express.urlencoded({extended: true}), (req,
                             if(results69[0] !== undefined && results69[0].points !== undefined) {
                                 points = results69[0].points;
                             }
-                            con.end();
                             if(points >= event_cost) {
                                 con = mysql.createConnection(database.getDatabaseCredentials());
                                 con.connect();
                                 const SID = results[0].streamerId;
                                 con.query('update points set points = points - ? where streamerId = ? and viewerId = ?', [event_cost, results[0].streamerId, viewerId], (error, results69, fields) => {
+                                    con.end();
                                     if (error) {
                                         console.error(error);
                                         res.status(500).send();
@@ -235,7 +236,6 @@ router.post('/:id', auth.authViewer, express.urlencoded({extended: true}), (req,
                                         eventFunctions.addCustomMinecraftEvent(token, {redeemed_by: redeemed_by, type: 'custom_command', command: commandString}, SID);
                                     }
                                     res.redirect("./" + streamerNameID);
-                                    con.end();
                                     return;
                                 });
                             }
@@ -268,11 +268,11 @@ router.post('/:id', auth.authViewer, express.urlencoded({extended: true}), (req,
                 con = mysql.createConnection(database.getDatabaseCredentials());
                 con.connect();
                 con.query('SELECT * FROM StreamerEvents WHERE EventStreamerUserId = ? AND is_enabled = 1 AND StreamerEventId IN ( SELECT event_id FROM events WHERE event_data_name = ?)', [results[0].userId, event_type], (error, results, fields) => {
+                    con.end();
                     if (error) {
                         console.error(error);
                         res.status(500).send();
                     }
-                    con.end();
                     if (results[0] !== undefined && results[0].EventStreamerUserId !== undefined) {
                         
                         const event_cost = results[0].event_cost;
@@ -287,6 +287,7 @@ router.post('/:id', auth.authViewer, express.urlencoded({extended: true}), (req,
                         con.connect();
 
                         con.query('select points from points where streamerId = ? and viewerId = ?', [results[0].EventStreamerUserId, viewerId], (error, results69, fields) => {
+                            con.end();
                             let points = 0;
                             const SID = results[0].EventStreamerUserId
 
@@ -297,11 +298,11 @@ router.post('/:id', auth.authViewer, express.urlencoded({extended: true}), (req,
                             if(results69[0] !== undefined && results69[0].points !== undefined) {
                                 points = results69[0].points;
                             }
-                            con.end();
                             if(points >= event_cost) {
                                 con = mysql.createConnection(database.getDatabaseCredentials());
                                 con.connect();
                                 con.query('update points set points = points - ? where streamerId = ? and viewerId = ?', [event_cost, results[0].EventStreamerUserId, viewerId], (error, results69, fields) => {
+                                    con.end();
                                     if (error) {
                                         console.error(error);
                                         res.status(500).send();
@@ -316,7 +317,6 @@ router.post('/:id', auth.authViewer, express.urlencoded({extended: true}), (req,
                                     }
 
                                     res.redirect("./" + streamerNameID);
-                                    con.end();
                                     return;
                                 });
                             } else {
@@ -419,6 +419,7 @@ router.get('/:id', auth.authViewer, (req, res) => {
                     con = mysql.createConnection(database.getDatabaseCredentials());
                     con.connect();
                     con.query('select * from customMinecraftEvents WHERE streamerId = ? AND isEnabled = 1', [streamerId], (error, resultscringe, fields) => {
+                        con.end();
                         res.render('viewer_streamerpage',
                         {
                             WebsiteTitleElementText: `${webTitle} - ${results[0].userDisplayname}`,

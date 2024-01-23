@@ -14,6 +14,7 @@ const guideRouter = require('./routes/guides');
 const apiRouter = require('./routes/api');
 const serverStatsFunctions = require('./functions/serverStatsFunctions');
 const { isDevMode } = require('./data/dev.json');
+const websocket = require('./functions/websocket')
 
 webTitle = 'Streamer Options'
 hostname = 'https://localhost:8080'
@@ -39,6 +40,7 @@ app.use(express.urlencoded({
 app.set('view engine', 'ejs');
 
 checkPoints.start();
+websocket.init();
 
 const fs = require('fs'),
     http = require('http'),
