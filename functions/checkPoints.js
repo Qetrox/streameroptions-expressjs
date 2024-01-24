@@ -9,6 +9,8 @@ const { isDevMode } = require('../data/dev.json');
 
 const CLIENT_ID = process.env.TWITCH_CLIENT_ID;
 
+let firstTime = true;
+
 /**
  * When there are more than 1000 chatters, this function is called to get the next 1000 chatters.
  * @param {String} cursor - The cursor to get the next chatters, this is received in the initial check.
@@ -94,6 +96,13 @@ async function updateViewersForAll() {
         }
         
         if(isDevMode) console.log('Checking viewers for all streamers...')
+
+        let broadcastnotification = true;
+        if(firstTime) {
+            broadcastnotification = false;
+            firstTime = false;
+        }
+
         for (let i = 0; i < results.length; i++) {
             const result = results[i];
             axios.get(`https://api.twitch.tv/helix/streams?user_id=${result.tokenUserId}`, {
@@ -106,7 +115,7 @@ async function updateViewersForAll() {
                 const streams = response.data.data;
                 if (streams.length > 0) {
                     updateViewers(result.tokenUserId, result.token);
-                    serverStatsFunctions.updateNowLive(result.tokenUserId, true, streams[0]);
+                    serverStatsFunctions.updateNowLive(result.tokenUserId, true, streams[0], broadcastnotification);
                 } else {
                     serverStatsFunctions.updateNowLive(result.tokenUserId, false);
                 }

@@ -17,22 +17,24 @@ let now_live = [];
  * @param {Boolean} isLive 
  * @returns {VoidFunction}
  */
-async function updateNowLive(streamerId, isLive, data) {
+async function updateNowLive(streamerId, isLive, data, sendNotification) {
     if (isLive) {
         //make sure there are no duplicates
         if(now_live.includes(streamerId)) return;
         now_live.push(streamerId);
 
-        websocket.sendGlobal(JSON.stringify({
-            type: "liveNotification",
-            data: {
-                streamerid: data.id,
-                displayname: data.user_name,
-                username: data.user_login,
-                title: data.title,
-                game: data.game_name,
-            }
-        }));
+        if(sendNotification) {
+            websocket.sendGlobal(JSON.stringify({
+                type: "liveNotification",
+                data: {
+                    streamerid: data.id,
+                    displayname: data.user_name,
+                    username: data.user_login,
+                    title: data.title,
+                    game: data.game_name,
+                }
+            }));
+        }
 
     } else {
         now_live = now_live.filter((id) => id !== streamerId);
