@@ -1,3 +1,4 @@
 {
-    "isDevMode": false
+    "isDevMode": true,
+    "dontCheckPoints": true
 }

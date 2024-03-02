@@ -20,10 +20,10 @@ let now_live = [];
 async function updateNowLive(streamerId, isLive, data, sendNotification) {
     if (isLive) {
         //make sure there are no duplicates
-        if(now_live.includes(streamerId)) return;
+        if (now_live.includes(streamerId)) return;
         now_live.push(streamerId);
 
-        if(sendNotification) {
+        if (sendNotification) {
             websocket.sendGlobal(JSON.stringify({
                 type: "liveNotification",
                 data: {
@@ -65,12 +65,12 @@ function getNowLive() {
  * @param {Number} streamerId The Id of the streamer for who the event was.
  * @returns {VoidFunction}
  */
-async function saveEventToDatabase(data, type, streamerId) {
+async function saveEventToDatabase(data, type, streamerId, event_id) {
 
     const con = mysql.createConnection(database.getDatabaseCredentials());
     con.connect();
 
-    con.query('INSERT INTO eventLog (streamerId, type, data) VALUES (?, ?, ?)', [streamerId, type, JSON.stringify(data)], (error, results, fields) => {
+    con.query('INSERT INTO eventLog (streamerId, type, data, event_id) VALUES (?, ?, ?)', [streamerId, type, JSON.stringify(data), event_id], (error, results, fields) => {
         con.end();
         if (error) {
             console.error(error);

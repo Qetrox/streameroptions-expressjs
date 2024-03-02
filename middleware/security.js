@@ -5,12 +5,13 @@ const cloudflareIPs = fs.readFileSync('./middleware/ipv4.txt', 'utf-8').replace(
 
 function onlyAllowCloudflare(req, res, next) {
     let ip = req.ip.split(':')[3];
+    //console.log(req.path)
 
     /* If the IP is undefined, it means that the user is accessing the website from localhost. */
     /* Only use in development. */
-    if(ip == undefined) {
+    if (ip == undefined) {
         ip = req.ip;
-        if(ip == '::1') {
+        if (ip == '::1') {
             next();
             return;
         }

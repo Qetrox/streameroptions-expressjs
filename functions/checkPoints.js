@@ -5,7 +5,7 @@ const database = require('./sql');
 const twitchFunctions = require('./twitchFunctions');
 const serverStatsFunctions = require('./serverStatsFunctions');
 const server = require('../server');
-const { isDevMode } = require('../data/dev.json');
+const { dontCheckPoints, isDevMode } = require('../data/dev.json');
 
 const CLIENT_ID = process.env.TWITCH_CLIENT_ID;
 
@@ -116,6 +116,7 @@ async function updateViewersForAll() {
                 if (streams.length > 0) {
                     updateViewers(result.tokenUserId, result.token);
                     serverStatsFunctions.updateNowLive(result.tokenUserId, true, streams[0], broadcastnotification);
+                    if(isDevMode && !broadcastnotification) console.log('No notification for: ' + result.tokenUserId);
                 } else {
                     serverStatsFunctions.updateNowLive(result.tokenUserId, false);
                 }
@@ -132,7 +133,10 @@ async function updateViewersForAll() {
  * Starts the point update loop.
  */
 function start() {
-    if(isDevMode) return; // Dont check viewers in dev mode
+    if( dontCheckPoints) {
+        console.warn("Point Checking is disabled in dev config!");
+        return;
+    }
     updateViewersForAll();
     setInterval(() => {
         updateViewersForAll();

@@ -1,33 +1,38 @@
 main {
     margin-top: 30px;
 }
-main > p,
-main > h1 {
+
+main>p,
+main>h1 {
     margin: 0;
     padding: 0;
     text-align: center;
 }
-main > h1 {
+
+main>h1 {
     font-size: 50px;
-    font-family: 'Kanit', sans-serif;
+    font-family: 'Inter';
 }
-main > p {
+
+main>p {
     font-size: 20px;
     font-family: 'Sometype Mono', monospace;
 }
 
 .guide-content {
-    font-family: 'Kanit', sans-serif;
+    font-family: 'Inter';
     margin: 10px 9vw;
     padding: 10px 1vw;
     background: #fff;
     border-radius: 5px;
     margin-top: 50px;
 }
-.guide-content > p {
+
+.guide-content>p {
     font-family: 'Sometype Mono', monospace;
 }
-.guide-content > img {
+
+.guide-content>img {
     width: 70%;
 }
 
@@ -37,8 +42,8 @@ main > p {
     justify-content: space-evenly;
 }
 
-.guide-list > .guide {
-    font-family: 'Kanit', sans-serif;
+.guide-list>.guide {
+    font-family: 'Inter';
     background: #fff;
     width: 30vw;
     margin: 10px;
@@ -51,9 +56,10 @@ img.float {
 }
 
 @media screen and (max-width: 768px) {
-    .guide-list > .guide {
+    .guide-list>.guide {
         width: 90vw;
     }
+
     h1,
     h2,
     h3,
@@ -62,6 +68,7 @@ img.float {
     h6 {
         text-align: center;
     }
+
     .guide-content {
         margin: 10px;
     }

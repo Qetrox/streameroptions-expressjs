@@ -15,9 +15,10 @@ const apiRouter = require('./routes/api');
 const serverStatsFunctions = require('./functions/serverStatsFunctions');
 const { isDevMode } = require('./data/dev.json');
 const websocket = require('./functions/websocket')
+const mailFunctions = require('./functions/mailFunctions');
 
 webTitle = 'Streamer Options'
-hostname = 'https://streameroptions.com'
+hostname = 'http://localhost:8080'
 
 app.set('x-powered-by', false)
 app.use(security.onlyAllowCloudflare);
@@ -34,8 +35,8 @@ app.use('/api/v1', apiRouter);
 app.use('/', mainRouter); // this router should be last.
 
 app.use(express.urlencoded({
-    extended: true
-  }))
+  extended: true
+}))
 
 app.set('view engine', 'ejs');
 
@@ -43,19 +44,22 @@ checkPoints.start();
 websocket.init();
 
 const fs = require('fs'),
-    http = require('http'),
-    https = require('https');
+  http = require('http'),
+  https = require('https');
 
 const options = {
-    key: fs.readFileSync('./.ssl/privatekey.pem'),
-    cert: fs.readFileSync('./.ssl/certificate.pem'),
+  key: fs.readFileSync('./.ssl/privatekey.pem'),
+  cert: fs.readFileSync('./.ssl/certificate.pem'),
 };
 
-let server = https.createServer(options, app).listen(8080, function(){
+let server = http.createServer(options, app).listen(8080, function () {
   serverStatsFunctions.start();
-  if(isDevMode) {
+  if (isDevMode) {
     console.log("Express server listening on port " + 8080);
   } else {
     console.log("Streamer Options is now online. Time: " + Date.now());
   }
 });
+
+
+//mailFunctions.sendMonthlyStatisticsMailToAll("no")

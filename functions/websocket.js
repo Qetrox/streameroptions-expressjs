@@ -3,7 +3,7 @@ const WebSocket = require("ws");
 const crypto = require('crypto');
 
 
-const key = "verycoolkeythingiu234hv345vbhg345b2489agh89hjolij230gna0rgu23bhuj89usdbg9hbhg9whvba904gyaczv830289567nvanbzxmgnopwejiweolghertrthwevgasdiopdvbjgpoi";
+const key = "8E0B3F6C9E1A4D793CA9346C9E1A4D7C";
 
 let wss;
 
@@ -12,12 +12,12 @@ async function init() {
 
     wss.on("connection", function connection(ws) {
 
+        console.log("New connection to websocket server.");
+
         ws.on("message", (data) => {
             handleIncoming(data.toString());
         });
-
     });
-
 }
 
 // iv cant be random
@@ -45,9 +45,9 @@ async function sendGlobal(message) {
     const encryptedMessage = encrypt(message);
     wss.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
-          client.send(encryptedMessage);
+            client.send(encryptedMessage);
         }
-      });
+    });
 }
 
 async function send(ws, message) {
@@ -57,7 +57,7 @@ async function send(ws, message) {
 
 async function handleIncoming(data) {
     const message = decrypt(data);
-    if(message === null) return;
+    if (message === null) return;
     console.log(message);
 }
 

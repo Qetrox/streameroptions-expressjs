@@ -22,7 +22,7 @@ function sendEvents(req, res, token, type) {
 
     const EventsGroup = Events[type];
 
-    if(EventsGroup[token] !== null && EventsGroup[token] !== undefined) {
+    if (EventsGroup[token] !== null && EventsGroup[token] !== undefined) {
         const tokenEvents = EventsGroup[token];
 
         for (let index = 0; index < tokenEvents.length; index++) {
@@ -71,7 +71,7 @@ async function isValidEvent(eventData, streamerId) {
  * @param {number} id - The ID of the streamer.
  * @returns {void}
  */
-async function addEvents(token, type, data, id) {
+async function addEvents(token, type, data, id, event_id) {
     if (!Events[type]) {
         Events[type] = {};
     }
@@ -81,7 +81,7 @@ async function addEvents(token, type, data, id) {
 
     Events[type][token].push(data);
     serverStatsFunctions.updateTotalEvents(1);
-    serverStatsFunctions.saveEventToDatabase(data, type, id);
+    if (!(id == 0 && event_id == 0)) serverStatsFunctions.saveEventToDatabase(data, type, id, event_id);
 }
 
 async function addCustomMinecraftEvent(token, data, id) {
@@ -92,9 +92,9 @@ async function addCustomMinecraftEvent(token, data, id) {
         Events['minecraft'][token] = [];
     }
     Events['minecraft'][token].push(data);
-    serverStatsFunctions.saveEventToDatabase(data, 'minecraft', id);
+    serverStatsFunctions.saveEventToDatabase(data, 'minecraft', id, 'NULL');
 }
- 
+
 
 module.exports = {
     sendEvents: sendEvents,

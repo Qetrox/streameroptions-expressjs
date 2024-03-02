@@ -1,27 +1,31 @@
 .banner {
-    height: 800px;
+    height: calc(100dvh - 110px);
     position: relative;
     color: #fff;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    transition:  all 1s ease;
+    transition: all 1s ease;
+    background: #000;
 }
-.banner > h1 {
+
+.banner>h1 {
     position: absolute;
     top: 5%;
     left: 4%;
-    font-family: 'Kani', sans-serif;
+    font-family: 'Inter';
     font-size: 80px;
 }
-.banner > h3 {
-    font-family: 'Kani', sans-serif;
+
+.banner>h3 {
+    font-family: 'Inter';
     position: absolute;
     top: calc(5% + 120px);
     font-size: 40px;
     left: 4%;
 }
-.banner > .feature-scrolldown {
+
+.banner>.feature-scrolldown {
     color: inherit;
     text-decoration: none;
     position: absolute;
@@ -32,31 +36,41 @@
     align-items: center;
     font-size: 20px;
 }
-.banner > .feature-scrolldown > h1 {
+
+.banner>.feature-scrolldown>h1 {
     margin: 0;
-    font-family: 'Kani', sans-serif;
+    font-family: 'Inter';
 }
-.banner > .feature-scrolldown > span {
+
+.banner>.feature-scrolldown>span {
     font-size: 50px;
 }
+
 .features {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
+
 .feature {
-    width: 70%;
-    display: grid;
-    grid-template-columns: auto auto;
-    margin-bottom: 80px;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    margin-bottom: 100px;
+    height: 350px;
+    justify-content: space-between;
 }
-.feature > img {
-    width: 30vw;
+
+.feature>img {
+    height: 300px;
+    width: 40vw;
     object-fit: cover;
     border-radius: 10px;
     box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.5);
 }
-.feature > div {
+
+.feature>div {
+    height: 300px;
     width: 30vw;
     display: flex;
     flex-wrap: wrap;
@@ -64,18 +78,22 @@
     align-content: center;
 }
 
-.features > h1 {
-    text-align: center;
-    font-size: 50px;
-}
 .features h1 {
-    font-family: 'Kanit', sans-serif;
-    width: 100%;
-}
-.features p {
-    font-family: 'Sometype-Mono', sans-serif;
+    font-family: 'Inter';
     width: 100%;
     margin: 0;
+}
+
+.features>h1 {
+    text-align: center;
+    font-size: 50px;
+    width: 100%;
+    margin: 33.5px 0px;
+}
+
+.features p {
+    font-family: 'Inter';
+    width: 100%;
 }
 
 .featured-streamers {
@@ -87,27 +105,30 @@
     justify-content: center;
     flex-wrap: wrap;
 }
-.featured-streamers > h1 {
+
+.featured-streamers>h1 {
     font-size: 50px;
 }
 
 .vp {
     overflow-x: hidden;
-    width: 80vw;
+    width: 100vw;
 }
+
 .streamer-list {
     width: fit-content;
     display: flex;
     flex-direction: row;
 }
-.streamer-list > .streamer-container > .streamer {
+
+.streamer-list>.streamer-container>.streamer {
     background-color: var(--first-color);
     font-family: 'Kanit', 'sans-serif';
     margin-bottom: 1vw;
     color: #fff;
     width: 4vw;
     height: 4vw;
-    margin-right:1vw;
+    margin-right: 1vw;
     border-radius: 5px;
     padding: 5px;
     box-sizing: border-box;
@@ -116,7 +137,8 @@
     background-repeat: no-repeat;
     background-position: center;
 }
-.streamer-list > .streamer > img {
+
+.streamer-list>.streamer>img {
     width: 7vw;
     border-radius: 2px;
 }
@@ -129,20 +151,86 @@
 .fade-in.appear {
     opacity: 1;
 }
+
 .feature-left {
     transform: translateX(-50%);
+    margin-left: 7.5%;
 }
+
 .feature-right {
     transform: translateX(50%);
+    margin-right: 7.5%;
 }
-.feature-left, .feature-right {
+
+.feature-left,
+.feature-right {
     transition: transform 400ms ease;
 }
-.feature-left.appear, .feature-right.appear {
+
+.feature-left.appear,
+.feature-right.appear {
     transform: translateX(0);
 }
-.feature > img.no-shadow {
+
+.feature>img.no-shadow {
     box-shadow: none;
+}
+
+.supported-games {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 100px 0;
+}
+
+.supported-games>h1 {
+    font-family: 'Inter';
+    font-size: 50px;
+    width: 100%;
+    text-align: center;
+}
+
+.supported-games>.game {
+    width: 60vw;
+    height: 20vw;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background-color: #D9D9D9;
+    margin-bottom: 100px;
+    border-radius: 25px;
+}
+
+.supported-games>.game>h1 {
+    font-family: 'Inter';
+    font-size: 50px;
+    width: 100%;
+    text-align: center;
+}
+
+.supported-games>.game>a {
+    width: 20%;
+    font-size: 20px;
+    text-decoration: none;
+    color: #000;
+    transition: all 250ms ease;
+}
+
+.supported-games>.game>a:hover {
+    transform: scale(1.1);
+}
+
+.supported-games>.game>a>p {
+    font-family: 'Inter';
+    width: 100%;
+    text-align: left;
+    font-weight: 800;
+}
+
+.supported-games>.game>a>p>span {
+    font-size: inherit;
+    float: right;
 }
 
 @media only screen and (max-width: 768px) {
@@ -151,65 +239,81 @@
         margin: 0;
         border-radius: 0;
     }
-    .banner > h1 {
+
+    .banner>h1 {
         left: 0;
         width: 100%;
         margin: 0;
         text-align: center;
     }
-    .banner > h3 {
+
+    .banner>h3 {
         text-align: center;
         font-size: 20px;
         top: calc(15% + 120px);
     }
-    .banner > .feature-scrolldown {
+
+    .banner>.feature-scrolldown {
         right: 50%;
         transform: translateX(50%)
     }
-    .banner > .feature-scrolldown > h1 {
+
+    .banner>.feature-scrolldown>h1 {
         font-size: 40px;
     }
-    .banner > .feature-scrolldown > span {
+
+    .banner>.feature-scrolldown>span {
         font-size: 30px;
     }
+
     .featured-streamers {
         margin-top: 0;
         margin-bottom: 0;
     }
-    .featured-streamers > h1 {
+
+    .featured-streamers>h1 {
         font-size: 30px;
     }
-    .streamer-list > .streamer-container > .streamer {
+
+    .streamer-list>.streamer-container>.streamer {
         width: 20vw;
         height: 20vw;
         margin-right: 5vw;
         margin-bottom: 5vw;
     }
-    .features > h1 {
+
+    .features>h1 {
         font-size: 30px;
     }
+
     .features img {
         display: none;
     }
+
     .features {
         overflow: hidden;
     }
+
     .feature {
         display: flex;
         width: 100%;
         flex-wrap: wrap;
         justify-content: center;
     }
-    .feature > div {
+
+    .feature>div {
         width: 90vw;
     }
+
     .feature-left {
         transform: translateX(50%);
     }
+
     .feature-right {
         transform: translateX(50%);
     }
-    .banner > h3 {
+
+    .banner>h3 {
         text-align: center;
         width: 100%;
         left: 0;

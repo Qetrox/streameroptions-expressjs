@@ -1,19 +1,24 @@
 main {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
+    display: block;
 }
+
 a {
     text-decoration: none;
     color: inherit;
 }
-main > .streamer {
-    font-family: 'Kanit', sans-serif;
-    min-width: 200px;
+
+main>.streamerlist {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+main>.streamerlist>.streamer {
+    font-family: 'Inter';
+    min-width: 300px;
     min-height: 100px;
     height: 10vw;
-    width: 30%;
-    margin: 10px;
+    width: 20%;
+    margin: 10px 2.5%;
     padding: 10px;
     border-radius: 5px;
     background-color: #fff;
@@ -25,34 +30,44 @@ main > .streamer {
     justify-content: center;
     overflow-y: hidden;
 }
-main > .streamer > .streamer__name {
+
+main>.streamerlist>.streamer>.streamer__name {
     font-size: 1.5rem;
     font-weight: bold;
     color: #000;
 }
-main > .streamer > .streamer__image {
-    width: calc(30% - 10px);
+
+main>.streamerlist>.streamer>.streamer__image {
+    width: calc(40% - 10px);
     height: 100%;
-    border-radius: 2px;
+    border-radius: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-shrink: 0; /* Add this line */
+    flex-shrink: 0;
+    /* Add this line */
 }
-main > .streamer > .streamer__image > img {
+
+main>.streamerlist>.streamer>.streamer__image>img {
     width: 100%;
     border-radius: 2px;
 }
-main > .streamer > .streamer__info {
+
+main>.streamerlist>.streamer>.streamer__info {
     width: calc(70% - 10px);
 }
 
 @media screen and (max-width: 768px) {
-    main > .streamer {
+    main>.streamerlist>.streamer {
         width: 90%;
     }
-    main {
+
+    main>.streamerlist {
         display: block;
     }
-    
+
+    main>.streamerlist>.streamer>.streamer__image {
+        width: calc(30% - 10px);
+    }
+
 }

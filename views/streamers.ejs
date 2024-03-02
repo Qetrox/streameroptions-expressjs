@@ -15,7 +15,12 @@
 <body>
     <%- include('parts/header.ejs') %>
     <main>
+        <h1>Promoted Streamers</h1>
+        <div class="streamerlist promoted">
 
+        </div>
+        <h1>Streamers</h1>
+        <div class="streamerlist">
         <% locals.streamer_list.forEach(element => {
             %>
             <a class="streamer" href="./<%= element.userUsername %>">
