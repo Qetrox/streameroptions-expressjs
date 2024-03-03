@@ -10,16 +10,17 @@ a {
     color: #050505;
 }
 
-main > div {
+main>div {
     background: #fff;
     padding: 20px;
     width: 60vw;
     border-radius: 5px;
     color: #050505;
     text-align: center;
-    font-family: 'Sometype Mono', monospace;
+    font-family: 'Inter';
 }
-main > div > form > input {
+
+main>div>form>input {
     width: 50%;
     height: 50px;
     border: none;
@@ -33,47 +34,52 @@ main > div > form > input {
     margin-bottom: 20px;
 }
 
-main > div > div > h3 {
+main>div>div>h3 {
     width: 100%;
 }
-main > div > div > input {
+
+main>div>div>input {
     width: auto;
     margin: 0;
 }
-main > div > div {
+
+main>div>div {
     display: flex;
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
 }
-main > div > div > p {
+
+main>div>div>p {
     margin: 5px;
 }
 
-main > div input:hover {
+main>div input:hover {
     background: var(--first-color-darker);
     cursor: pointer;
 }
 
-main > div input:hover:disabled {
+main>div input:hover:disabled {
     background: var(--first-color-darker);
     cursor: not-allowed;
 }
 
-main > div h1 {
+main>div h1 {
     margin-bottom: 20px;
 }
-main > div h3 {
+
+main>div h3 {
     margin-top: 0;
 }
 
 @media only screen and (max-width: 768px) {
-    main > div {
+    main>div {
         padding: 5px;
         width: 100%;
         border-radius: 0;
     }
-    main > div > div > p {
+
+    main>div>div>p {
         margin-left: 0;
     }
 }

@@ -57,7 +57,7 @@ header>div>img:hover {
 }
 
 header a {
-    font-family: 'Sometype Mono', monospace;
+    font-family: 'Inter';
     color: #fff;
     text-decoration: none;
 }
@@ -148,7 +148,7 @@ header>.header-mobile-burger {
     font-size: 30px;
     color: #000;
     text-align: left;
-    font-family: 'Sometype Mono', monospace;
+    font-family: 'Inter';
 }
 
 .mobile-navmenu>.header-buttons {

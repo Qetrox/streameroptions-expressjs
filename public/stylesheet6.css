@@ -7,7 +7,7 @@ a {
     color: #050505;
 }
 
-main > div {
+main>div {
     background: #fff;
     margin: 20px 0;
     border-radius: 5px;
@@ -16,7 +16,7 @@ main > div {
     height: auto;
     color: #050505;
     text-align: left;
-    font-family: 'Sometype Mono', monospace;
+    font-family: 'Inter';
 }
 
 .form {
@@ -31,7 +31,8 @@ form {
     height: 100%;
 }
 
-.form form textarea, input {
+.form form textarea,
+input {
     width: 90%;
     margin: 20px;
     margin-top: 0;
@@ -39,7 +40,8 @@ form {
     background-color: #ddd;
 }
 
-textarea, input {
+textarea,
+input {
     resize: none;
     outline: none;
     border: none;
@@ -55,18 +57,21 @@ textarea, input {
     color: #fff;
     border-radius: 2px;
 }
+
 .button:hover {
     background: var(--first-color-darker);
     cursor: pointer;
 }
+
 .button:hover:disabled {
     cursor: not-allowed;
 }
 
 @media only screen and (max-width: 768px) {
-    main > div {
+    main>div {
         width: 100%;
     }
+
     .button {
         width: 95%;
         margin: 0;

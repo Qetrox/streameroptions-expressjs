@@ -3,7 +3,7 @@ main {
     padding: 30px;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    font-family: 'Sometype Mono', monospace;
+    font-family: 'Inter';
 }
 
 .save-button {

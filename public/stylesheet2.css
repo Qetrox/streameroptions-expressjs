@@ -34,7 +34,7 @@ h1 {
 .description {
     font-size: 16px;
     margin-bottom: 10px;
-    font-family: 'Sometime Mono', monospace;
+    font-family: 'Inter'
 }
 
 .price {
@@ -141,7 +141,7 @@ main>div>.info {
     height: auto;
     color: #050505;
     text-align: left;
-    font-family: 'Sometype Mono', monospace;
+    font-family: 'Inter';
     border-radius: 5px;
 }
 
@@ -152,7 +152,7 @@ main>div>.setup {
     height: auto;
     color: #050505;
     text-align: left;
-    font-family: 'Sometype Mono', monospace;
+    font-family: 'Inter';
     border-radius: 5px;
 }
 

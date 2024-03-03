@@ -16,7 +16,7 @@ main>h1 {
 
 main>p {
     font-size: 20px;
-    font-family: 'Sometype Mono', monospace;
+    font-family: 'Inter'
 }
 
 .guide-content {
@@ -29,7 +29,7 @@ main>p {
 }
 
 .guide-content>p {
-    font-family: 'Sometype Mono', monospace;
+    font-family: 'Inter'
 }
 
 .guide-content>img {
@@ -44,7 +44,7 @@ main>p {
 
 .guide-list>.guide {
     font-family: 'Inter';
-    background: #fff;
+    background: #d9d9d9;
     width: 30vw;
     margin: 10px;
     padding: 10px;
