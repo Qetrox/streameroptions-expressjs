@@ -16,9 +16,12 @@ const serverStatsFunctions = require('./functions/serverStatsFunctions');
 const { isDevMode } = require('./data/dev.json');
 const websocket = require('./functions/websocket')
 const mailFunctions = require('./functions/mailFunctions');
+const database = require('./functions/sql');
 
 webTitle = 'Streamer Options'
 hostname = 'http://localhost:8080'
+
+database.initializePool();
 
 app.set('x-powered-by', false)
 app.use(security.onlyAllowCloudflare);

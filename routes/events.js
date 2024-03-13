@@ -11,13 +11,10 @@ const { isDevMode } = require('../data/dev.json');
 
 
 router.get('/minecraft/:token', async (req, res) => {
-    const con = mysql.createConnection(database.getDatabaseCredentials());
 
     const token = req.params.token
 
-    con.connect();
-    con.query('select * from eventTokens where token = ?', [token], (error, results, fields) => {
-        con.end();
+    database.getPool().query('select * from eventTokens where token = ?', [token], (error, results, fields) => {
         if (error) {
             return res.status(500).send();
         }
@@ -60,13 +57,9 @@ router.get('/minecraft/:token', async (req, res) => {
 });
 
 router.get('/lethal-company/:token', async (req, res) => {
-    const con = mysql.createConnection(database.getDatabaseCredentials());
-
     const token = req.params.token
 
-    con.connect();
-    con.query('select * from eventTokens where token = ?', [token], (error, results, fields) => {
-        con.end();
+    database.getPool().query('select * from eventTokens where token = ?', [token], (error, results, fields) => {
         if (error) {
             return res.status(500).send();
         }

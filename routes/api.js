@@ -8,13 +8,7 @@ const { admin } = require('../data/roles.json');
 const cors = require('cors')
 
 router.get('/web/streamers', (req, res) => {
-
-    let con = mysql.createConnection(database.getDatabaseCredentials());
-
-    con.connect();
-
-    con.query('SELECT userId as id, userProfileImageURL as profileImage, userUsername as username, userDisplayname as displayname FROM streamer JOIN users ON streamerUserId = userId LIMIT 1000', async (error, results, fields) => {
-        con.end();
+    database.getPool().query('SELECT userId as id, userProfileImageURL as profileImage, userUsername as username, userDisplayname as displayname FROM streamer JOIN users ON streamerUserId = userId LIMIT 1000', async (error, results, fields) => {
         if (error) {
             console.error(error);
             return res.status(500).send();
@@ -36,11 +30,7 @@ router.get('/web/streamers/sponsored', (req, res) => {
 
 router.get('/web/streamers/watched/live', auth.authCookie, (req, res) => {
 
-    let con = mysql.createConnection(database.getDatabaseCredentials());
-    con.connect();
-
-    con.query('SELECT userId as id, userProfileImageURL as profileImage, userUsername as username, userDisplayname as displayname FROM users WHERE userId IN (SELECT streamerId FROM points WHERE totalPoints > 100 AND viewerId = ?) LIMIT 20', [req.user.id], async (error, results, fields) => {
-        con.end();
+    database.getPool().query('SELECT userId as id, userProfileImageURL as profileImage, userUsername as username, userDisplayname as displayname FROM users WHERE userId IN (SELECT streamerId FROM points WHERE totalPoints > 100 AND viewerId = ?) LIMIT 20', [req.user.id], async (error, results, fields) => {
         if (error) {
             console.error(error);
             return res.status(500).send();
@@ -57,11 +47,7 @@ router.get('/web/streamers/watched/live', auth.authCookie, (req, res) => {
 
 router.get('/web/streamers/watched', auth.authCookie, (req, res) => {
 
-    let con = mysql.createConnection(database.getDatabaseCredentials());
-    con.connect();
-
-    con.query('SELECT userId as id, userProfileImageURL as profileImage, userUsername as username, userDisplayname as displayname FROM users JOIN points ON userId = streamerId WHERE viewerId = ? AND totalPoints > 100 ORDER BY totalPoints DESC LIMIT 100', [req.user.id], async (error, results, fields) => {
-        con.end();
+    database.getPool().query('SELECT userId as id, userProfileImageURL as profileImage, userUsername as username, userDisplayname as displayname FROM users JOIN points ON userId = streamerId WHERE viewerId = ? AND totalPoints > 100 ORDER BY totalPoints DESC LIMIT 100', [req.user.id], async (error, results, fields) => {
         if (error) {
             console.error(error);
             return res.status(500).send();
@@ -75,11 +61,7 @@ router.get('/web/streamers/watched', auth.authCookie, (req, res) => {
 
 router.get('/web/streamers/watched/top', auth.authCookie, (req, res) => {
 
-    let con = mysql.createConnection(database.getDatabaseCredentials());
-    con.connect();
-
-    con.query('SELECT userId as id, userProfileImageURL as profileImage, userUsername as username, userDisplayname as displayname FROM users JOIN points ON userId = streamerId WHERE viewerId = ? AND totalPoints > 100 ORDER BY points DESC LIMIT 20', [req.user.id], async (error, results, fields) => {
-        con.end();
+    database.getPool().query('SELECT userId as id, userProfileImageURL as profileImage, userUsername as username, userDisplayname as displayname FROM users JOIN points ON userId = streamerId WHERE viewerId = ? AND totalPoints > 100 ORDER BY points DESC LIMIT 20', [req.user.id], async (error, results, fields) => {
         if (error) {
             console.error(error);
             return res.status(500).send();
@@ -96,10 +78,7 @@ router.get('/twitch/activated-modules', cors(), (req, res) => {
         res.status(400).send('No user specified');
         return;
     }
-    let con = mysql.createConnection(database.getDatabaseCredentials());
-    con.connect();
-    con.query('SELECT event_data, userUsername FROM StreamerEvents JOIN events ON StreamerEventId = event_id JOIN users ON EventStreamerUserId = userId WHERE is_enabled = 1 and EventStreamerUserId = ?', [req.query.u], (err, result) => {
-        con.end();
+    database.getPool().query('SELECT event_data, userUsername FROM StreamerEvents JOIN events ON StreamerEventId = event_id JOIN users ON EventStreamerUserId = userId WHERE is_enabled = 1 and EventStreamerUserId = ?', [req.query.u], (err, result) => {
         if (err) {
             console.log(err);
             return res.status(500).send('Internal Server Error');
@@ -117,10 +96,7 @@ router.get('/twitch/activated-modules', cors(), (req, res) => {
 
         }
 
-        con = mysql.createConnection(database.getDatabaseCredentials());
-        con.connect();
-        con.query('SELECT * FROM customMinecraftEvents JOIN users ON streamerId = userId WHERE isEnabled = 1 AND streamerId = ?', [req.query.u], (err, result) => {
-            con.end();
+        database.getPool().query('SELECT * FROM customMinecraftEvents JOIN users ON streamerId = userId WHERE isEnabled = 1 AND streamerId = ?', [req.query.u], (err, result) => {
             if (err) {
                 console.log(err);
                 return res.status(500).send('Internal Server Error');
@@ -143,10 +119,7 @@ router.get('/twitch/point-leaderboard', cors(), (req, res) => {
     if (req.query.u === undefined || req.query.u === '') {
         return res.status(400).send('No user specified');
     }
-    let con = mysql.createConnection(database.getDatabaseCredentials());
-    con.connect();
-    con.query('SELECT points, userDisplayname FROM points JOIN users ON viewerId = userId WHERE userUsername IS NOT NULL AND streamerId = ? AND viewerId != ? ORDER BY points DESC LIMIT 200', [req.query.u, req.query.u], (err, result) => {
-        con.end();
+    database.getPool().query('SELECT points, userDisplayname FROM points JOIN users ON viewerId = userId WHERE userUsername IS NOT NULL AND streamerId = ? AND viewerId != ? ORDER BY points DESC LIMIT 200', [req.query.u, req.query.u], (err, result) => {
         if (err) {
             console.log(err);
             return res.status(500).send('Internal Server Error');
@@ -165,10 +138,7 @@ router.get('/twitch/watchtime-leaderboard', cors(), (req, res) => {
     if (req.query.u === undefined || req.query.u === '') {
         return res.status(400).send('No user specified');
     }
-    let con = mysql.createConnection(database.getDatabaseCredentials());
-    con.connect();
-    con.query('SELECT totalPoints, userDisplayname FROM points JOIN users ON viewerId = userId WHERE userUsername IS NOT NULL AND streamerId = ? AND viewerId != ? ORDER BY totalPoints DESC LIMIT 200', [req.query.u, req.query.u], (err, result) => {
-        con.end();
+    database.getPool().query('SELECT totalPoints, userDisplayname FROM points JOIN users ON viewerId = userId WHERE userUsername IS NOT NULL AND streamerId = ? AND viewerId != ? ORDER BY totalPoints DESC LIMIT 200', [req.query.u, req.query.u], (err, result) => {
         if (err) {
             console.log(err);
             return res.status(500).send('Internal Server Error');

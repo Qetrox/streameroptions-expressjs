@@ -15,11 +15,7 @@ async function sendSignupMail(userId) {
         },
     });
 
-    let con = mysql.createConnection(database.getDatabaseCredentials());
-    con.connect();
-
-    con.query('SELECT * FROM users WHERE userId = ?', [userId], function (error, results, fields) {
-        con.end();
+    database.getPool().query('SELECT * FROM users WHERE userId = ?', [userId], function (error, results, fields) {
         if (results[0].userEmail == null || results[0].userEmail == "" || results[0].userEmail == undefined) return;
         if (error) throw error;
         const mailOptions = {
@@ -116,11 +112,7 @@ async function sendMonthyStatisticsMail(userId, monthNumber, yearNumber) {
     const firstTimestamp = Math.floor(firstDay.getTime() / 1000);
     const lastTimestamp = Math.floor(lastDay.getTime() / 1000);
 
-    let con = mysql.createConnection(database.getDatabaseCredentials());
-    con.connect();
-
-    con.query('SELECT * FROM users WHERE userId = ?', [userId], function (error, results, fields) {
-        con.end();
+    database.getPool().query('SELECT * FROM users WHERE userId = ?', [userId], function (error, results, fields) {
         if (results[0].userEmail == null || results[0].userEmail == "" || results[0].userEmail == undefined) return;
         if (error) throw error;
 
@@ -128,9 +120,7 @@ async function sendMonthyStatisticsMail(userId, monthNumber, yearNumber) {
         const userUsername = results[0].userUsername
         const userDisplayname = results[0].userDisplayname
 
-        con = mysql.createConnection(database.getDatabaseCredentials());
-        con.connect();
-        con.query('SELECT COUNT(*) as eventCount, SUM(event_cost) as totalCost FROM eventLog JOIN StreamerEvents ON StreamerEventId = event_id WHERE UNIX_TIMESTAMP(timestamp) BETWEEN ? AND ? AND EventStreamerUserId = ? AND streamerId = ?', [firstTimestamp, lastTimestamp, userId, userId], function (error, results, fields) {
+        database.getPool().query('SELECT COUNT(*) as eventCount, SUM(event_cost) as totalCost FROM eventLog JOIN StreamerEvents ON StreamerEventId = event_id WHERE UNIX_TIMESTAMP(timestamp) BETWEEN ? AND ? AND EventStreamerUserId = ? AND streamerId = ?', [firstTimestamp, lastTimestamp, userId, userId], function (error, results, fields) {
             if (error) throw error;
 
             const hoursWatched = Math.round(results[0].totalCost / 600);
@@ -194,10 +184,7 @@ async function sendMonthyStatisticsMail(userId, monthNumber, yearNumber) {
 async function sendMonthlyStatisticsMailToAll(sure) {
     if (sure != "yes") return;
     console.warn("Sending monthly statistics to all users. This will take a while.");
-    const con = mysql.createConnection(database.getDatabaseCredentials());
-    con.connect();
-    con.query('SELECT streamerUserId FROM streamer', function (error, results, fields) {
-        con.end();
+    database.getPool().query('SELECT streamerUserId FROM streamer', function (error, results, fields) {
         if (error) throw error;
         results.forEach(user => {
             sendMonthyStatisticsMail(user.streamerUserId, 2, 2024);

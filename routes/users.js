@@ -69,20 +69,13 @@ router.get('/login/twitch-auth', express.urlencoded({ extended: true }), async (
 
         const twitchUser = userInfoResponse.data.data[0];
 
-        let con = mysql.createConnection(database.getDatabaseCredentials());
-        con.connect();
-        con.query('INSERT INTO accessTokens VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE token = ?, refreshToken = ?', [accessToken, refreshToken, twitchUser.id, accessToken, refreshToken], (error, results, fields) => {
-            con.end();
+        database.getPool().query('INSERT INTO accessTokens VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE token = ?, refreshToken = ?', [accessToken, refreshToken, twitchUser.id, accessToken, refreshToken], (error, results, fields) => {
             if (error) {
                 console.error(error);
                 return res.status(500).send();
             }
 
-
-            con = mysql.createConnection(database.getDatabaseCredentials());
-            con.connect();
-            con.query('SELECT * FROM users WHERE userId = ?', [twitchUser.id], async (error, results, fields) => {
-                con.end();
+            database.getPool().query('SELECT * FROM users WHERE userId = ?', [twitchUser.id], async (error, results, fields) => {
                 if (error) {
                     console.error(error);
                     return res.status(500).send();
@@ -91,11 +84,7 @@ router.get('/login/twitch-auth', express.urlencoded({ extended: true }), async (
                 if (results[0] !== undefined && results[0].userId !== undefined) {
 
                     //update users credentials
-
-                    con = mysql.createConnection(database.getDatabaseCredentials());
-                    con.connect();
-                    con.query('UPDATE users SET userEmail = ?, userUsername = ?, userDisplayname = ?, userProfileImageUrl = ? WHERE userId = ?', [twitchUser.email, twitchUser.login, twitchUser.display_name, twitchUser.profile_image_url, twitchUser.id], (error, results, fields) => {
-                        con.end();
+                    database.getPool().query('UPDATE users SET userEmail = ?, userUsername = ?, userDisplayname = ?, userProfileImageUrl = ? WHERE userId = ?', [twitchUser.email, twitchUser.login, twitchUser.display_name, twitchUser.profile_image_url, twitchUser.id], (error, results, fields) => {
                         if (error) {
                             console.error(error);
                             return res.status(500).send();
@@ -112,12 +101,9 @@ router.get('/login/twitch-auth', express.urlencoded({ extended: true }), async (
                     });
                 } else {
                     // Add the user to the database
-                    con = mysql.createConnection(database.getDatabaseCredentials());
-                    con.connect();
                     const insertQuery = 'INSERT INTO users (userId, userEmail, userUsername, userDisplayname, userProfileImageUrl) VALUES (?, ?, ?, ?, ?)';
                     const insertValues = [twitchUser.id, twitchUser.email, twitchUser.login, twitchUser.display_name, twitchUser.profile_image_url];
-                    con.query(insertQuery, insertValues, (error, results, fields) => {
-                        con.end();
+                    database.getPool().query(insertQuery, insertValues, (error, results, fields) => {
                         if (error) {
                             console.error(error);
                             return res.status(500).send();

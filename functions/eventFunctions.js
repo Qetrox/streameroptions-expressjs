@@ -46,11 +46,7 @@ async function isValidEvent(eventData, streamerId) {
     }
     if (data.redeemed_by === undefined || data.Redeemed_by === null || data.Redeemed_by === '') return false;
 
-    const con = mysql.createConnection(database.getDatabaseCredentials());
-    con.connect();
-
-    con.query('SELECT * FROM StreamerEvents WHERE EventStreamerUserId = ? AND event_id IN ( SELECT event_id FROM events WHERE event_data_name = ?)', [streamerId, data.type], (error, results, fields) => {
-        con.end();
+    database.getPool().query('SELECT * FROM StreamerEvents WHERE EventStreamerUserId = ? AND event_id IN ( SELECT event_id FROM events WHERE event_data_name = ?)', [streamerId, data.type], (error, results, fields) => {
         if (error) {
             console.error(error);
             return false;

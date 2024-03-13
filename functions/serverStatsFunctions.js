@@ -67,11 +67,7 @@ function getNowLive() {
  */
 async function saveEventToDatabase(data, type, streamerId, event_id) {
 
-    const con = mysql.createConnection(database.getDatabaseCredentials());
-    con.connect();
-
-    con.query('INSERT INTO eventLog (streamerId, type, data, event_id) VALUES (?, ?, ?, ?)', [streamerId, type, JSON.stringify(data), event_id], (error, results, fields) => {
-        con.end();
+    database.getPool().query('INSERT INTO eventLog (streamerId, type, data, event_id) VALUES (?, ?, ?, ?)', [streamerId, type, JSON.stringify(data), event_id], (error, results, fields) => {
         if (error) {
             console.error(error);
             return false;
@@ -85,19 +81,13 @@ async function saveEventToDatabase(data, type, streamerId, event_id) {
  * @returns {VoidFunction}
  */
 async function updateUsersAndStreamers() {
-    let con = mysql.createConnection(database.getDatabaseCredentials());
-    con.connect();
-    con.query('select count(userId) from users', (error, results, fields) => {
-        con.end();
+    database.getPool().query('select count(userId) from users', (error, results, fields) => {
         if (error) {
             console.error(error);
             return;
         }
         users = results[0]['count(userId)'];
-        con = mysql.createConnection(database.getDatabaseCredentials());
-        con.connect();
-        con.query('select count(streamerUserId) from streamer', (error, results, fields) => {
-            con.end();
+        database.getPool().query('select count(streamerUserId) from streamer', (error, results, fields) => {
             if (error) {
                 console.error(error);
                 return;

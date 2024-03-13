@@ -11,12 +11,7 @@ const { isDevMode } = require('../data/dev.json');
 
 router.get('/', (req, res) => {
 
-    let con = mysql.createConnection(database.getDatabaseCredentials());
-
-    con.connect();
-
-    con.query('SELECT * FROM streamer JOIN users ON streamerUserId = userId LIMIT 50', async (error, results, fields) => {
-        con.end();
+    database.getPool().query('SELECT * FROM streamer JOIN users ON streamerUserId = userId LIMIT 50', async (error, results, fields) => {
         if (error) {
             console.error(error);
             res.status(500).send();
@@ -100,10 +95,7 @@ router.get('/viewer', auth.authCookie, (req, res) => {
 
 
     const viewerId = req.user.id;
-    let con = mysql.createConnection(database.getDatabaseCredentials());
-    con.connect();
-    con.query('SELECT * FROM points JOIN streamer ON streamerUserId = streamerId JOIN users ON streamerUserId = userId WHERE points.viewerId = ?', [viewerId], (error, results, fields) => {
-        con.end();
+    database.getPool().query('SELECT * FROM points JOIN streamer ON streamerUserId = streamerId JOIN users ON streamerUserId = userId WHERE points.viewerId = ?', [viewerId], (error, results, fields) => {
         if (error) {
             console.error(error);
             return res.status(500).send();
@@ -150,12 +142,7 @@ router.post('/:id', auth.authViewer, express.urlencoded({ extended: true }), (re
         return;
     }
 
-    let con = mysql.createConnection(database.getDatabaseCredentials());
-
-    con.connect();
-
-    con.query('SELECT * FROM streamer JOIN users ON streamerUserId = userId JOIN eventTokens ON tokenUserId = streamerUserId WHERE userUsername = ?', [streamerNameID, streamerNameID], async (error, results, fields) => {
-        con.end();
+    database.getPool().query('SELECT * FROM streamer JOIN users ON streamerUserId = userId JOIN eventTokens ON tokenUserId = streamerUserId WHERE userUsername = ?', [streamerNameID, streamerNameID], async (error, results, fields) => {
         if (error) {
             console.error(error);
             res.status(500).send();
@@ -176,10 +163,7 @@ router.post('/:id', auth.authViewer, express.urlencoded({ extended: true }), (re
                     return;
                 }
 
-                con = mysql.createConnection(database.getDatabaseCredentials());
-                con.connect();
-                con.query('select * from customMinecraftEvents WHERE streamerId = ? AND isEnabled = 1 AND streamerEventId = ?', [results[0].userId, event_type], (error, results, fields) => {
-                    con.end();
+                database.getPool().query('select * from customMinecraftEvents WHERE streamerId = ? AND isEnabled = 1 AND streamerEventId = ?', [results[0].userId, event_type], (error, results, fields) => {
                     if (error) {
                         console.error(error);
                         res.status(500).send();
@@ -195,11 +179,8 @@ router.post('/:id', auth.authViewer, express.urlencoded({ extended: true }), (re
                         } else {
                             viewerId = req.user.id;
                         }
-                        con = mysql.createConnection(database.getDatabaseCredentials());
-                        con.connect();
 
-                        con.query('select points from points where streamerId = ? and viewerId = ?', [results[0].streamerId, viewerId], (error, results69, fields) => {
-                            con.end();
+                        database.getPool().query('select points from points where streamerId = ? and viewerId = ?', [results[0].streamerId, viewerId], (error, results69, fields) => {
                             let points = 0;
                             if (error) {
                                 console.error(error);
@@ -209,11 +190,8 @@ router.post('/:id', auth.authViewer, express.urlencoded({ extended: true }), (re
                                 points = results69[0].points;
                             }
                             if (points >= event_cost) {
-                                con = mysql.createConnection(database.getDatabaseCredentials());
-                                con.connect();
                                 const SID = results[0].streamerId;
-                                con.query('update points set points = points - ? where streamerId = ? and viewerId = ?', [event_cost, results[0].streamerId, viewerId], (error, results69, fields) => {
-                                    con.end();
+                                database.getPool().query('update points set points = points - ? where streamerId = ? and viewerId = ?', [event_cost, results[0].streamerId, viewerId], (error, results69, fields) => {
                                     if (error) {
                                         console.error(error);
                                         return res.status(500).send();
@@ -253,10 +231,7 @@ router.post('/:id', auth.authViewer, express.urlencoded({ extended: true }), (re
                 const token = results[0].token;
 
                 if (redeemed_by === undefined || redeemed_by === null || redeemed_by === '') return res.redirect("./" + streamerNameID);
-                con = mysql.createConnection(database.getDatabaseCredentials());
-                con.connect();
-                con.query('SELECT * FROM StreamerEvents WHERE EventStreamerUserId = ? AND is_enabled = 1 AND StreamerEventId IN ( SELECT event_id FROM events WHERE event_data_name = ?)', [results[0].userId, event_type], (error, results, fields) => {
-                    con.end();
+                database.getPool().query('SELECT * FROM StreamerEvents WHERE EventStreamerUserId = ? AND is_enabled = 1 AND StreamerEventId IN ( SELECT event_id FROM events WHERE event_data_name = ?)', [results[0].userId, event_type], (error, results, fields) => {
                     if (error) {
                         console.error(error);
                         res.status(500).send();
@@ -272,11 +247,7 @@ router.post('/:id', auth.authViewer, express.urlencoded({ extended: true }), (re
                         } else {
                             viewerId = req.user.id;
                         }
-                        con = mysql.createConnection(database.getDatabaseCredentials());
-                        con.connect();
-
-                        con.query('select points from points where streamerId = ? and viewerId = ?', [results[0].EventStreamerUserId, viewerId], (error, results69, fields) => {
-                            con.end();
+                        database.getPool().query('select points from points where streamerId = ? and viewerId = ?', [results[0].EventStreamerUserId, viewerId], (error, results69, fields) => {
                             let points = 0;
                             const SID = results[0].EventStreamerUserId
 
@@ -288,10 +259,7 @@ router.post('/:id', auth.authViewer, express.urlencoded({ extended: true }), (re
                                 points = results69[0].points;
                             }
                             if (points >= event_cost) {
-                                con = mysql.createConnection(database.getDatabaseCredentials());
-                                con.connect();
-                                con.query('update points set points = points - ? where streamerId = ? and viewerId = ?', [event_cost, results[0].EventStreamerUserId, viewerId], (error, results69, fields) => {
-                                    con.end();
+                                database.getPool().query('update points set points = points - ? where streamerId = ? and viewerId = ?', [event_cost, results[0].EventStreamerUserId, viewerId], (error, results69, fields) => {
                                     if (error) {
                                         console.error(error);
                                         res.status(500).send();
@@ -326,23 +294,14 @@ router.post('/:id', auth.authViewer, express.urlencoded({ extended: true }), (re
 router.get('/:id', auth.authViewer, (req, res) => {
 
     const streamerNameID = req.params.id;
-
-    let con = mysql.createConnection(database.getDatabaseCredentials());
-
-    con.connect();
-
-    con.query('SELECT * FROM streamer JOIN users ON streamerUserId = userId WHERE userUsername = ?', [streamerNameID, streamerNameID], (error, results, fields) => {
-        con.end();
+    database.getPool().query('SELECT * FROM streamer JOIN users ON streamerUserId = userId WHERE userUsername = ?', [streamerNameID, streamerNameID], (error, results, fields) => {
         if (error) {
             console.error(error);
             return res.status(500).send();
         }
 
         if (results[0] !== undefined && results[0].userId !== undefined) {
-            con = mysql.createConnection(database.getDatabaseCredentials());
-            con.connect();
-            con.query('SELECT * FROM events LEFT JOIN StreamerEvents ON event_id = StreamerEventId WHERE StreamerEvents.EventStreamerUserId = ? AND is_enabled = 1', [results[0].userId], (error, results2, fields) => {
-                con.end();
+            database.getPool().query('SELECT * FROM events LEFT JOIN StreamerEvents ON event_id = StreamerEventId WHERE StreamerEvents.EventStreamerUserId = ? AND is_enabled = 1', [results[0].userId], (error, results2, fields) => {
                 if (error) {
                     console.error(error);
                     return res.status(500).send();
@@ -383,10 +342,7 @@ router.get('/:id', auth.authViewer, (req, res) => {
                     viewerId = req.user.id;
                 }
 
-                con = mysql.createConnection(database.getDatabaseCredentials());
-                con.connect();
-                con.query('select points from points where streamerId = ? and viewerId = ?', [results[0].userId, viewerId], (error, results69, fields) => {
-                    con.end();
+                database.getPool().query('select points from points where streamerId = ? and viewerId = ?', [results[0].userId, viewerId], (error, results69, fields) => {
 
                     let viewer_name = "";
 
@@ -404,10 +360,11 @@ router.get('/:id', auth.authViewer, (req, res) => {
                         points = results69[0].points;
                     }
 
-                    con = mysql.createConnection(database.getDatabaseCredentials());
-                    con.connect();
-                    con.query('select * from customMinecraftEvents WHERE streamerId = ? AND isEnabled = 1', [streamerId], (error, resultscringe, fields) => {
-                        con.end();
+                    database.getPool().query('select * from customMinecraftEvents WHERE streamerId = ? AND isEnabled = 1', [streamerId], (error, resultscringe, fields) => {
+                        if (error) {
+                            console.error(error);
+                            return res.status(500).send();
+                        }
                         res.render('viewer_streamerpage',
                             {
                                 WebsiteTitleElementText: `${webTitle} - ${results[0].userDisplayname}`,

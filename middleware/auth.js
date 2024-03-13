@@ -39,7 +39,7 @@ function authCookie(req, res, next) {
     try {
         token = req.cookies.token;
         refreshToken = req.cookies.refreshtoken;
-    } catch (err){
+    } catch (err) {
         return res.redirect("../");
     }
 
@@ -51,8 +51,8 @@ function authCookie(req, res, next) {
 
     } catch (err) {
         try { // probeer refresh token te gebruiken
-            
-            if(authFunctions.checkRefreshToken(refreshToken)) {
+
+            if (authFunctions.checkRefreshToken(refreshToken)) {
                 res.clearCookie("token");
                 res.clearCookie("refreshtoken");
                 return res.redirect("../../../../../../../../login");
@@ -61,7 +61,7 @@ function authCookie(req, res, next) {
             user = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
             const accessToken = authFunctions.genToken({ user: user.name, id: user.id, display_name: user.display_name });
 
-            res.cookie('token', accessToken, { expires: new Date(Date.now() + 60*60*24*30*1000) })
+            res.cookie('token', accessToken, { expires: new Date(Date.now() + 60 * 60 * 24 * 30 * 1000) })
             req.user = user;
             next();
 
@@ -84,12 +84,7 @@ function authViewer(req, res, next) {
 
     const streamerNameID = req.params.id;
 
-    const con = mysql.createConnection(database.getDatabaseCredentials());
-
-    con.connect();
-
-    con.query('SELECT * FROM streamer JOIN users ON streamerUserId = userId WHERE userUsername = ?', [streamerNameID], (error, results) => {
-        con.end();
+    database.getPool().query('SELECT * FROM streamer JOIN users ON streamerUserId = userId WHERE userUsername = ?', [streamerNameID], (error, results) => {
         if (error) {
             console.error(error);
             res.status(500).send();
@@ -102,7 +97,7 @@ function authViewer(req, res, next) {
             try {
                 token = req.cookies.token;
                 refreshToken = req.cookies.refreshtoken;
-            } catch (err){
+            } catch (err) {
                 next();
                 return;
             }
@@ -116,8 +111,8 @@ function authViewer(req, res, next) {
 
             } catch (err) {
                 try { // probeer refresh token te gebruiken
-                    
-                    if(authFunctions.checkRefreshToken(refreshToken)) {
+
+                    if (authFunctions.checkRefreshToken(refreshToken)) {
                         res.clearCookie("token");
                         res.clearCookie("refreshtoken");
                         next();
@@ -126,7 +121,7 @@ function authViewer(req, res, next) {
                     user = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
                     const accessToken = authFunctions.genToken({ user: user.name, id: user.id, display_name: user.display_name });
 
-                    res.cookie('token', accessToken, { expires: new Date(Date.now() + 60*60*24*30*1000) })
+                    res.cookie('token', accessToken, { expires: new Date(Date.now() + 60 * 60 * 24 * 30 * 1000) })
                     req.user = user;
                     next();
                     return;
@@ -144,7 +139,7 @@ function authViewer(req, res, next) {
     });
 }
 
-module.exports = { 
+module.exports = {
     authToken: authToken,
     authCookie: authCookie,
     authViewer: authViewer,

@@ -18,20 +18,17 @@ let firstTime = true;
  */
 async function pagination(cursor, access_token) {
     axios.get(`https://api.twitch.tv/helix/chat/chatters?broadcaster_id=${Streamer_Id}&moderator_id=${Streamer_Id}&first=1000&after=${cursor}`, {
-    headers: {
-        'Authorization': `Bearer ${access_token}`,
-        'Client-Id': CLIENT_ID
-    } 
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+            'Client-Id': CLIENT_ID
+        }
     }).then(response => {
         const chatters = response.data.data
-        if(response.data.pagination.cursor !== undefined) {
+        if (response.data.pagination.cursor !== undefined) {
             pagination(response.data.pagination.cursor, access_token)
         }
         chatters.forEach(chatter => {
-            const con = mysql.createConnection(database.getDatabaseCredentials());
-            con.connect();
-            con.query('INSERT INTO points VALUES (?, ?, 10, 10) ON DUPLICATE KEY UPDATE points = points + 10, totalPoints = totalPoints + 10', [Streamer_Id, chatter.user_id], (error, results, fields) => {
-                con.end();
+            database.getPool().query('INSERT INTO points VALUES (?, ?, 10, 10) ON DUPLICATE KEY UPDATE points = points + 10, totalPoints = totalPoints + 10', [Streamer_Id, chatter.user_id], (error, results, fields) => {
                 if (error) {
                     console.error(error);
                     return;
@@ -39,8 +36,8 @@ async function pagination(cursor, access_token) {
             });
         });
     }).catch(error => {
-        if(isDevMode) console.error("(1)Error while getting chatters for: " + Streamer_Id);
-        if(isDevMode) console.error("Refreshing Token...");
+        if (isDevMode) console.error("(1)Error while getting chatters for: " + Streamer_Id);
+        if (isDevMode) console.error("Refreshing Token...");
         twitchFunctions.refreshTwitchToken(refreshToken, Streamer_Id);
     });
 }
@@ -53,20 +50,17 @@ async function pagination(cursor, access_token) {
  */
 async function updateViewers(Streamer_Id, access_token) {
     axios.get(`https://api.twitch.tv/helix/chat/chatters?broadcaster_id=${Streamer_Id}&moderator_id=${Streamer_Id}&first=1000`, {
-    headers: {
-        'Authorization': `Bearer ${access_token}`,
-        'Client-Id': CLIENT_ID
-    } 
+        headers: {
+            'Authorization': `Bearer ${access_token}`,
+            'Client-Id': CLIENT_ID
+        }
     }).then(response => {
         const chatters = response.data.data
-        if(response.data.pagination.cursor !== undefined) {
+        if (response.data.pagination.cursor !== undefined) {
             pagination(response.data.pagination.cursor, access_token)
         }
         chatters.forEach(chatter => {
-            const con = mysql.createConnection(database.getDatabaseCredentials());
-            con.connect();
-            con.query('INSERT INTO points VALUES (?, ?, 10, 10) ON DUPLICATE KEY UPDATE points = points + 10, totalPoints = totalPoints + 10', [Streamer_Id, chatter.user_id], (error, results, fields) => {
-                con.end();
+            database.getPool().query('INSERT INTO points VALUES (?, ?, 10, 10) ON DUPLICATE KEY UPDATE points = points + 10, totalPoints = totalPoints + 10', [Streamer_Id, chatter.user_id], (error, results, fields) => {
                 if (error) {
                     console.error(error);
                     return;
@@ -74,8 +68,8 @@ async function updateViewers(Streamer_Id, access_token) {
             });
         });
     }).catch(error => {
-        if(isDevMode) console.error("(1)Error while getting chatters for: " + Streamer_Id);
-        if(isDevMode) console.error("Refreshing Token...");
+        if (isDevMode) console.error("(1)Error while getting chatters for: " + Streamer_Id);
+        if (isDevMode) console.error("Refreshing Token...");
         twitchFunctions.refreshTwitchToken(refreshToken, Streamer_Id);
     });
 }
@@ -86,19 +80,16 @@ async function updateViewers(Streamer_Id, access_token) {
  */
 
 async function updateViewersForAll() {
-    const con = mysql.createConnection(database.getDatabaseCredentials());
-    con.connect();
-    con.query('SELECT * FROM accessTokens', async (error, results, fields) => {
-        con.end();
+    database.getPool().query('SELECT * FROM accessTokens', async (error, results, fields) => {
         if (error) {
             console.error(error);
             return;
         }
-        
-        if(isDevMode) console.log('Checking viewers for all streamers...')
+
+        if (isDevMode) console.log('Checking viewers for all streamers...')
 
         let broadcastnotification = true;
-        if(firstTime) {
+        if (firstTime) {
             broadcastnotification = false;
             firstTime = false;
         }
@@ -111,18 +102,18 @@ async function updateViewersForAll() {
                     'Client-Id': CLIENT_ID
                 }
             }).then(response => {
-                if(isDevMode) console.log('Checked viewers for: ' + result.tokenUserId);
+                if (isDevMode) console.log('Checked viewers for: ' + result.tokenUserId);
                 const streams = response.data.data;
                 if (streams.length > 0) {
                     updateViewers(result.tokenUserId, result.token);
                     serverStatsFunctions.updateNowLive(result.tokenUserId, true, streams[0], broadcastnotification);
-                    if(isDevMode && !broadcastnotification) console.log('No notification for: ' + result.tokenUserId);
+                    if (isDevMode && !broadcastnotification) console.log('No notification for: ' + result.tokenUserId);
                 } else {
                     serverStatsFunctions.updateNowLive(result.tokenUserId, false);
                 }
             }).catch(error => {
-                if(isDevMode) console.error("(2)Error while getting chatters for: " + result.tokenUserId);
-                if(isDevMode) console.error("Refreshing Token...");
+                if (isDevMode) console.error("(2)Error while getting chatters for: " + result.tokenUserId);
+                if (isDevMode) console.error("Refreshing Token...");
                 twitchFunctions.refreshTwitchToken(result.refreshToken, result.tokenUserId);
             });
         }
@@ -133,7 +124,7 @@ async function updateViewersForAll() {
  * Starts the point update loop.
  */
 function start() {
-    if( dontCheckPoints) {
+    if (dontCheckPoints) {
         console.warn("Point Checking is disabled in dev config!");
         return;
     }
