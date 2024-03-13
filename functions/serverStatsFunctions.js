@@ -70,7 +70,7 @@ async function saveEventToDatabase(data, type, streamerId, event_id) {
     const con = mysql.createConnection(database.getDatabaseCredentials());
     con.connect();
 
-    con.query('INSERT INTO eventLog (streamerId, type, data, event_id) VALUES (?, ?, ?)', [streamerId, type, JSON.stringify(data), event_id], (error, results, fields) => {
+    con.query('INSERT INTO eventLog (streamerId, type, data, event_id) VALUES (?, ?, ?, ?)', [streamerId, type, JSON.stringify(data), event_id], (error, results, fields) => {
         con.end();
         if (error) {
             console.error(error);

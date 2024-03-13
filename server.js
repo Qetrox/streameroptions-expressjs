@@ -34,6 +34,17 @@ app.use('/api/v1', apiRouter);
 
 app.use('/', mainRouter); // this router should be last.
 
+app.route('*').get((req, res) => {
+  res.status(404).render(
+    '404notfound',
+    {
+      WebsiteTitleElementText: webTitle + ' - Not Found',
+      hostname: hostname,
+      CssUrl: hostname + '/stylesheet10.css',
+    }
+  );
+});
+
 app.use(express.urlencoded({
   extended: true
 }))

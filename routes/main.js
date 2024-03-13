@@ -121,29 +121,14 @@ router.get('/viewer', auth.authCookie, (req, res) => {
 });
 
 router.get('/streamers', (req, res) => {
-
-    let con = mysql.createConnection(database.getDatabaseCredentials());
-
-    con.connect();
-
-    con.query('SELECT * FROM streamer JOIN users ON streamerUserId = userId', async (error, results, fields) => {
-        con.end();
-        if (error) {
-            console.error(error);
-            res.status(500).send();
+    res.render(
+        'streamers',
+        {
+            WebsiteTitleElementText: webTitle + ' - Streamers',
+            hostname: hostname,
+            CssUrl: 'stylesheet9.css',
         }
-
-        res.render(
-            'streamers',
-            {
-                WebsiteTitleElementText: webTitle + ' - Streamers',
-                hostname: hostname,
-                CssUrl: 'stylesheet9.css',
-                streamer_list: results
-            }
-        );
-
-    });
+    );
 });
 
 router.post('/:id', auth.authViewer, express.urlencoded({ extended: true }), (req, res) => {

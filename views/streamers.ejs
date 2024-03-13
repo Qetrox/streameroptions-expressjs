@@ -20,33 +20,23 @@
 <body>
     <%- include('parts/header.ejs') %>
         <main>
-            <div class="title-section">
+            <div class="title-section" id="sponsoredtitle">
                 <h1>Sponsored</h1>
                 <div class="line"></div>
             </div>
-            <div class="streamerlist">
-
-                <% locals.streamer_list.forEach(element=> {
-                    %>
-                    <a class="streamer" href="./<%= element.userUsername %>"
-                        style="background-image: url('https://static-cdn.jtvnw.net/previews-ttv/live_user_<%= element.userUsername %>-440x248.jpg')">
-                        <div class="streamer-bottom">
-                            <div class="streamer-pfp">
-                                <img src="<%= element.userProfileImageUrl %>" alt="<%= element.name %>">
-                            </div>
-                            <h3 class="streamer-title">
-                                <%= element.userDisplayname %>
-                            </h3>
-                        </div>
-                    </a>
-                    <% }); %>
+            <div class="streamerlist" id="sponsoredlist">
             </div>
-            <div class="title-section">
+            <div class="title-section" id="livenowtitle">
                 <div class="line"></div>
                 <h1>Live now</h1>
+            </div>
+            <div class="streamerlist" id="livenowlist">
+
             </div>
         </main>
         <%- include('parts/footer.ejs') %>
 </body>
+
+<script src="<%= locals.hostname + '/js3.js' || 'localhost/js3.js' %>"></script>
 
 </html>

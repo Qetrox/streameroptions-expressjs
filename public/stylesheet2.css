@@ -124,6 +124,7 @@ main>h1 {
     width: calc(90% + 40px);
     margin: 30px auto;
     border-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(29, 29, 29, 0.5);
 }
 
 main>.top {
@@ -143,6 +144,7 @@ main>div>.info {
     text-align: left;
     font-family: 'Inter';
     border-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(29, 29, 29, 0.5);
 }
 
 main>div>.setup {
@@ -154,6 +156,7 @@ main>div>.setup {
     text-align: left;
     font-family: 'Inter';
     border-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(29, 29, 29, 0.5);
 }
 
 .info>input:disabled {
@@ -268,6 +271,7 @@ main>h1 {
     overflow: hidden;
     padding: 10px;
     font-family: 'Inter';
+    box-shadow: 5px 5px 10px rgba(29, 29, 29, 0.5);
 }
 
 .MinecraftCustomCommandEditor>.modal>h1 {

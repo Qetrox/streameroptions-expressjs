@@ -1,21 +1,121 @@
 main {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
+    display: block;
+    width: 90%;
+    margin: 0 auto;
 }
 
-.streamer_points {
-    background: #fff;
-    width: 300px;
-    height: 150px;
-    color: #050505;
-    font-family: 'Inter';
-    padding: 10px;
-    border-radius: 10px;
-    margin: 10px;
-    cursor: pointer;
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
-    & h2 {
-        margin: 0;
+main>.streamerlist {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+main>.streamerlist>.streamer {
+    background-color: #d9d9d9;
+    font-family: 'Inter';
+    margin: 1.2dvw;
+    width: 20dvw;
+    height: 13dvw;
+    border-radius: 25px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.5);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+main>.streamerlist>.streamer>.streamer-bottom {
+    background-color: #000;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    height: 20%;
+    border-radius: 0 0 25px 25px;
+}
+
+main>.streamerlist>.streamer>.streamer-bottom>.streamer-pfp {
+    height: 5dvw;
+    width: 5dvw;
+    position: absolute;
+    bottom: 1dvw;
+    left: 1dvw;
+}
+
+main>.streamerlist>.streamer>.streamer-bottom>.streamer-pfp>img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+main>.streamerlist>.streamer>.streamer-bottom>.streamer-title {
+    position: absolute;
+    bottom: 1dvw;
+    left: 7dvw;
+    color: #fff;
+    font-size: 1dvw;
+    font-weight: bold;
+    margin: 0;
+}
+
+main>.title-section {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin: 30px 0;
+}
+
+main>.title-section>h1 {
+    font-family: 'Inter';
+    font-size: 3rem;
+    font-weight: bold;
+    color: #000;
+    margin: 20px;
+    text-wrap: nowrap;
+}
+
+main>.title-section>.line {
+    background-color: #000;
+    height: 5px;
+    width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    main>.title-section>h1 {
+        font-size: 2rem;
     }
+
+    main>.streamerlist>.streamer {
+        width: 100dvw;
+        height: 50dvw;
+    }
+
+    main>.streamerlist>.streamer>.streamer-bottom>.streamer-title {
+        left: 29dvw;
+        bottom: 2dvw;
+        font-size: 5dvw;
+    }
+
+    main>.streamerlist>.streamer>.streamer-bottom>.streamer-pfp {
+        width: 25dvw;
+        height: 25dvw;
+        bottom: 2dvw;
+        left: 2dvw;
+    }
+
+    main>.title-section>h1 {
+        text-align: center;
+        width: 100%;
+    }
+
+    main>.title-section>.line {
+        display: none;
+    }
+
 }

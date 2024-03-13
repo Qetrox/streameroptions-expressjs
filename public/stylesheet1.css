@@ -7,6 +7,7 @@
     background-position: center;
     transition: all 1s ease;
     background: #000;
+    cursor: default;
 }
 
 .banner>h1 {
@@ -14,15 +15,27 @@
     top: 5%;
     left: 4%;
     font-family: 'Inter';
-    font-size: 80px;
+    font-size: 60px;
+}
+
+.coolcolor,
+.coolcolor {
+    color: #236d82;
+    transition: all 250ms ease;
+}
+
+.coolcolor:hover,
+.coolcolor:hover {
+    color: #194a58;
 }
 
 .banner>h3 {
     font-family: 'Inter';
     position: absolute;
-    top: calc(5% + 120px);
-    font-size: 40px;
+    top: calc(5% + 140px);
+    font-size: 30px;
     left: 4%;
+    width: 50%;
 }
 
 .banner>.feature-scrolldown {
@@ -197,9 +210,16 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    background-color: #D9D9D9;
+    background-color: #000;
     margin-bottom: 100px;
     border-radius: 25px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transition: all 250ms ease;
+    color: #fff;
+    min-width: 400px;
+    min-height: 300px;
 }
 
 .supported-games>.game>h1 {
@@ -210,10 +230,11 @@
 }
 
 .supported-games>.game>a {
+    min-width: 200px;
     width: 20%;
     font-size: 20px;
     text-decoration: none;
-    color: #000;
+    color: #fff;
     transition: all 250ms ease;
 }
 
@@ -233,6 +254,43 @@
     float: right;
 }
 
+.feature-buttons {
+    display: flex;
+    justify-content: center;
+    margin: 100px 0;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+.feature-buttons>.button {
+    font-family: 'Inter';
+    border-radius: 12px;
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
+    width: 350px;
+    text-align: center;
+    position: relative;
+    transition: all 250ms ease;
+    text-decoration: none;
+}
+
+.feature-buttons>.button:hover {
+    transform: translateY(-5px);
+}
+
+.feature-buttons>.button>h1 {
+    font-weight: 200;
+}
+
+.feature-buttons>.button>h1>span {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 30px;
+}
+
 @media only screen and (max-width: 768px) {
     .banner {
         height: 500px;
@@ -250,7 +308,7 @@
     .banner>h3 {
         text-align: center;
         font-size: 20px;
-        top: calc(15% + 120px);
+        top: calc(15% + 160px);
     }
 
     .banner>.feature-scrolldown {
@@ -267,7 +325,7 @@
     }
 
     .featured-streamers {
-        margin-top: 0;
+        margin-top: 10px;
         margin-bottom: 0;
     }
 
@@ -299,10 +357,13 @@
         width: 100%;
         flex-wrap: wrap;
         justify-content: center;
+        height: fit-content;
     }
 
     .feature>div {
-        width: 90vw;
+        width: 80%;
+        margin: auto;
+        height: auto;
     }
 
     .feature-left {
@@ -317,5 +378,14 @@
         text-align: center;
         width: 100%;
         left: 0;
+    }
+
+    .supported-games>.game {
+        width: 90dvw;
+        height: 50dvw;
+    }
+
+    .supported-games {
+        margin: 0;
     }
 }

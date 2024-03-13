@@ -17,7 +17,7 @@ main>.streamerlist {
 main>.streamerlist>.streamer {
     background-color: #d9d9d9;
     font-family: 'Inter';
-    margin: 20px;
+    margin: 1.2dvw;
     width: 20dvw;
     height: 13dvw;
     border-radius: 25px;
@@ -43,8 +43,8 @@ main>.streamerlist>.streamer>.streamer-bottom>.streamer-pfp {
     height: 5dvw;
     width: 5dvw;
     position: absolute;
-    bottom: 15px;
-    left: 15px;
+    bottom: 1dvw;
+    left: 1dvw;
 }
 
 main>.streamerlist>.streamer>.streamer-bottom>.streamer-pfp>img {
@@ -56,10 +56,10 @@ main>.streamerlist>.streamer>.streamer-bottom>.streamer-pfp>img {
 
 main>.streamerlist>.streamer>.streamer-bottom>.streamer-title {
     position: absolute;
-    bottom: 15px;
-    left: calc(30px + 5dvw);
+    bottom: 1dvw;
+    left: 7dvw;
     color: #fff;
-    font-size: 1.5rem;
+    font-size: 1dvw;
     font-weight: bold;
     margin: 0;
 }
@@ -87,18 +87,26 @@ main>.title-section>.line {
 }
 
 @media screen and (max-width: 768px) {
+    main>.title-section>h1 {
+        font-size: 2rem;
+    }
+
     main>.streamerlist>.streamer {
         width: 100dvw;
         height: 50dvw;
     }
 
     main>.streamerlist>.streamer>.streamer-bottom>.streamer-title {
-        left: calc(30px + 25dvw);
+        left: 29dvw;
+        bottom: 2dvw;
+        font-size: 5dvw;
     }
 
     main>.streamerlist>.streamer>.streamer-bottom>.streamer-pfp {
         width: 25dvw;
         height: 25dvw;
+        bottom: 2dvw;
+        left: 2dvw;
     }
 
     main>.title-section>h1 {

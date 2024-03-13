@@ -3,8 +3,93 @@ const router = express.Router()
 const mysql = require('mysql');
 const database = require('../functions/sql');
 const serverStatsFunctions = require('../functions/serverStatsFunctions');
+const auth = require('../middleware/auth');
 const { admin } = require('../data/roles.json');
 const cors = require('cors')
+
+router.get('/web/streamers', (req, res) => {
+
+    let con = mysql.createConnection(database.getDatabaseCredentials());
+
+    con.connect();
+
+    con.query('SELECT userId as id, userProfileImageURL as profileImage, userUsername as username, userDisplayname as displayname FROM streamer JOIN users ON streamerUserId = userId LIMIT 1000', async (error, results, fields) => {
+        con.end();
+        if (error) {
+            console.error(error);
+            return res.status(500).send();
+        }
+
+        const liveNowList = serverStatsFunctions.getNowLive();
+        const liveNow = results.filter(streamer => liveNowList.includes(streamer.id));
+
+        return res.json(liveNow);
+
+    });
+
+});
+
+router.get('/web/streamers/sponsored', (req, res) => {
+
+    res.json([]);
+});
+
+router.get('/web/streamers/watched/live', auth.authCookie, (req, res) => {
+
+    let con = mysql.createConnection(database.getDatabaseCredentials());
+    con.connect();
+
+    con.query('SELECT userId as id, userProfileImageURL as profileImage, userUsername as username, userDisplayname as displayname FROM users WHERE userId IN (SELECT streamerId FROM points WHERE totalPoints > 100 AND viewerId = ?) LIMIT 20', [req.user.id], async (error, results, fields) => {
+        con.end();
+        if (error) {
+            console.error(error);
+            return res.status(500).send();
+        }
+
+        const liveNowList = serverStatsFunctions.getNowLive();
+        const liveNow = results.filter(streamer => liveNowList.includes(streamer.id));
+
+        return res.json(liveNow);
+
+
+    });
+});
+
+router.get('/web/streamers/watched', auth.authCookie, (req, res) => {
+
+    let con = mysql.createConnection(database.getDatabaseCredentials());
+    con.connect();
+
+    con.query('SELECT userId as id, userProfileImageURL as profileImage, userUsername as username, userDisplayname as displayname FROM users JOIN points ON userId = streamerId WHERE viewerId = ? AND totalPoints > 100 ORDER BY totalPoints DESC LIMIT 100', [req.user.id], async (error, results, fields) => {
+        con.end();
+        if (error) {
+            console.error(error);
+            return res.status(500).send();
+        }
+
+        return res.json(results);
+
+
+    });
+});
+
+router.get('/web/streamers/watched/top', auth.authCookie, (req, res) => {
+
+    let con = mysql.createConnection(database.getDatabaseCredentials());
+    con.connect();
+
+    con.query('SELECT userId as id, userProfileImageURL as profileImage, userUsername as username, userDisplayname as displayname FROM users JOIN points ON userId = streamerId WHERE viewerId = ? AND totalPoints > 100 ORDER BY points DESC LIMIT 20', [req.user.id], async (error, results, fields) => {
+        con.end();
+        if (error) {
+            console.error(error);
+            return res.status(500).send();
+        }
+
+        return res.json(results);
+
+
+    });
+});
 
 router.get('/twitch/activated-modules', cors(), (req, res) => {
     if (req.query.u === undefined || req.query.u === '') {
