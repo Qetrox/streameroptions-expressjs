@@ -70,6 +70,7 @@ let server = http.createServer(options, app).listen(8080, function () {
   serverStatsFunctions.start();
   if (isDevMode) {
     console.log("Express server listening on port " + 8080);
+    console.log("Open the website -> " + hostname);
   } else {
     console.log("Streamer Options is now online. Time: " + Date.now());
   }

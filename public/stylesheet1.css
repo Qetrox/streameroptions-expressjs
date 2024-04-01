@@ -77,9 +77,8 @@
 .feature>img {
     height: 300px;
     width: 40vw;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 10px;
-    box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.5);
 }
 
 .feature>div {

@@ -123,6 +123,9 @@ async function sendMonthyStatisticsMail(userId, monthNumber, yearNumber) {
         database.getPool().query('SELECT COUNT(*) as eventCount, SUM(event_cost) as totalCost FROM eventLog JOIN StreamerEvents ON StreamerEventId = event_id WHERE UNIX_TIMESTAMP(timestamp) BETWEEN ? AND ? AND EventStreamerUserId = ? AND streamerId = ?', [firstTimestamp, lastTimestamp, userId, userId], function (error, results, fields) {
             if (error) throw error;
 
+            if (results[0].totalCost == null || results[0].totalCost == undefined) results[0].totalCost = 0;
+            if (results[0].eventCount == null || results[0].eventCount == undefined) results[0].eventCount = 0;
+
             const hoursWatched = Math.round(results[0].totalCost / 600);
 
             const mailOptions = {
@@ -187,7 +190,7 @@ async function sendMonthlyStatisticsMailToAll(sure) {
     database.getPool().query('SELECT streamerUserId FROM streamer', function (error, results, fields) {
         if (error) throw error;
         results.forEach(user => {
-            sendMonthyStatisticsMail(user.streamerUserId, 2, 2024);
+            sendMonthyStatisticsMail(user.streamerUserId, 3, 2024);
         });
     });
 }
