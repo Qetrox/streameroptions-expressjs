@@ -3,7 +3,7 @@ const previouswatchedlist = document.getElementById('previouswatchedlist');
 const mostpointslist = document.getElementById('mostpointslist');
 
 
-fetch('http://localhost:8080/api/v1/web/streamers/watched/live')
+fetch('https://streameroptions.com/api/v1/web/streamers/watched/live')
     .then(response => response.json())
     .then(data => {
 
@@ -39,7 +39,7 @@ fetch('http://localhost:8080/api/v1/web/streamers/watched/live')
         console.log(error);
     });
 
-fetch('http://localhost:8080/api/v1/web/streamers/watched')
+fetch('https://streameroptions.com/api/v1/web/streamers/watched')
     .then(response => response.json())
     .then(data => {
 
@@ -75,7 +75,7 @@ fetch('http://localhost:8080/api/v1/web/streamers/watched')
         console.log(error);
     });
 
-fetch('http://localhost:8080/api/v1/web/streamers/watched/top')
+fetch('https://streameroptions.com/api/v1/web/streamers/watched/top')
     .then(response => response.json())
     .then(data => {
 

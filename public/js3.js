@@ -1,7 +1,7 @@
 const livenowlist = document.getElementById('livenowlist');
 const sponsoredlist = document.getElementById('sponsoredlist');
 
-fetch('http://localhost:8080/api/v1/web/streamers/sponsored')
+fetch('https://streameroptions.com/api/v1/web/streamers/sponsored')
     .then(response => response.json())
     .then(data => {
 
@@ -50,7 +50,7 @@ fetch('http://localhost:8080/api/v1/web/streamers/sponsored')
 
     });
 
-fetch('http://localhost:8080/api/v1/web/streamers')
+fetch('https://streameroptions.com/api/v1/web/streamers')
     .then(response => response.json())
     .then(data => {
 
