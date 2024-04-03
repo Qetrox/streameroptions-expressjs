@@ -56,6 +56,8 @@ router.get('/minecraft/:token', async (req, res) => {
 
 });
 
+/*
+
 router.get('/lethal-company/:token', async (req, res) => {
     const token = req.params.token
 
@@ -100,5 +102,7 @@ router.get('/lethal-company/:token', async (req, res) => {
     });
 
 });
+
+*/
 
 module.exports = router;

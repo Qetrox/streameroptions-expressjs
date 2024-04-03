@@ -17,9 +17,11 @@ const { isDevMode } = require('./data/dev.json');
 const websocket = require('./functions/websocket')
 const mailFunctions = require('./functions/mailFunctions');
 const database = require('./functions/sql');
+const logger = require('./logging');
+
 
 webTitle = 'Streamer Options'
-hostname = 'http://localhost:8080'
+hostname = 'https://streameroptions.com'
 
 database.initializePool();
 
@@ -28,6 +30,12 @@ app.use(security.onlyAllowCloudflare);
 app.use(cookieParser());
 app.use(express.static("public"));
 app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}))
+
+app.set('view engine', 'ejs');
+
 app.use('/users', userRouter);
 app.use('/streamer', streamerRouter);
 app.use('/events', eventRouter);
@@ -36,6 +44,13 @@ app.use('/', guideRouter);
 app.use('/api/v1', apiRouter);
 
 app.use('/', mainRouter); // this router should be last.
+
+/*
+
+This should be the absolute last route, 
+if there hasnt been a response by now this will send a 404.
+
+*/
 
 app.route('*').get((req, res) => {
   res.status(404).render(
@@ -48,11 +63,16 @@ app.route('*').get((req, res) => {
   );
 });
 
-app.use(express.urlencoded({
-  extended: true
-}))
+/*
 
-app.set('view engine', 'ejs');
+Log ExpressJS errors, and handle them.
+
+*/
+
+app.use((err, req, res, next) => {
+  logger.error(err)
+  res.status(500).send({ error: 'Please try again later.' })
+})
 
 checkPoints.start();
 websocket.init();
@@ -66,7 +86,7 @@ const options = {
   cert: fs.readFileSync('./.ssl/certificate.pem'),
 };
 
-let server = http.createServer(options, app).listen(8080, function () {
+let server = https.createServer(options, app).listen(8080, function () {
   serverStatsFunctions.start();
   if (isDevMode) {
     console.log("Express server listening on port " + 8080);

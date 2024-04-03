@@ -29,6 +29,16 @@ async function refreshTwitchToken(refreshToken, twitch_id) {
             }
         });
     }).catch((error) => {
+        if (error.response.data.status === 400 && error.response.data.message == 'Invalid refresh token') {
+            database.getPool().query('DELETE FROM accessTokens WHERE tokenUserId = ?', [twitch_id], (error, results, fields) => {
+                if (error) {
+                    console.error(error);
+                    return;
+                }
+                logging.info('Removed invalid twitch access & refresh token for user: ' + twitch_id);
+            });
+            return;
+        }
         console.error(error);
         return;
     });

@@ -6,6 +6,7 @@ const twitchFunctions = require('./twitchFunctions');
 const serverStatsFunctions = require('./serverStatsFunctions');
 const server = require('../server');
 const { dontCheckPoints, isDevMode } = require('../data/dev.json');
+const logging = require('../logging');
 
 const CLIENT_ID = process.env.TWITCH_CLIENT_ID;
 
@@ -93,6 +94,8 @@ async function updateViewersForAll() {
             broadcastnotification = false;
             firstTime = false;
         }
+
+        logging.info('Checking viewers for ' + results.length + ' streamers');
 
         for (let i = 0; i < results.length; i++) {
             const result = results[i];

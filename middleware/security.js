@@ -1,5 +1,6 @@
 const ipRangeCheck = require('ip-range-check');
 const fs = require('fs');
+const logger = require('../logging');
 
 const cloudflareIPs = fs.readFileSync('./middleware/ipv4.txt', 'utf-8').replace(/\r/g, '',).split('\n');
 
@@ -22,6 +23,7 @@ function onlyAllowCloudflare(req, res, next) {
         next();
     } else {
         // console.warn('Unauthorized IP: ' + ip + '\n tried to access: ' + req.originalUrl);
+        //logger.debug('Unauthorized IP: ' + ip + '\n tried to access: ' + req.originalUrl);
     }
 }
 

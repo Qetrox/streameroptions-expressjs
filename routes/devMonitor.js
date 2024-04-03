@@ -11,7 +11,14 @@ router.get('/devMonitorStats/', auth.authCookie, (req, res) => {
             serverStatsFunctions.getStatisticsCounts()
         );
     } else {
-        return res.status(403).send('You do not have permission to view this page.');
+        return res.status(404).render(
+            '404notfound',
+            {
+                WebsiteTitleElementText: webTitle + ' - Not Found',
+                hostname: hostname,
+                CssUrl: hostname + '/stylesheet10.css',
+            }
+        );
     }
 });
 
@@ -28,7 +35,14 @@ router.get('/devMonitor', auth.authCookie, (req, res) => {
             }
         );
     } else {
-        return res.redirect('../../../');
+        return res.status(404).render(
+            '404notfound',
+            {
+                WebsiteTitleElementText: webTitle + ' - Not Found',
+                hostname: hostname,
+                CssUrl: hostname + '/stylesheet10.css',
+            }
+        );
     }
 });
 

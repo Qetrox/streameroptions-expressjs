@@ -10,6 +10,7 @@ const authFunctions = require('../functions/authFunctions');
 const database = require('../functions/sql');
 const axios = require('axios');
 const mailFunctions = require('../functions/mailFunctions');
+const logging = require('../logging');
 
 /**
  * Performs bitwise operations and returns a string representation of the result.
@@ -68,6 +69,8 @@ router.get('/login/twitch-auth', express.urlencoded({ extended: true }), async (
         });
 
         const twitchUser = userInfoResponse.data.data[0];
+
+        logging.info(`User ${twitchUser.login} logged in.`)
 
         database.getPool().query('INSERT INTO accessTokens VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE token = ?, refreshToken = ?', [accessToken, refreshToken, twitchUser.id, accessToken, refreshToken], (error, results, fields) => {
             if (error) {
