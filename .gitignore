@@ -2,7 +2,7 @@
 .ssl
 .ssl/certificate.pem
 .ssl/privatekey.pem
-
+logs/*
 
 # Ignore Node modules
 node_modules

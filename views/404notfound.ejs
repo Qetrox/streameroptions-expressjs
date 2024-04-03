@@ -11,37 +11,21 @@
     <title>
         <%= locals.WebsiteTitleElementText %>
     </title>
-    <link rel="stylesheet" type="text/css" href="<%= locals.CssUrl || 'stylesheet1.css' %>">
+    <link rel="stylesheet" type="text/css" href="<%= locals.CssUrl || 'stylesheet10.css' %>">
     <link rel="stylesheet" type="text/css"
         href="<%= locals.hostname + '/base_stylesheet.css' || 'localhost/base_stylesheet1.css' %>">
+
     <%- include('parts/metatags.ejs') %>
-        <meta name="robots" content="noindex">
+
 </head>
 
 <body>
     <%- include('parts/header.ejs') %>
         <main>
-            <div class="title-section" id="livenowtitle">
-                <h1>Live now</h1>
-                <div class="line"></div>
-            </div>
-            <div class="streamerlist" id="livenowlist">
-            </div>
-            <div class="title-section" id="previouswatchedtitle">
-                <div class="line"></div>
-                <h1>Previously watched</h1>
-            </div>
-            <div class="streamerlist" id="previouswatchedlist">
-            </div>
-            <div class="title-section" id="ostpointstitle">
-                <h1>Most points collected</h1>
-                <div class="line"></div>
-            </div>
-            <div class="streamerlist" id="mostpointslist">
-            </div>
+            <h1>404 Not Found</h1>
+            <p>Sorry, the page you are looking for does not exist.</p>
         </main>
         <%- include('parts/footer.ejs') %>
 </body>
-<script src="<%= locals.hostname + '/js4.js' || 'localhost/js4.js' %>"></script>
 
 </html>

@@ -24,7 +24,9 @@
     "ip-range-check": "^0.2.0",
     "jsonwebtoken": "^9.0.2",
     "mysql": "^2.18.1",
-    "nodemailer": "^6.9.7"
+    "nodemailer": "^6.9.7",
+    "winston": "^3.13.0",
+    "ws": "^8.16.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

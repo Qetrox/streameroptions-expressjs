@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="apple-touch-icon" sizes="180x180" href="<%= locals.hostname || '' %>/fav/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="<%= locals.hostname || '' %>/fav/favicon-32x32.png">
@@ -7,35 +8,35 @@
     <link rel="manifest" href="<%= locals.hostname || '' %>/fav/site.webmanifest">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= locals.WebsiteTitleElementText %></title>
+    <title>
+        <%= locals.WebsiteTitleElementText %>
+    </title>
     <link rel="stylesheet" type="text/css" href="<%= locals.CssUrl || 'stylesheet1.css' %>">
-    <link rel="stylesheet" type="text/css" href="<%= locals.hostname + '/base_stylesheet.css' || 'localhost/base_stylesheet1.css' %>">
+    <link rel="stylesheet" type="text/css"
+        href="<%= locals.hostname + '/base_stylesheet.css' || 'localhost/base_stylesheet1.css' %>">
     <%- include('parts/metatags.ejs') %>
 </head>
+
 <body>
     <%- include('parts/header.ejs') %>
-    <main>
+        <main>
+            <div class="title-section" id="sponsoredtitle">
+                <h1>Sponsored</h1>
+                <div class="line"></div>
+            </div>
+            <div class="streamerlist" id="sponsoredlist">
+            </div>
+            <div class="title-section" id="livenowtitle">
+                <div class="line"></div>
+                <h1>Live now</h1>
+            </div>
+            <div class="streamerlist" id="livenowlist">
 
-        <% locals.streamer_list.forEach(element => {
-            %>
-            <a class="streamer" href="./<%= element.userUsername %>">
-                <div class="streamer__image">
-                    <img src="<%= element.userProfileImageUrl %>" alt="<%= element.name %>">
-                </div>
-                <div class="streamer__info">
-                    <div class="streamer__name">
-                        <h2><%= element.userDisplayname %></h2>
-                    </div>
-                    <div class="streamer__description">
-                        <p><%= element.streamerSlogan %></p>
-                    </div>
-                </div>
-            </a>
-            <%
-        });
-        %>
-        
-    </main>
-    <%- include('parts/footer.ejs') %>
+            </div>
+        </main>
+        <%- include('parts/footer.ejs') %>
 </body>
+
+<script src="<%= locals.hostname + '/js3.js' || 'localhost/js3.js' %>"></script>
+
 </html>

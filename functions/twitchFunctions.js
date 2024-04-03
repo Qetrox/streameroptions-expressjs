@@ -22,16 +22,23 @@ async function refreshTwitchToken(refreshToken, twitch_id) {
         const accessToken = response.data.access_token;
         const refreshToken = response.data.refresh_token;
 
-        let con = mysql.createConnection(database.getDatabaseCredentials());
-        con.connect();
-        con.query('INSERT INTO accessTokens VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE token = ?, refreshToken = ?', [accessToken, refreshToken, twitch_id, accessToken, refreshToken], (error, results, fields) => {
-            con.end();
-            if(error) {
+        database.getPool().query('INSERT INTO accessTokens VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE token = ?, refreshToken = ?', [accessToken, refreshToken, twitch_id, accessToken, refreshToken], (error, results, fields) => {
+            if (error) {
                 console.error(error);
                 return;
             }
         });
     }).catch((error) => {
+        if (error.response.data.status === 400 && error.response.data.message == 'Invalid refresh token') {
+            database.getPool().query('DELETE FROM accessTokens WHERE tokenUserId = ?', [twitch_id], (error, results, fields) => {
+                if (error) {
+                    console.error(error);
+                    return;
+                }
+                logging.info('Removed invalid twitch access & refresh token for user: ' + twitch_id);
+            });
+            return;
+        }
         console.error(error);
         return;
     });

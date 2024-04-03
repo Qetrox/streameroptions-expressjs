@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css"
         href="<%= locals.hostname + '/base_stylesheet.css' || 'localhost/base_stylesheet1.css' %>">
     <%- include('parts/metatags.ejs') %>
+    <meta name="robots" content="noindex">
 </head>
 
 <% let customMinecraftModulesEnabled=0; for(let key in locals.customMinecraftModules) {

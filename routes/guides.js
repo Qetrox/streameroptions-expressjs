@@ -27,7 +27,8 @@ router.get('/guides/:guide', (req, res) => {
             WebsiteTitleElementText: webTitle + ' - ' + guide.urlTitle,
             hostname: hostname,
             CssUrl: '../../guideStyle.css',
-            guide: guide
+            guide: guide,
+            reqlink: reqGuide
         }
     )
 });

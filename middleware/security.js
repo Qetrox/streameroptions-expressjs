@@ -1,16 +1,18 @@
 const ipRangeCheck = require('ip-range-check');
 const fs = require('fs');
+const logger = require('../logging');
 
 const cloudflareIPs = fs.readFileSync('./middleware/ipv4.txt', 'utf-8').replace(/\r/g, '',).split('\n');
 
 function onlyAllowCloudflare(req, res, next) {
     let ip = req.ip.split(':')[3];
+    //console.log(req.path)
 
     /* If the IP is undefined, it means that the user is accessing the website from localhost. */
     /* Only use in development. */
-    if(ip == undefined) {
+    if (ip == undefined) {
         ip = req.ip;
-        if(ip == '::1') {
+        if (ip == '::1') {
             next();
             return;
         }
@@ -20,7 +22,8 @@ function onlyAllowCloudflare(req, res, next) {
         // IP is within the Cloudflare range
         next();
     } else {
-        console.warn('Unauthorized IP: ' + ip + '\n tried to access: ' + req.originalUrl);
+        // console.warn('Unauthorized IP: ' + ip + '\n tried to access: ' + req.originalUrl);
+        //logger.debug('Unauthorized IP: ' + ip + '\n tried to access: ' + req.originalUrl);
     }
 }
 

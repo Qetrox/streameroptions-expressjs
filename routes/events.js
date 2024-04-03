@@ -1,4 +1,4 @@
-const express= require('express');
+const express = require('express');
 const router = express.Router()
 const auth = require('../middleware/auth');
 const streamer = require('../middleware/streamer');
@@ -11,18 +11,14 @@ const { isDevMode } = require('../data/dev.json');
 
 
 router.get('/minecraft/:token', async (req, res) => {
-    const con = mysql.createConnection(database.getDatabaseCredentials());
 
     const token = req.params.token
 
-    con.connect();
-    con.query('select * from eventTokens where token = ?', [token], (error, results, fields) => {
-        con.end();
-        if(error) {
-            res.status(500).send();
-            return;
+    database.getPool().query('select * from eventTokens where token = ?', [token], (error, results, fields) => {
+        if (error) {
+            return res.status(500).send();
         }
-        if(results[0] !== undefined && results[0].tokenUserId !== undefined && results[0].tokenUserId !== null) {
+        if (results[0] !== undefined && results[0].tokenUserId !== undefined && results[0].tokenUserId !== null) {
 
             res.setHeader('Cache-Control', 'no-cache');
             res.setHeader('Content-Type', 'text/event-stream');
@@ -30,7 +26,7 @@ router.get('/minecraft/:token', async (req, res) => {
             res.setHeader('Connection', 'keep-alive');
             res.flushHeaders();
 
-            if(isDevMode) console.log(token + ' Connected')
+            if (isDevMode) console.log(token + ' Connected')
             serverStatsFunctions.updateConnectedTokens(1);
 
             res.write(`data: {"status":"connected"}\n\n`);
@@ -38,15 +34,15 @@ router.get('/minecraft/:token', async (req, res) => {
             const keepAliveInterval = setInterval(() => {
                 res.write(`Keep Alive\n\n`);
             }, 60000);
-            
+
             const interval = setInterval(() => {
 
                 eventFunctions.sendEvents(req, res, token, 'minecraft');
-                
+
             }, 100);
 
             res.on('close', () => {
-                if(isDevMode) console.log(token + ' Dropped');
+                if (isDevMode) console.log(token + ' Dropped');
                 serverStatsFunctions.updateConnectedTokens(-1);
                 clearInterval(interval);
                 clearInterval(keepAliveInterval);
@@ -54,10 +50,59 @@ router.get('/minecraft/:token', async (req, res) => {
             });
 
         } else {
-            res.status(401).json({ error:"Invalid Token" });
+            return res.status(401).json({ error: "Invalid Token" });
         }
     });
-    
+
 });
+
+/*
+
+router.get('/lethal-company/:token', async (req, res) => {
+    const token = req.params.token
+
+    database.getPool().query('select * from eventTokens where token = ?', [token], (error, results, fields) => {
+        if (error) {
+            return res.status(500).send();
+        }
+        if (results[0] !== undefined && results[0].tokenUserId !== undefined && results[0].tokenUserId !== null) {
+
+            res.setHeader('Cache-Control', 'no-cache');
+            res.setHeader('Content-Type', 'text/event-stream');
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Connection', 'keep-alive');
+            res.flushHeaders();
+
+            if (isDevMode) console.log(token + ' Connected')
+            serverStatsFunctions.updateConnectedTokens(1);
+
+            res.write(`data: {"status":"connected"}\n\n`);
+
+            const keepAliveInterval = setInterval(() => {
+                res.write(`Keep Alive\n\n`);
+            }, 60000);
+
+            const interval = setInterval(() => {
+
+                eventFunctions.sendEvents(req, res, token, 'lethal-company');
+
+            }, 100);
+
+            res.on('close', () => {
+                if (isDevMode) console.log(token + ' Dropped');
+                serverStatsFunctions.updateConnectedTokens(-1);
+                clearInterval(interval);
+                clearInterval(keepAliveInterval);
+                res.end();
+            });
+
+        } else {
+            return res.status(401).json({ error: "Invalid Token" });
+        }
+    });
+
+});
+
+*/
 
 module.exports = router;

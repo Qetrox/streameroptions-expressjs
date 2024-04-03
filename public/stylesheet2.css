@@ -28,13 +28,13 @@ h1 {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 10px;
-    font-family: 'Kanit', sans-serif;
+    font-family: 'Inter';
 }
 
 .description {
     font-size: 16px;
     margin-bottom: 10px;
-    font-family: 'Sometime Mono', monospace;
+    font-family: 'Inter'
 }
 
 .price {
@@ -44,7 +44,7 @@ h1 {
     position: absolute;
     top: 10px;
     right: 10px;
-    font-family: 'Kanit', sans-serif;
+    font-family: 'Inter';
 }
 
 .price input {
@@ -100,11 +100,11 @@ h1 {
     transition: transform 0.4s;
 }
 
-.toggle-slider-checkbox:checked + .toggle-slider-label {
+.toggle-slider-checkbox:checked+.toggle-slider-label {
     background-color: #2196F3;
 }
 
-.toggle-slider-checkbox:checked + .toggle-slider-label:after {
+.toggle-slider-checkbox:checked+.toggle-slider-label:after {
     transform: translateX(26px);
 }
 
@@ -114,19 +114,20 @@ main {
     justify-content: center;
 }
 
-main > h1 {
+main>h1 {
     font-size: 48px;
     font-weight: bold;
     margin-bottom: 10px;
-    font-family: 'Kanit', sans-serif;
+    font-family: 'Inter';
     text-align: center;
     background: #fff;
     width: calc(90% + 40px);
     margin: 30px auto;
     border-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(29, 29, 29, 0.5);
 }
 
-main > .top {
+main>.top {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -134,29 +135,31 @@ main > .top {
     margin-top: 30px;
 }
 
-main > div > .info {
+main>div>.info {
     background: #fff;
     padding: 20px;
     width: 40%;
     height: auto;
     color: #050505;
     text-align: left;
-    font-family: 'Sometype Mono', monospace;
+    font-family: 'Inter';
     border-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(29, 29, 29, 0.5);
 }
 
-main > div > .setup {
+main>div>.setup {
     background: #fff;
     padding: 20px;
     width: 40%;
     height: auto;
     color: #050505;
     text-align: left;
-    font-family: 'Sometype Mono', monospace;
+    font-family: 'Inter';
     border-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(29, 29, 29, 0.5);
 }
 
-.info > input:disabled {
+.info>input:disabled {
     color: #050505;
 }
 
@@ -172,7 +175,8 @@ form {
     height: 100%;
 }
 
-.setup form textarea, input {
+.setup form textarea,
+input {
     width: 90%;
     margin: 20px;
     margin-top: 0;
@@ -181,7 +185,8 @@ form {
     color: #050505;
 }
 
-textarea, input {
+textarea,
+input {
     resize: none;
     outline: none;
     border: none;
@@ -189,7 +194,8 @@ textarea, input {
     border-radius: 2px;
 }
 
-.button, .info > button {
+.button,
+.info>button {
     background: var(--first-color);
     outline: none;
     border: none;
@@ -198,10 +204,13 @@ textarea, input {
     border-radius: 2px;
     min-height: 40px;
 }
-.button:hover, .info > button:hover {
+
+.button:hover,
+.info>button:hover {
     background: var(--first-color-darker);
     cursor: pointer;
 }
+
 .button:hover:disabled {
     cursor: not-allowed;
 }
@@ -220,7 +229,7 @@ textarea, input {
     margin: 0;
 }
 
-main > h1 {
+main>h1 {
     transform: translateY(60px);
     z-index: 1;
 }
@@ -252,7 +261,8 @@ main > h1 {
     align-items: center;
     transition: all 150ms ease;
 }
-.MinecraftCustomCommandEditor > .modal {
+
+.MinecraftCustomCommandEditor>.modal {
     background-color: #fff;
     width: 50%;
     height: 90%;
@@ -260,47 +270,57 @@ main > h1 {
     transition: all 150ms ease;
     overflow: hidden;
     padding: 10px;
-    font-family: 'Kanit', sans-serif;
+    font-family: 'Inter';
+    box-shadow: 5px 5px 10px rgba(29, 29, 29, 0.5);
 }
-.MinecraftCustomCommandEditor > .modal > h1 {
+
+.MinecraftCustomCommandEditor>.modal>h1 {
     text-align: center;
 }
-.MinecraftCustomCommandEditor > .modal > form {
+
+.MinecraftCustomCommandEditor>.modal>form {
     overflow-y: scroll;
     height: inherit;
     display: flex;
     flex-wrap: wrap;
 }
-.MinecraftCustomCommandEditor > .modal > form > input[type="submit"] {
+
+.MinecraftCustomCommandEditor>.modal>form>input[type="submit"] {
     width: 70%;
     margin: 30px auto;
 }
-.MinecraftCustomCommandEditor > .modal > form > .command {
+
+.MinecraftCustomCommandEditor>.modal>form>.command {
     width: 100%;
     position: relative;
     width: 45vw;
 }
-.MinecraftCustomCommandEditor > .modal > form > .command > input,
-.MinecraftCustomCommandEditor > .modal > form > .command > textarea {
+
+.MinecraftCustomCommandEditor>.modal>form>.command>input,
+.MinecraftCustomCommandEditor>.modal>form>.command>textarea {
     background-color: #ddd;
     width: 100%;
     margin-bottom: 0;
 }
-.MinecraftCustomCommandEditor > .modal > form > .command > .top-inputs {
+
+.MinecraftCustomCommandEditor>.modal>form>.command>.top-inputs {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.MinecraftCustomCommandEditor > .modal > form > .command > .sliders {
+
+.MinecraftCustomCommandEditor>.modal>form>.command>.sliders {
     position: relative;
     min-height: 50px;
 }
-.MinecraftCustomCommandEditor > .modal > form > .command > .sliders > .viewer-input {
+
+.MinecraftCustomCommandEditor>.modal>form>.command>.sliders>.viewer-input {
     display: flex;
 }
-.MinecraftCustomCommandEditor > .modal > form > .command > .sliders > .toggle-slider,
-.MinecraftCustomCommandEditor > .modal > form > .command > .sliders > div > .toggle-slider {
+
+.MinecraftCustomCommandEditor>.modal>form>.command>.sliders>.toggle-slider,
+.MinecraftCustomCommandEditor>.modal>form>.command>.sliders>div>.toggle-slider {
     margin: 0 10px;
     min-width: 60px;
     position: relative;
@@ -314,25 +334,32 @@ main > h1 {
     .module {
         width: 90%;
     }
-    main > h1 {
+
+    main>h1 {
         width: 100%;
         border-radius: 0;
     }
-    main > div > .setup, main > div > .info {
+
+    main>div>.setup,
+    main>div>.info {
         width: 90%;
         border-radius: 0;
         margin-top: 20px;
     }
+
     .top {
         flex-wrap: wrap;
     }
-    .MinecraftCustomCommandEditor > .modal {
+
+    .MinecraftCustomCommandEditor>.modal {
         width: 100%;
     }
-    .MinecraftCustomCommandEditor > .modal > form > .command {
+
+    .MinecraftCustomCommandEditor>.modal>form>.command {
         width: 100%;
     }
-    .MinecraftCustomCommandEditor > .modal > form > input[type="submit"] {
+
+    .MinecraftCustomCommandEditor>.modal>form>input[type="submit"] {
         margin-bottom: 70px;
     }
 
